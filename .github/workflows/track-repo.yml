@@ -73,7 +73,8 @@ jobs:
         working-directory: lint-tools
         run: |
           python3 -m tools.payload_lint "${GITHUB_WORKSPACE}/under-test" \
-            --register tools/testdata/register.tsv
+            --register tools/testdata/register.tsv \
+            --visibility "${{ inputs.visibility }}"
 
       # The upload step reads the WHOLE workflow text and NOT an action
       # allow-list. A `run: gh release download` against the private
