@@ -2917,7 +2917,7 @@ def main(argv):
         # one. The committed corpus is still authoritative, but this run
         # would not be a byte-identical regeneration.
         parser.error(
-            "assembler %r reports %r; docs/toolchain.md pins %r. Refuse to "
+            "assembler %r reports %r; BINUTILS_VERSION pins %r. Refuse to "
             "regenerate the committed corpus with a different assembler."
             % (M68K_AS, first_line, BINUTILS_VERSION))
 

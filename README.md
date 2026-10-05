@@ -175,11 +175,10 @@ ctest --preset full
 
 ## Detailed Documentation
 
+- [Online Documentation (GitHub Pages)](https://axiomantic.github.io/mcf5407/): Live, responsive interactive documentation page.
 - [API Specification (Markdown)](docs/api.md): Complete function, callback, and type reference.
-- [API Specification (HTML / GitHub Pages)](docs/index.html): Responsive, self-contained technical documentation page.
-- [Sources and Architectural Decisions](docs/sources.md): Citations, manual cross-references, and design rationale.
-- [Nim Toolchain Policy](docs/nim-version.md): Compiler version pinning and upgrading ceremony.
-- [Cycle Scheduling](docs/avoiding-cycles.md): Architectural decisions regarding instruction timing.
+- [API Specification (HTML)](docs/index.html): Self-contained, offline-capable documentation page.
+- [Sources and Architectural References](docs/sources.md): Hardware manual citations, register decodes, and design rationale.
 
 ---
 

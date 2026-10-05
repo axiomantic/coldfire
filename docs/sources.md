@@ -623,7 +623,7 @@ about the callback's meaning to a host.
 An instrument is not a document, and a header that cites one is recording a
 measurement rather than an authority. `m68k-elf-as` and `m68k-elf-objdump`
 are cited in the core headers as the thing that confirms which operand sizes
-ISA_A accepts. Their pin is in `docs/toolchain.md`.
+ISA_A accepts. Their pin is in `conformance/generate.py`.
 
 ## Unverified
 
@@ -641,8 +641,5 @@ ISA_A accepts. Their pin is in `docs/toolchain.md`.
 
 ## Related
 
-- `docs/toolchain.md` — the cross-assembler pin.
-- `docs/nim-version.md` — the compiler pin.
-- `docs/avoiding-cycles.md` — the layering rule the module headers obey.
 - `AGENTS.md` — the clean-room rule that decides what may be taken from a
   source at all.
