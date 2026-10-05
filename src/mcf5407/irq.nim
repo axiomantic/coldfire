@@ -25,7 +25,7 @@
 ## bullet, folio 18-19, describes a case that rule cannot produce - a handler
 ## which LOWERS the interrupt mask: "If the level 7 interrupt routine lowers
 ## the mask level, a second level 7 interrupt is recognized without a
-## transition of the interrupt control pins." The target programs no level-7
+## transition of the interrupt control pins." The target board programs no level-7
 ## source, so nothing in this project can reach the difference.
 ##
 ## The order inside `takeInterrupt` is the manual's four steps, and the

@@ -11,7 +11,7 @@ The core implementation is authored in Nim, exposing a pure C application binary
 - **Pure C11 ABI Boundary**: Communicates strictly via standard types, opaque context pointers, and C function pointers. No Nim runtime internals, garbage collector handles, or C++ virtual tables cross the interface.
 - **Dual Build Modes**:
   - **Native Nim Mode**: Drives the pinned Nim compiler directly via CMake for active core development.
-  - **Pre-Generated C Distribution**: Downstream consumers (such as [`downstream emulator`](https://github.com/axiomantic)) do **not** require a Nim installation. Standard C11 builds are supported on macOS, Linux x86_64, and Windows x86_64.
+  - **Pre-Generated C Distribution**: Downstream consumers do **not** require a Nim installation. Standard C11 builds are supported on macOS, Linux x86_64, and Windows x86_64.
 - **ColdFire V4 Core Emulation**: Accurate instruction decoding, arithmetic logic unit (ALU), move control operations (`MOVEC`), supervisor registers (VBR, CACR, ACR0–3, RAMBAR0–1, MBAR), cycle-budgeted execution, bus fault handling, and prioritized multi-level interrupt servicing.
 - **ISP1181 USB Device Controller**: Complete endpoint register file, double-buffered FIFOs, setup packet handling, OUT/IN token processing, and diagnostic ring logging.
 - **Deterministic State Serialization**: Full snapshot capture and restore for deterministic replay and state persistence.

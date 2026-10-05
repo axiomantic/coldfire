@@ -67,7 +67,7 @@ ctest --test-dir <build> --no-tests=error --output-on-failure
 The narrow run leaves the conformance corpus unexecuted, so a change to the
 core's decode, ALU, logic or control behaviour needs the full run. A change that
 alters the published C ABI needs it too: the consumer that links this library is
-`downstream emulator`'s `downstream library`, and nothing in this tree builds that.
+external, and nothing in this tree builds that.
 
 ### Traps
 
@@ -183,8 +183,8 @@ Two ColdFire user's manuals are read in this project, and both stay.
 
 | Document | Designation | Where to get it |
 |---|---|---|
-| MCF5407 ColdFire Integrated Microprocessor User's Manual | `MCF5407UM/D`, Rev. 0.1, 11/2001, 546 pages | `the artifacts repository`, `datasheets/MCF5407UM.pdf`. The pinned copy was obtained from `https://www.farnell.com/datasheets/2291337.pdf`. |
-| MCF5307 ColdFire Integrated Microprocessor User's Manual | `MCF5307UM/AD`, 1998, 456 pages, scanned paper | `the artifacts repository`, `datasheets/MCF5307UM.pdf`. Obtain it by its designation if you cannot reach that repository. |
+| MCF5407 ColdFire Integrated Microprocessor User's Manual | `MCF5407UM/D`, Rev. 0.1, 11/2001, 546 pages | The project artifacts repository, `datasheets/MCF5407UM.pdf`. The pinned copy was obtained from `https://www.farnell.com/datasheets/2291337.pdf`. |
+| MCF5307 ColdFire Integrated Microprocessor User's Manual | `MCF5307UM/AD`, 1998, 456 pages, scanned paper | The project artifacts repository, `datasheets/MCF5307UM.pdf`. Obtain it by its designation if you cannot reach that repository. |
 | ColdFire Family Programmer's Reference Manual | `CFPRM`, Rev. 3 | No repository of this project holds it. Obtain it from the vendor archive by its designation. |
 
 `docs/sources.md` pins the SHA-256 of each copy and is the register these rows
@@ -423,21 +423,17 @@ the line the comment describes. Change nothing else.
 
 ## Gotchas
 
-- **USE THE GDB DEBUGGER EARLY AND OFTEN for anything the MCF5307 stub can
-  reach.** This repo ships the stub and the board harness exposes it as
-  `test console --gdb` (see `AGENTS.md`, "Debugging the MCF5307
-  with GDB"). For any runtime question about firmware execution — is this
+- **USE THE GDB DEBUGGER EARLY AND OFTEN for anything the processor stub can
+  reach.** For any runtime question about firmware execution — is this
   routine reached, who writes this address, what do the registers hold — a
   breakpoint or watchpoint is the FIRST tool to reach for, before static
   disassembly and before adding probe scaffolds to test files. Static analysis
   enumerates candidate paths; the debugger tells you which one ran. Reserve
-  scaffolds for what the stub cannot reach (DSP-side state, whole-run
-  statistics). When dispatching a subagent on firmware work, state this in the
-  dispatch prompt explicitly — an agent that defaults to print-probes and
-  disassembly wastes the instrument this project already built.
-- **FOR STATIC STRUCTURE QUESTIONS, USE THE GHIDRA DECOMPILER** — full setup,
-  working recipe, and the decompile-vs-breakpoint decision table are in
-  `artifacts repository/AGENTS.md` §0.1 (project at `/tmp/ghidra_mcf5407`, language
+  scaffolds for what the stub cannot reach. When dispatching a subagent on
+  firmware work, state this in the dispatch prompt explicitly — an agent that
+  defaults to print-probes and disassembly wastes the instrument this project
+  already built.
+- **FOR STATIC STRUCTURE QUESTIONS, USE THE GHIDRA DECOMPILER** (language
   `68000:BE:32:Coldfire`, base address `0x30000400`; Java scripts only —
   Ghidra 12 dropped Python). Decompile answers "what does this code do / who
   calls it"; the debugger answers "did it run". Decompile to plan breakpoints,
@@ -464,7 +460,5 @@ that class of change. The removal stands.
 
 ## Related
 
-This library is a component of a target system emulator, but it holds no
-knowledge of that instrument. A program that needs a ColdFire processor can use
-it alone. The emulator's implementation plan and its cross-repository rules live
-in the `target-emulator` workspace.
+This library is a general-purpose ColdFire MCF5407 core and ISP1181 USB model.
+A program that needs a ColdFire processor can use it alone.

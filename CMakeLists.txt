@@ -43,7 +43,7 @@ enable_testing()
 #
 # A consumer that adds this project with `FetchContent` also gives it the
 # consumer's own `CMAKE_C_FLAGS_RELEASE` and `CMAKE_CXX_FLAGS_RELEASE`.
-# Measured: `downstream emulator` appends `-Ofast`, and a current Apple clang answers
+# Measured: a downstream consumer appends `-Ofast`, and a current Apple clang answers
 # `-Ofast` with `argument '-Ofast' is deprecated; use '-O3 -ffast-math'
 # [-Wdeprecated-ofast]`. That diagnostic is about the command line the consumer
 # built and not about one line of this project's source, so `-Werror` promotes

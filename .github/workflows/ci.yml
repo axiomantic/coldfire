@@ -48,7 +48,7 @@ jobs:
         include:
           # macos-arm64 is EXCLUDED here, not unsupported. macOS/arm64 is the
           # development platform and is exercised locally. It left CI after
-          # the downstream emulator's inherited CMake run 31033322092, where the macOS jobs
+          # an inherited CMake run 31033322092, where the macOS jobs
           # were CANCELLED at >=4h 32m without completing, against 19m 46s for
           # the comparable Ubuntu job: >=13.8x, and unbounded, because a
           # cancelled job gives a lower bound and not a duration. That run

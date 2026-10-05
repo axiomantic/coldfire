@@ -68,7 +68,7 @@
     {
       "name": "full",
       "displayName": "Run everything including the conformance corpus",
-      "description": "The T0 run leaves the conformance corpus unexecuted, so a change to the core's decode, ALU, logic or control behaviour needs this one. A change that alters the published C ABI needs more than this: the consumer that links this library is the downstream library and nothing in this tree builds it.",
+      "description": "The T0 run leaves the conformance corpus unexecuted, so a change to the core's decode, ALU, logic or control behaviour needs this one. A change that alters the published C ABI needs more than this: the consumer that links this library is external and nothing in this tree builds it.",
       "configurePreset": "full",
       "environment": {
         "CTEST_NO_TESTS_ACTION": "error"
