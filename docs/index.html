@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mcf5407 C ABI Reference</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2328;
+      --text-muted: #656d76;
+      --border: #d0d7de;
+      --sidebar-bg: #f6f8fa;
+      --card-bg: #f6f8fa;
+      --code-bg: #eff1f3;
+      --code-inline-bg: #ebf0f4;
+      --accent: #0969da;
+      --accent-hover: #0550ae;
+      --table-stripe: #f6f8fa;
+      --alert-note-bg: #ddf4ff;
+      --alert-note-border: #54aeff;
+      --alert-warn-bg: #fff8c5;
+      --alert-warn-border: #d4a72c;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --text: #e6edf3;
+        --text-muted: #848d97;
+        --border: #30363d;
+        --sidebar-bg: #161b22;
+        --card-bg: #161b22;
+        --code-bg: #161b22;
+        --code-inline-bg: #21262d;
+        --accent: #2f81f7;
+        --accent-hover: #58a6ff;
+        --table-stripe: #161b22;
+        --alert-note-bg: #0c2d6b;
+        --alert-note-border: #1f6feb;
+        --alert-warn-bg: #3d2a00;
+        --alert-warn-border: #9e6a03;
+      }
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      display: flex;
+      min-height: 100vh;
+    }
+    nav.sidebar {
+      width: 280px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      padding: 24px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+    }
+    nav.sidebar h2 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    nav.sidebar .tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      display: block;
+    }
+    nav.sidebar ul {
+      list-style: none;
+    }
+    nav.sidebar li {
+      margin-bottom: 4px;
+    }
+    nav.sidebar li.section-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-top: 18px;
+      margin-bottom: 6px;
+      padding-left: 8px;
+    }
+    nav.sidebar a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.88rem;
+      display: block;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav.sidebar a:hover {
+      background: var(--code-inline-bg);
+      color: var(--accent);
+    }
+    main.content {
+      flex: 1;
+      max-width: 980px;
+      padding: 40px 48px 80px 48px;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4 {
+      color: var(--text);
+      font-weight: 600;
+      line-height: 1.25;
+      margin-top: 28px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 2rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+      margin-top: 0;
+    }
+    h2 {
+      font-size: 1.45rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+      margin-top: 36px;
+    }
+    h3 {
+      font-size: 1.15rem;
+      margin-top: 24px;
+    }
+    p, ul, ol {
+      margin-bottom: 16px;
+    }
+    ul, ol {
+      padding-left: 24px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.85em;
+      padding: 0.2em 0.4em;
+      background: var(--code-inline-bg);
+      border-radius: 4px;
+    }
+    pre {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      line-height: 1.45;
+    }
+    pre code {
+      padding: 0;
+      background: none;
+      font-size: inherit;
+      border-radius: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      text-align: left;
+    }
+    th {
+      background: var(--sidebar-bg);
+      font-weight: 600;
+    }
+    tr:nth-child(even) td {
+      background: var(--table-stripe);
+    }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--border);
+      color: var(--text);
+      margin-left: 6px;
+    }
+    .alert {
+      padding: 14px 18px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+    .alert-note {
+      background: var(--alert-note-bg);
+      border-color: var(--alert-note-border);
+    }
+    .alert-warn {
+      background: var(--alert-warn-bg);
+      border-color: var(--alert-warn-border);
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      background: var(--card-bg);
+      margin-bottom: 20px;
+    }
+    @media (max-width: 850px) {
+      body {
+        flex-direction: column;
+      }
+      nav.sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      main.content {
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="sidebar">
+    <h2>mcf5407 <span class="badge">v0.1.0</span></h2>
+    <span class="tagline">ColdFire MCF5407 Core &amp; ISP1181 USB Model</span>
+    <ul>
+      <li class="section-header">General</li>
+      <li><a href="#principles">Architectural Principles</a></li>
+      <li><a href="#runtime-init">Runtime Initialisation</a></li>
+
+      <li class="section-header">ColdFire CPU Core</li>
+      <li><a href="#cpu-context">Context &amp; Status</a></li>
+      <li><a href="#cpu-callbacks">Bus Callbacks</a></li>
+      <li><a href="#cpu-lifecycle">Lifecycle (Create/Reset)</a></li>
+      <li><a href="#cpu-exec">Instruction Execution</a></li>
+      <li><a href="#cpu-registers">Register Access Table</a></li>
+      <li><a href="#cpu-state">Halted &amp; Faulted State</a></li>
+      <li><a href="#cpu-irq">Interrupt Presentation</a></li>
+      <li><a href="#cpu-snapshot">State Serialization</a></li>
+
+      <li class="section-header">ISP1181 USB Controller</li>
+      <li><a href="#usb-context">Context &amp; Callbacks</a></li>
+      <li><a href="#usb-lifecycle">Lifecycle &amp; Backends</a></li>
+      <li><a href="#usb-registers">Register Access</a></li>
+      <li><a href="#usb-packets">Packets (RX / Setup / IN)</a></li>
+      <li><a href="#usb-timebase">SOF Timebase</a></li>
+      <li><a href="#usb-endpoints">Endpoint Configuration</a></li>
+      <li><a href="#usb-logging">Diagnostics &amp; Reporting</a></li>
+      <li><a href="#usb-snapshot">State Serialization</a></li>
+
+      <li class="section-header">Code Examples</li>
+      <li><a href="#example-c">Minimal C Host</a></li>
+      <li><a href="#example-cpp">Minimal C++ Host</a></li>
+    </ul>
+  </nav>
+
+  <main class="content">
+    <h1>mcf5407 C ABI Reference</h1>
+    <p>
+      This reference specifies the public C application binary interface (ABI) exposed by <code>mcf5407</code>
+      via <code>include/mcf5407.h</code>. It defines the low-level contracts for embedding the Motorola ColdFire
+      MCF5407 processor core and Philips ISP1181 USB Full-Speed device controller model in C and C++ hosts.
+    </p>
+
+    <!-- Principles -->
+    <h2 id="principles">Architectural Principles</h2>
+    <p>
+      The library exports symbols with <code>cdecl</code> linkage and C calling conventions.
+      It is designed to cleanly separate the host board model from the processor core.
+    </p>
+    <ul>
+      <li><strong>Opaque Context Objects</strong>: Pointers (<code>mcf5407_ctx*</code>, <code>isp1181_ctx*</code>) are opaque; internal fields are never exposed.</li>
+      <li><strong>Primitive Types Only</strong>: The boundary transports only fixed-width integers (<code>uint8_t</code>, <code>uint32_t</code>, <code>size_t</code>), flat byte buffers, and function pointers.</li>
+      <li><strong>No Managed Runtime Leakage</strong>: No garbage-collected references, closures, or C++ vtables cross the ABI.</li>
+      <li><strong>No Thrown Exceptions</strong>: Faults and status are communicated via return codes or explicit out-parameters.</li>
+      <li><strong>Diagnostic Attributes</strong>: Critical functions are annotated with <code>MCF5407_MUST_CHECK</code> / <code>MCF5407_MUST_USE</code> (<code>[[nodiscard]]</code> / <code>warn_unused_result</code>) to prevent silent error drops.</li>
+    </ul>
+
+    <!-- Runtime Init -->
+    <h2 id="runtime-init">Runtime Initialisation</h2>
+    <div class="card">
+      <pre><code>MCF5407_MUST_CHECK int mcf5407_runtime_init(void);</code></pre>
+      <p>
+        Initialises the library runtime once. This function is idempotent, thread-safe, and never aborts or terminates the host process.
+      </p>
+      <p>
+        <strong>Returns:</strong> <code>1</code> on success, or <code>0</code> if an initialisation latch timed out or failed.
+        If initialisation fails, subsequent allocation calls safely return <code>NULL</code>.
+      </p>
+    </div>
+
+    <!-- CPU Core -->
+    <h2 id="cpu-context">ColdFire MCF5407 CPU Core: Context &amp; Status</h2>
+    <pre><code>typedef struct mcf5407_ctx mcf5407_ctx;
+
+typedef enum {
+    MCF5407_BUS_OK           = 0, /* Access completed normally */
+    MCF5407_BUS_UNMAPPED     = 1, /* Target address is unmapped */
+    MCF5407_BUS_SIZE_ILLEGAL = 2, /* Target rejects access width */
+    MCF5407_BUS_FAULT        = 3  /* Target asserts bus error */
+} mcf5407_bus_status;</code></pre>
+
+    <h2 id="cpu-callbacks">Memory &amp; Interrupt Callbacks</h2>
+    <p>
+      The host board implements address decoding and supplies callbacks during CPU context creation:
+    </p>
+    <pre><code>typedef uint32_t (*mcf5407_read_fn)(void* user, uint32_t addr, int size,
+                                    mcf5407_bus_status* status);
+
+typedef void (*mcf5407_write_fn)(void* user, uint32_t addr, int size,
+                                 uint32_t value, mcf5407_bus_status* status);
+
+typedef void (*mcf5407_iack_fn)(void* user, int level, uint8_t vector);</code></pre>
+    <p>
+      <code>size</code> is the access width in bytes (<code>1</code>, <code>2</code>, or <code>4</code>).
+      <code>status</code> is an out-parameter pre-initialised to <code>MCF5407_BUS_OK</code>.
+      <code>mcf5407_iack_fn</code> is called during interrupt acknowledge cycles after pushing the exception frame.
+    </p>
+
+    <h2 id="cpu-lifecycle">Lifecycle Management</h2>
+    <pre><code>mcf5407_ctx* mcf5407_create(void* user,
+                            mcf5407_read_fn rd,
+                            mcf5407_write_fn wr,
+                            mcf5407_iack_fn iack);
+
+void mcf5407_destroy(mcf5407_ctx* ctx);
+
+void mcf5407_reset(mcf5407_ctx* ctx, uint32_t initial_sp, uint32_t initial_pc);</code></pre>
+    <p>
+      <code>mcf5407_reset</code> sets the stack pointer (<code>A7</code>) to <code>initial_sp</code>,
+      the program counter (<code>PC</code>) to <code>initial_pc</code>, the interrupt priority mask in <code>SR</code> to 7,
+      clears all control registers to zero, and inhibits interrupt sampling for the initial instruction.
+    </p>
+
+    <h2 id="cpu-exec">Instruction Execution</h2>
+    <pre><code>uint32_t mcf5407_exec(mcf5407_ctx* ctx, uint32_t max_cycles);</code></pre>
+    <p>
+      Executes instructions until at least <code>max_cycles</code> cycles have elapsed. Because the cycle limit
+      is evaluated at instruction boundaries, the returned count may exceed <code>max_cycles</code> by up to the cost
+      of the final instruction. Schedulers should carry <code>spent - max_cycles</code> forward into the next quantum.
+    </p>
+
+    <h2 id="cpu-registers">Register Access</h2>
+    <pre><code>int mcf5407_set_reg(mcf5407_ctx* ctx, int index, uint32_t value);
+uint32_t mcf5407_get_reg(const mcf5407_ctx* ctx, int index);</code></pre>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>Symbol</th>
+          <th>Description</th>
+          <th>Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0 .. 7</td><td><code>D0 .. D7</code></td><td>Data registers</td><td>Read / Write</td></tr>
+        <tr><td>8 .. 15</td><td><code>A0 .. A7</code></td><td>Address registers (<code>A7</code> = SP)</td><td>Read / Write</td></tr>
+        <tr><td>16</td><td><code>SR</code></td><td>Status Register (low 16 bits)</td><td>Read / Write</td></tr>
+        <tr><td>17</td><td><code>PC</code></td><td>Program Counter</td><td>Read Only</td></tr>
+        <tr><td>18</td><td><code>VBR</code></td><td>Vector Base Register</td><td>Read / Write</td></tr>
+        <tr><td>19</td><td><code>CACR</code></td><td>Cache Control Register</td><td>Read / Write</td></tr>
+        <tr><td>20</td><td><code>ACR0</code></td><td>Access Control Register 0 (Data)</td><td>Read / Write</td></tr>
+        <tr><td>21</td><td><code>ACR1</code></td><td>Access Control Register 1 (Data)</td><td>Read / Write</td></tr>
+        <tr><td>22</td><td><code>RAMBAR0</code></td><td>On-chip RAM Base Address Register 0</td><td>Read / Write</td></tr>
+        <tr><td>23</td><td><code>RAMBAR1</code></td><td>On-chip RAM Base Address Register 1</td><td>Read / Write</td></tr>
+        <tr><td>24</td><td><code>MBAR</code></td><td>Module Base Address Register</td><td>Read / Write</td></tr>
+        <tr><td>25</td><td><code>ACR2</code></td><td>Access Control Register 2 (Instruction)</td><td>Read / Write</td></tr>
+        <tr><td>26</td><td><code>ACR3</code></td><td>Access Control Register 3 (Instruction)</td><td>Read / Write</td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="cpu-state">Execution State</h2>
+    <pre><code>int mcf5407_halted(const mcf5407_ctx* ctx);
+int mcf5407_faulted(const mcf5407_ctx* ctx);</code></pre>
+    <p>
+      <code>mcf5407_halted</code> returns <code>1</code> if the CPU has stopped.
+      <code>mcf5407_faulted</code> returns <code>1</code> if the stop was caused by a processor fault
+      (bus error, illegal instruction, unaligned access, or divide by zero). All faulted cores are halted.
+    </p>
+
+    <h2 id="cpu-irq">Interrupt Presentation</h2>
+    <pre><code>#define MCF5407_IRQ_NONE 0
+
+void mcf5407_set_irq(mcf5407_ctx* ctx, int level, uint8_t vector, int autovector);</code></pre>
+    <p>
+      Presents the board's current highest pending interrupt. Levels 1 to 6 are level-sensitive.
+      Level 7 is non-maskable and edge-triggered; the core latches a rising edge to level 7.
+    </p>
+
+    <h2 id="cpu-snapshot">State Serialization</h2>
+    <pre><code>size_t mcf5407_state_size(void);
+void mcf5407_state_save(const mcf5407_ctx* ctx, void* dst);
+void mcf5407_state_load(mcf5407_ctx* ctx, const void* src);</code></pre>
+    <p>
+      Saves and loads the CPU core state to/from a flat, self-contained, versioned binary block.
+    </p>
+
+    <!-- ISP1181 USB -->
+    <h2 id="usb-context">Philips ISP1181 USB Controller: Context &amp; Callbacks</h2>
+    <pre><code>typedef struct isp1181_ctx isp1181_ctx;
+
+typedef void (*isp1181_irq_fn)(void* user, int asserted);
+typedef void (*isp1181_tx_fn)(void* user, int endpoint,
+                              const uint8_t* data, size_t len);</code></pre>
+    <p>
+      <code>isp1181_irq_fn</code> reports logical interrupt assertion (active high).
+      <code>isp1181_tx_fn</code> is called synchronously when an IN packet is transferred to the USB host.
+    </p>
+
+    <h2 id="usb-lifecycle">Lifecycle &amp; Backends</h2>
+    <pre><code>isp1181_ctx* isp1181_create(void* user, isp1181_irq_fn irq, isp1181_tx_fn tx);
+void isp1181_destroy(isp1181_ctx* ctx);
+
+#define MCF5407_ISP1181_BACKEND_STUB       0
+#define MCF5407_ISP1181_BACKEND_FULL_MODEL 1
+
+int isp1181_set_backend(isp1181_ctx* ctx, int backend);</code></pre>
+    <p>
+      The default mode is <code>MCF5407_ISP1181_BACKEND_STUB</code> (passive stub).
+      Set to <code>MCF5407_ISP1181_BACKEND_FULL_MODEL</code> to activate full FIFO logic and registers.
+    </p>
+
+    <h2 id="usb-registers">Register Access</h2>
+    <pre><code>uint8_t isp1181_read(isp1181_ctx* ctx, uint32_t addr);
+void isp1181_write(isp1181_ctx* ctx, uint32_t addr, uint8_t value);</code></pre>
+
+    <h2 id="usb-packets">USB Packet Interface</h2>
+    <pre><code>MCF5407_MUST_USE int isp1181_rx(isp1181_ctx* ctx, int endpoint,
+                                const uint8_t* data, size_t len);
+
+int isp1181_setup(isp1181_ctx* ctx, const uint8_t* data, size_t len);
+
+int isp1181_in_token(isp1181_ctx* ctx, int endpoint);</code></pre>
+    <p>
+      <code>isp1181_rx</code> receives an OUT packet from the host (returns 1 on accept, 0 on NAK/reject).
+      <code>isp1181_setup</code> delivers a control SETUP packet to Endpoint 0.
+      <code>isp1181_in_token</code> triggers transmission if data is validated in the specified endpoint's IN buffer.
+    </p>
+
+    <h2 id="usb-timebase">SOF Timebase</h2>
+    <pre><code>void isp1181_tick(isp1181_ctx* ctx, uint32_t sof_frames);</code></pre>
+    <p>
+      Advances the USB frame counter by <code>sof_frames</code>. Each SOF frame represents exactly 1 millisecond.
+    </p>
+
+    <h2 id="usb-endpoints">Endpoint Configuration &amp; Geometry</h2>
+    <pre><code>MCF5407_MUST_USE size_t isp1181_config_slots(void);
+
+MCF5407_MUST_USE int isp1181_config_slot(const isp1181_ctx* ctx, size_t slot,
+                                         uint8_t* value);
+
+MCF5407_MUST_USE int isp1181_slot_buffer(const isp1181_ctx* ctx, size_t slot,
+                                         size_t* max_packet_bytes,
+                                         size_t* buffer_count);</code></pre>
+
+    <h2 id="usb-logging">Diagnostics &amp; Reporting</h2>
+    <pre><code>MCF5407_MUST_USE size_t isp1181_log_written(const isp1181_ctx* ctx);
+MCF5407_MUST_USE size_t isp1181_log_retained(const isp1181_ctx* ctx);
+
+MCF5407_MUST_USE size_t isp1181_log_line(const isp1181_ctx* ctx, size_t index,
+                                         char* dst, size_t capacity);
+
+MCF5407_MUST_USE size_t isp1181_report(const isp1181_ctx* ctx, char* dst,
+                                       size_t capacity);</code></pre>
+    <div class="alert alert-note">
+      <strong>Automated Teardown Report:</strong> If the environment variable <code>MCF5407_ISP1181_REPORT</code>
+      is defined, <code>isp1181_destroy</code> automatically appends the diagnostic report to the specified file.
+    </div>
+
+    <h2 id="usb-snapshot">State Serialization</h2>
+    <pre><code>size_t isp1181_state_size(void);
+void isp1181_state_save(const isp1181_ctx* ctx, void* dst);
+void isp1181_state_load(isp1181_ctx* ctx, const void* src);</code></pre>
+
+    <!-- Examples -->
+    <h2 id="example-c">Integration Example: C Host</h2>
+    <pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include "mcf5407.h"
+
+#define RAM_SIZE 0x100000
+static uint8_t s_ram[RAM_SIZE];
+
+static uint32_t board_read(void* user, uint32_t addr, int size, mcf5407_bus_status* status) {
+    if (addr + size &lt;= RAM_SIZE) {
+        uint32_t val = 0;
+        for (int i = 0; i &lt; size; ++i) val = (val &lt;&lt; 8) | s_ram[addr + i];
+        return val;
+    }
+    *status = MCF5407_BUS_UNMAPPED;
+    return 0;
+}
+
+static void board_write(void* user, uint32_t addr, int size, uint32_t val, mcf5407_bus_status* status) {
+    if (addr + size &lt;= RAM_SIZE) {
+        for (int i = size - 1; i &gt;= 0; --i) {
+            s_ram[addr + i] = (uint8_t)(val &amp; 0xFF);
+            val &gt;&gt;= 8;
+        }
+        return;
+    }
+    *status = MCF5407_BUS_UNMAPPED;
+}
+
+static void board_iack(void* user, int level, uint8_t vector) {
+    (void)user; (void)level; (void)vector;
+}
+
+int main(void) {
+    if (!mcf5407_runtime_init()) return 1;
+
+    mcf5407_ctx* cpu = mcf5407_create(NULL, board_read, board_write, board_iack);
+    if (!cpu) return 1;
+
+    mcf5407_reset(cpu, 0x00080000, 0x00000400);
+    uint32_t spent = mcf5407_exec(cpu, 1000);
+    printf("Executed %u cycles; halted=%d\n", spent, mcf5407_halted(cpu));
+
+    mcf5407_destroy(cpu);
+    return 0;
+}</code></pre>
+
+    <h2 id="example-cpp">Integration Example: C++ Host</h2>
+    <pre><code>#include &lt;iostream&gt;
+#include &lt;vector&gt;
+#include &lt;stdexcept&gt;
+#include "mcf5407.h"
+
+class SystemBoard {
+public:
+    SystemBoard() {
+        if (!mcf5407_runtime_init()) {
+            throw std::runtime_error("mcf5407 runtime initialization failed");
+        }
+        m_ram.resize(0x200000, 0);
+        m_cpu = mcf5407_create(this, &amp;SystemBoard::readThunk, &amp;SystemBoard::writeThunk, &amp;SystemBoard::iackThunk);
+        if (!m_cpu) {
+            throw std::runtime_error("mcf5407 CPU creation failed");
+        }
+    }
+
+    ~SystemBoard() {
+        if (m_cpu) mcf5407_destroy(m_cpu);
+    }
+
+    void reset(uint32_t sp, uint32_t pc) {
+        mcf5407_reset(m_cpu, sp, pc);
+    }
+
+    uint32_t step(uint32_t cycles) {
+        return mcf5407_exec(m_cpu, cycles);
+    }
+
+private:
+    static uint32_t readThunk(void* user, uint32_t addr, int size, mcf5407_bus_status* status) {
+        return static_cast&lt;SystemBoard*&gt;(user)-&gt;handleRead(addr, size, status);
+    }
+
+    static void writeThunk(void* user, uint32_t addr, int size, uint32_t val, mcf5407_bus_status* status) {
+        static_cast&lt;SystemBoard*&gt;(user)-&gt;handleWrite(addr, size, val, status);
+    }
+
+    static void iackThunk(void* user, int level, uint8_t vector) {
+        (void)user; (void)level; (void)vector;
+    }
+
+    uint32_t handleRead(uint32_t addr, int size, mcf5407_bus_status* status) {
+        if (addr + size &lt;= m_ram.size()) {
+            uint32_t val = 0;
+            for (int i = 0; i &lt; size; ++i) val = (val &lt;&lt; 8) | m_ram[addr + i];
+            return val;
+        }
+        *status = MCF5407_BUS_UNMAPPED;
+        return 0;
+    }
+
+    void handleWrite(uint32_t addr, int size, uint32_t val, mcf5407_bus_status* status) {
+        if (addr + size &lt;= m_ram.size()) {
+            for (int i = size - 1; i &gt;= 0; --i) {
+                m_ram[addr + i] = static_cast&lt;uint8_t&gt;(val &amp; 0xFF);
+                val &gt;&gt;= 8;
+            }
+            return;
+        }
+        *status = MCF5407_BUS_UNMAPPED;
+    }
+
+    mcf5407_ctx* m_cpu{nullptr};
+    std::vector&lt;uint8_t&gt; m_ram;
+};</code></pre>
+
+  </main>
+</body>
+</html>
