@@ -91,7 +91,7 @@ The exported target `mcf5407::mcf5407` automatically propagates the include dire
 
 ## Quick API Overview
 
-The C interface is defined in [`include/mcf5407.h`](include/mcf5407.h). Full documentation is available in the [API Documentation Guide](docs/api.md) and the [Interactive Web Documentation](docs/index.html).
+The C interface is defined in [`include/mcf5407.h`](include/mcf5407.h). Full documentation is available in the [API Documentation Guide](docs/api.md).
 
 ### Initialization and Execution Lifecycle
 
@@ -175,9 +175,7 @@ ctest --preset full
 
 ## Detailed Documentation
 
-- [Online Documentation (GitHub Pages)](https://axiomantic.github.io/mcf5407/): Live, responsive interactive documentation page.
-- [API Specification (Markdown)](docs/api.md): Complete function, callback, and type reference.
-- [API Specification (HTML)](docs/index.html): Self-contained, offline-capable documentation page.
+- [API Specification](docs/api.md): Complete function, callback, and type reference.
 - [Sources and Architectural References](docs/sources.md): Hardware manual citations, register decodes, and design rationale.
 
 ---
