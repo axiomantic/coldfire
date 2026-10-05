@@ -37,6 +37,7 @@ import mcf5407/bus
 import mcf5407/decode_types
 import mcf5407/ea
 import mcf5407/exception
+import mcf5407/sim
 
 # ---------------------------------------------------------------------------
 # The register file.
@@ -308,29 +309,53 @@ proc stackingWrite(ctx: MCF5407Ctx; address: uint32; size: uint8;
 # records the fault on the context and `cpu.nim`'s `step` takes it at the
 # instruction boundary.
 
+proc isMbarHit*(ctx: MCF5407Ctx; address: uint32): bool =
+  if (ctx.mbar and 1'u32) != 0'u32:
+    let base = ctx.mbar and 0xFFFFF000'u32
+    (address and 0xFFFFF000'u32) == base
+  else:
+    false
+
 proc readMem*(ctx: MCF5407Ctx; address: uint32; size: uint8): uint32 =
-  stackingRead(ctx, address, size)
+  if isMbarHit(ctx, address):
+    var st = Mcf5407BusStatus.busOk
+    let offset = address and 0x00000FFF'u32
+    result = simRead(ensureSim(ctx), offset, size, st)
+    if st != Mcf5407BusStatus.busOk:
+      ctx.fault = true
+      ctx.halted = true
+  else:
+    result = stackingRead(ctx, address, size)
 
 proc writeMem*(ctx: MCF5407Ctx; address: uint32; size: uint8; value: uint32) =
-  var st = Mcf5407BusStatus.busOk
-  boardWrite(ctx, address, size, value, st)
-  if st != Mcf5407BusStatus.busOk and not ctx.pendingWriteFault:
-    # The first faulted store of an instruction is the one reported, and the
-    # manual settles neither this nor its alternative. MCF5307 section 3.5.1
-    # says the
-    # reporting is imprecise and names the NOP instruction as the way to
-    # collect a write error - the MCF5407 keeps only the second half of that,
-    # in section 4.9.5.2.1, folio 4-19: "Supervisor instructions, the NOP
-    # instruction, and exception processing synchronize the processor core and
-    # guarantee the push and store buffers are empty before proceeding."
-    # Neither manual says anything about a second faulted store
-    # before that collection. `movem.l` writing a register list into refused
-    # space is the one instruction in this core that can raise the question.
-    # The first is kept because it is the one whose captured program counter
-    # and status register are nearest the fault.
-    ctx.pendingWriteFault = true
-    ctx.pendingFaultStatus = faultStatusFor(st, operandWrite)
-    ctx.pendingStackedSr = ctx.sr and 0xFFFF'u32
+  if isMbarHit(ctx, address):
+    var st = Mcf5407BusStatus.busOk
+    let offset = address and 0x00000FFF'u32
+    simWrite(ensureSim(ctx), offset, size, value, st)
+    if st != Mcf5407BusStatus.busOk and not ctx.pendingWriteFault:
+      ctx.pendingWriteFault = true
+      ctx.pendingFaultStatus = faultStatusFor(st, operandWrite)
+      ctx.pendingStackedSr = ctx.sr and 0xFFFF'u32
+  else:
+    var st = Mcf5407BusStatus.busOk
+    boardWrite(ctx, address, size, value, st)
+    if st != Mcf5407BusStatus.busOk and not ctx.pendingWriteFault:
+      # The first faulted store of an instruction is the one reported, and the
+      # manual settles neither this nor its alternative. MCF5307 section 3.5.1
+      # says the
+      # reporting is imprecise and names the NOP instruction as the way to
+      # collect a write error - the MCF5407 keeps only the second half of that,
+      # in section 4.9.5.2.1, folio 4-19: "Supervisor instructions, the NOP
+      # instruction, and exception processing synchronize the processor core and
+      # guarantee the push and store buffers are empty before proceeding."
+      # Neither manual says anything about a second faulted store
+      # before that collection. `movem.l` writing a register list into refused
+      # space is the one instruction in this core that can raise the question.
+      # The first is kept because it is the one whose captured program counter
+      # and status register are nearest the fault.
+      ctx.pendingWriteFault = true
+      ctx.pendingFaultStatus = faultStatusFor(st, operandWrite)
+      ctx.pendingStackedSr = ctx.sr and 0xFFFF'u32
 
 proc fetchExt*(ctx: MCF5407Ctx): uint16 =
   ## Read one extension word from the instruction stream and advance the pc

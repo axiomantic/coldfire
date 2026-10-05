@@ -105,6 +105,7 @@ type
 
   MCF5407Ctx* = ref object
     user*: pointer
+    sim*: pointer
     readFn*: Mcf5407ReadFn 
     writeFn*: Mcf5407WriteFn 
     iackFn*: Mcf5407IackFn 

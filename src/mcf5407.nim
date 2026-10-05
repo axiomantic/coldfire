@@ -19,6 +19,11 @@ import mcf5407/logic
 import mcf5407/machine
 import mcf5407/move
 import mcf5407/state
+import mcf5407/intc
+import mcf5407/timer
+import mcf5407/uart
+import mcf5407/mbus
+import mcf5407/sim
 # The ISP1181 device model. It is a sibling of the core rather than a part of
 # it, and it is named here for the same reason the core submodules are: the
 # compiler builds a module this entry module reaches and no other.

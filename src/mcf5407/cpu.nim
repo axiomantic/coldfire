@@ -40,6 +40,7 @@ import mcf5407/logic
 import mcf5407/control
 import mcf5407/movec
 import mcf5407/irq
+import mcf5407/sim
 # The one-time runtime latch. `mcf5407_create` reads it and allocates nothing
 # behind an abandoned one; `mcf5407/latch.nim` states why that refusal is the
 # mechanism and the status return is only the advice.
@@ -134,6 +135,7 @@ proc mcf5407_create*(user: pointer; rd: Mcf5407ReadFn; wr: Mcf5407WriteFn;
   result.readFn = rd
   result.writeFn = wr
   result.iackFn = iack
+  result.sim = nil
 
 proc mcf5407_destroy*(ctx: MCF5407Ctx)
     {.exportc: "mcf5407_destroy", cdecl, dynlib.} =
@@ -146,6 +148,7 @@ proc mcf5407_destroy*(ctx: MCF5407Ctx)
     ctx.readFn = nil
     ctx.writeFn = nil
     ctx.iackFn = nil
+    freeSim(ctx)
 
 proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
     {.exportc: "mcf5407_reset", cdecl, dynlib.} =
@@ -201,6 +204,7 @@ proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
   ctx.rambar0 = 0'u32
   ctx.rambar1 = 0'u32
   ctx.mbar = 0'u32
+  resetSim(ctx)
 
   # A reset discards a store's recorded access error rather than carrying it
   # into the reset handler. The capture names a status register of the program
