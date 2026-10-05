@@ -175,6 +175,7 @@ ctest --preset full
 
 ## Detailed Documentation
 
+- [Online Documentation (GitHub Pages)](https://axiomantic.github.io/mcf5407/): Live rendered documentation portal.
 - [API Specification](docs/api.md): Complete function, callback, and type reference.
 - [Sources and Architectural References](docs/sources.md): Hardware manual citations, register decodes, and design rationale.
 
