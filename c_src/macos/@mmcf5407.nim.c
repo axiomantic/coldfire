@@ -17,23 +17,28 @@
 #undef far
 #undef powerpc
 #undef unix
-typedef struct tyObject_RuntimeLatch__mz5kX9cAtVZhGSkxOBId9bRw tyObject_RuntimeLatch__mz5kX9cAtVZhGSkxOBId9bRw;
+typedef struct tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ;
 typedef struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ;
+typedef struct tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg;
 typedef N_CDECL_PTR(void, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ) (void);
 struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ {
 	_Atomic NI64 value;
 };
-struct tyObject_RuntimeLatch__mz5kX9cAtVZhGSkxOBId9bRw {
+struct tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ {
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ state;
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ reported;
 };
 N_LIB_EXPORT N_CDECL(int, mcf5407_runtime_init)(void);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeInitOnce__mcf5407Zlatch_u172)(tyObject_RuntimeLatch__mz5kX9cAtVZhGSkxOBId9bRw* latch_p0, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ initializer_p1, NI64 waitMillis_p2);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeInitOnce__mcf5407Zlatch_u172)(tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ* latch_p0, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ initializer_p1, NI64 waitMillis_p2);
 N_CDECL(void, mcf5407_NimMain)(void);
 N_LIB_PRIVATE N_NIMCALL(void, nimTestErrorFlag)(void);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__mcf5407Zmbus_u23)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0, NU8 addr7_p1, NIM_BOOL read_p2);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__mcf5407Zmbus_u30)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0, NU8 byte_p1);
+N_LIB_PRIVATE N_NIMCALL(NU8, read__mcf5407Zmbus_u36)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0);
+N_LIB_PRIVATE N_NIMCALL(void, stop__mcf5407Zmbus_u41)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0);
 N_LIB_PRIVATE N_NIMCALL(void, atpsystemdotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, mcf5407_NimMainModule)(void);
-extern tyObject_RuntimeLatch__mz5kX9cAtVZhGSkxOBId9bRw runtimeLatch__mcf5407Zlatch_u49;
+extern tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ runtimeLatch__mcf5407Zlatch_u49;
 N_LIB_EXPORT N_CDECL(int, mcf5407_runtime_init)(void) {
 	int result;
 	int colontmpD_;
@@ -58,6 +63,30 @@ LA1_: ;
 	return result;
 }
 N_LIB_PRIVATE N_CDECL(void, mcf5407_NimDestroyGlobals)(void) {
+}
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__mcf5407Zmbus_u28)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0, NU8 addr7_p1, NIM_BOOL read_p2) {
+	NIM_BOOL result;
+{	result = start__mcf5407Zmbus_u23(s_p0, addr7_p1, read_p2);
+	goto BeforeRet_;
+	}BeforeRet_: ;
+	return result;
+}
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__mcf5407Zmbus_u34)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0, NU8 byte_p1) {
+	NIM_BOOL result;
+{	result = write__mcf5407Zmbus_u30(s_p0, byte_p1);
+	goto BeforeRet_;
+	}BeforeRet_: ;
+	return result;
+}
+N_LIB_PRIVATE N_NIMCALL(NU8, read__mcf5407Zmbus_u39)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0) {
+	NU8 result;
+{	result = read__mcf5407Zmbus_u36(s_p0);
+	goto BeforeRet_;
+	}BeforeRet_: ;
+	return result;
+}
+N_LIB_PRIVATE N_NIMCALL(void, stop__mcf5407Zmbus_u43)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0) {
+	stop__mcf5407Zmbus_u41(s_p0);
 }
 
 N_LIB_PRIVATE void mcf5407_PreMainInner(void) {

@@ -18,7 +18,7 @@
 #undef unix
 typedef struct NimStrPayload NimStrPayload;
 typedef struct NimStringV2 NimStringV2;
-typedef struct tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA;
+typedef struct tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw;
 struct NimStrPayload {
 	NI cap;
 	NIM_CHAR data[SEQ_DECL_SIZE];
@@ -28,8 +28,8 @@ struct NimStringV2 {
 	NimStrPayload* p;
 };
 N_NIMCALL(NimStringV2, rawNewString)(NI cap_p0);
-N_LIB_PRIVATE N_NIMCALL(NI, logWritten__isp1181Zisp1181_u471)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0);
-N_LIB_PRIVATE N_NIMCALL(NI, logRetained__isp1181Zisp1181_u477)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0);
+N_LIB_PRIVATE N_NIMCALL(NI, logWritten__isp1181Zisp1181_u471)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0);
+N_LIB_PRIVATE N_NIMCALL(NI, logRetained__isp1181Zisp1181_u477)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
 static N_INLINE(void, appendString)(NimStringV2* dest_p0, NimStringV2 src_p1);
 static N_INLINE(void, copyMem__system_u1755)(void* dest_p0, void* source_p1, NI size_p2);
@@ -38,15 +38,15 @@ N_LIB_PRIVATE N_NIMCALL(void, prepareAdd)(NimStringV2* s_p0, NI addLen_p1);
 static N_INLINE(void, nimAddCharV1)(NimStringV2* s_p0, NIM_CHAR c_p1);
 N_LIB_PRIVATE N_NIMCALL(NimStringV2, dollar___systemZdollars_u14)(NI xX60gensym0__p0);
 N_LIB_PRIVATE N_NOCONV(void, deallocShared)(void* p_p0);
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, toHex__isp1181Zisp1181_u798)(NU8 x_p0);
+N_LIB_PRIVATE N_NIMCALL(NimStringV2, toHex__isp1181Zisp1181_u782)(NU8 x_p0);
 N_LIB_PRIVATE N_NIMCALL(NimStringV2, slotEndpointName__isp1181Zreport_u5)(NI slot_p0);
 N_LIB_PRIVATE N_NIMCALL(NimStringV2, fifoName__isp1181Zisp1181_u110)(NI index_p0);
 N_LIB_PRIVATE N_NIMCALL(NimStringV2, slotBufferName__isp1181Zreport_u8)(NI slot_p0);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, configSlotWritten__isp1181Zisp1181_u506)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0, NI slot_p1);
-N_LIB_PRIVATE N_NIMCALL(NU8, configSlotValue__isp1181Zisp1181_u513)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0, NI slot_p1);
-N_LIB_PRIVATE N_NIMCALL(NI, configSlotOrdinal__isp1181Zisp1181_u520)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0, NI slot_p1);
-N_LIB_PRIVATE N_NIMCALL(NI, logOrdinal__isp1181Zisp1181_u496)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0, NI index_p1);
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, logLine__isp1181Zisp1181_u486)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0, NI index_p1);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, configSlotWritten__isp1181Zisp1181_u506)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0, NI slot_p1);
+N_LIB_PRIVATE N_NIMCALL(NU8, configSlotValue__isp1181Zisp1181_u513)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0, NI slot_p1);
+N_LIB_PRIVATE N_NIMCALL(NI, configSlotOrdinal__isp1181Zisp1181_u520)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0, NI slot_p1);
+N_LIB_PRIVATE N_NIMCALL(NI, logOrdinal__isp1181Zisp1181_u496)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0, NI index_p1);
+N_LIB_PRIVATE N_NIMCALL(NimStringV2, logLine__isp1181Zisp1181_u486)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0, NI index_p1);
 static const struct {
   NI cap; NIM_CHAR data[22+1];
 } TM__SDfggRPNdEt0t0o2jQgH9bA_3 = { 22 | NIM_STRLIT_FLAG, "isp1181: report begins" };
@@ -243,7 +243,7 @@ LA4_: ;
 LA2_: ;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, reportText__isp1181Zreport_u11)(tyObject_ISP1181colonObjectType___VKTErYKycr8V9ar4JzQpLmA* m_p0) {
+N_LIB_PRIVATE N_NIMCALL(NimStringV2, reportText__isp1181Zreport_u11)(tyObject_ISP1181colonObjectType___5sw8uL9czt48bYW1D2uCpzw* m_p0) {
 	NimStringV2 result;
 	NimStringV2 colontmpD_;
 	NimStringV2 colontmpD__2;
@@ -333,7 +333,7 @@ appendString((&result), colontmpD__11);
 	}
 LA2_: ;
 	T8_.len = 0; T8_.p = NIM_NIL;
-	colontmpD__5 = toHex__isp1181Zisp1181_u798(((NU8)64));
+	colontmpD__5 = toHex__isp1181Zisp1181_u782(((NU8)64));
 	T8_ = rawNewString(colontmpD__5.len + 191);
 appendString((&T8_), TM__SDfggRPNdEt0t0o2jQgH9bA_20);
 appendString((&T8_), colontmpD__5);
@@ -368,7 +368,7 @@ appendString((&result), colontmpD__6);
 				colontmpD__12 = dollar___systemZdollars_u14(slot_1);
 				if (nimAddInt(((NI)32), slot_1, &TM__SDfggRPNdEt0t0o2jQgH9bA_27)) { raiseOverflow(); goto BeforeRet_;
 				};
-				colontmpD__13 = toHex__isp1181Zisp1181_u798(((NU8) ((NI)(TM__SDfggRPNdEt0t0o2jQgH9bA_27))));
+				colontmpD__13 = toHex__isp1181Zisp1181_u782(((NU8) ((NI)(TM__SDfggRPNdEt0t0o2jQgH9bA_27))));
 				colontmpD__14 = slotEndpointName__isp1181Zreport_u5(slot_1);
 				colontmpD__15 = slotBufferName__isp1181Zreport_u8(slot_1);
 				T12_ = rawNewString(colontmpD__12.len + colontmpD__13.len + colontmpD__14.len + colontmpD__15.len + 36);
@@ -423,7 +423,7 @@ LA16_: ;
 					value_1 = configSlotValue__isp1181Zisp1181_u513(m_p0, slot_1);
 					epdir_1 = !(((NU8)(value_1 & ((NU8)64)) == ((NU8)0)));
 					T20_.len = 0; T20_.p = NIM_NIL;
-					colontmpD__17 = toHex__isp1181Zisp1181_u798(value_1);
+					colontmpD__17 = toHex__isp1181Zisp1181_u782(value_1);
 					T21_.len = 0; T21_.p = NIM_NIL;
 					{
 						if (!epdir_1) goto LA24_;

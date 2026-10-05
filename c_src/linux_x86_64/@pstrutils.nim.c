@@ -99,7 +99,7 @@ LA8_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, toHex__isp1181Zisp1181_u798)(NU8 x_p0) {
+N_LIB_PRIVATE N_NIMCALL(NimStringV2, toHex__isp1181Zisp1181_u782)(NU8 x_p0) {
 	NimStringV2 result;
 	result = toHexImpl__pureZstrutils_u780(((NU64) (x_p0)), ((NI)2), ((NU8)(x_p0) < (NU8)(((NU8)0))));
 	return result;
