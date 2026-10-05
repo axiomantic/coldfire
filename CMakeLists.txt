@@ -90,11 +90,23 @@ endif()
 add_custom_target(mcf5407_tests
     COMMENT "Building the mcf5407 T0 test set")
 
-# CMake drives Nim. Its integration steps run there, at configure time, and
-# they leave `mcf5407_nim_objs`, `mcf5407` and `mcf5407::mcf5407` defined. The
-# include comes before the test directories because a test that links the core
-# needs the target to exist when its own list is read.
-include(cmake/Nim.cmake)
+# CMake drives Nim or builds from pre-generated C distribution.
+# Either path leaves `mcf5407_nim_objs`, `mcf5407` and `mcf5407::mcf5407` defined.
+option(MCF5407_USE_C_DIST
+	"Compile libmcf5407 directly from pre-generated C distribution" OFF)
+
+find_program(MCF5407_NIM_EXECUTABLE nim
+	DOC "The Nim compiler that builds the mcf5407 core")
+
+if(MCF5407_USE_C_DIST OR NOT MCF5407_NIM_EXECUTABLE)
+	if(NOT MCF5407_NIM_EXECUTABLE AND NOT MCF5407_USE_C_DIST)
+		message(STATUS
+			"mcf5407: Nim compiler not found; falling back to pre-generated C distribution")
+	endif()
+	include(cmake/CDist.cmake)
+else()
+	include(cmake/Nim.cmake)
+endif()
 
 # The build gate. It registers `t0_build_is_current` -- at top level only --
 # and defines `mcf5407_require_current_build()`, which each registration list

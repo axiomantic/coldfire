@@ -320,6 +320,7 @@ add_test(NAME t0_abi_header
 # The compile happens inside the test and not in the build, for the reason
 # `t0_abi_header` gives above: a `ctest` run over a tree whose build had
 # failed would otherwise run the STALE binary of an earlier build and pass.
+if(DEFINED MCF5407_NIM_COMMAND)
 
 if(NOT DEFINED MCF5407_NIM_COMMAND)
     message(FATAL_ERROR
@@ -3389,6 +3390,11 @@ file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/t_runtime_latch_driver.cmake"
 add_test(NAME t_runtime_latch
     COMMAND "${CMAKE_COMMAND}"
         -P "${CMAKE_CURRENT_BINARY_DIR}/t_runtime_latch_driver.cmake")
+
+else()
+	message(STATUS
+		"mcf5407: Nim compiler not active; skipping Nim-dependent unit tests (t_*)")
+endif()
 
 
 # ---------------------------------------------------------------------------
