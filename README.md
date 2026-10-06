@@ -69,9 +69,7 @@ This script verifies that the installed Nim compiler version matches [`.nim-vers
 ### Exported Targets
 
 - `coldfire::coldfire` (canonical target)
-- `coldfire` (unqualified alias)
 - `mcf5407::mcf5407` (backward compatibility alias)
-- `mcf5407` (unqualified alias)
 
 ### Consuming via `FetchContent`
 
@@ -80,7 +78,7 @@ include(FetchContent)
 
 FetchContent_Declare(
     coldfire
-    GIT_REPOSITORY https://github.com/axiomantic/mcf5407.git
+    GIT_REPOSITORY https://github.com/axiomantic/coldfire.git
     GIT_TAG        main # Or pinned commit hash
 )
 

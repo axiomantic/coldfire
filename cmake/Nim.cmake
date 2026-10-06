@@ -1808,6 +1808,5 @@ message(STATUS "mcf5407: step 5 the static library mcf5407 is defined")
 
 add_library(mcf5407::mcf5407 ALIAS mcf5407)
 add_library(coldfire::coldfire ALIAS mcf5407)
-add_library(coldfire ALIAS mcf5407)
 
 message(STATUS "mcf5407: step 6 the target mcf5407::mcf5407 (and coldfire::coldfire) is exported")

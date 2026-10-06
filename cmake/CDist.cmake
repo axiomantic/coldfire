@@ -75,7 +75,6 @@ set_target_properties(mcf5407 PROPERTIES
 # Exported alias for consumers.
 add_library(mcf5407::mcf5407 ALIAS mcf5407)
 add_library(coldfire::coldfire ALIAS mcf5407)
-add_library(coldfire ALIAS mcf5407)
 
 # ---------------------------------------------------------------------------
 # Published ABI symbols for abi_smoke test.
