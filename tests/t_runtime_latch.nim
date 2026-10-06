@@ -1,14 +1,14 @@
 ## `t_runtime_latch` - the one-time runtime latch, and what a stalled one
 ## answers.
 ##
-## `mcf5407_runtime_init` reports a stall to its caller, and a report nobody
+## `cf_runtime_init` reports a stall to its caller, and a report nobody
 ## is obliged to read is worth nothing unless the rest of the library refuses
 ## to run behind it. Both halves are asserted here: the report, and the
 ## refusal.
 ##
 ## Every case drives the real mechanism. The stall is produced by a second
 ## thread that claims the latch through `runtimeInitOnce` itself and stays
-## inside its initializer, which is the exact shape `src/mcf5407/latch.nim`
+## inside its initializer, which is the exact shape `src/coldfire/latch.nim`
 ## documents: module initialization waits for a thread, and that thread calls
 ## the initializer again. Nothing here writes a latch state by hand.
 ##
@@ -27,8 +27,8 @@
 import std/atomics
 import std/os
 
-import mcf5407/latch
-import mcf5407/cpu
+import coldfire/latch
+import coldfire/cpu
 import isp1181/stub
 
 
@@ -164,7 +164,7 @@ check(not defaultAnswer and defaultElapsed >= latchWaitMillis - 100,
       "false elapsed>=" & $(latchWaitMillis - 100))
 
 # ---------------------------------------------------------------------------
-# The refusal. A caller that dropped the status of `mcf5407_runtime_init`
+# The refusal. A caller that dropped the status of `cf_runtime_init`
 # reaches a library that will not hand it a context.
 #
 # This is the half that does not depend on the caller. The status return is
@@ -176,9 +176,9 @@ check(not abandonedGlobalAnswer,
       "the ABI's own latch reaches the same abandoned state",
       $abandonedGlobalAnswer, "false")
 
-let refusedCore = mcf5407_create(nil, nil, nil, nil)
+let refusedCore = cf_create(nil, nil, nil, nil)
 check(refusedCore.isNil,
-      "mcf5407_create refuses to allocate a core behind an abandoned runtime",
+      "cf_create refuses to allocate a core behind an abandoned runtime",
       (if refusedCore.isNil: "nil" else: "a context"), "nil")
 
 let refusedDevice = isp1181_create(nil, nil, nil)

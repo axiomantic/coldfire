@@ -36,10 +36,6 @@ typedef void (*isp1181_tx_fn)(void* user, int endpoint,
 #define ISP1181_BACKEND_STUB 0
 #define ISP1181_BACKEND_FULL_MODEL 1
 
-/* Compatibility defines */
-#define MCF5407_ISP1181_BACKEND_STUB ISP1181_BACKEND_STUB
-#define MCF5407_ISP1181_BACKEND_FULL_MODEL ISP1181_BACKEND_FULL_MODEL
-
 isp1181_ctx* isp1181_create(void* user, isp1181_irq_fn irq, isp1181_tx_fn tx);
 void isp1181_destroy(isp1181_ctx* ctx);
 uint8_t isp1181_read(isp1181_ctx* ctx, uint32_t addr);

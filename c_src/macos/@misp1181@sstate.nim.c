@@ -57,7 +57,7 @@ static N_INLINE(NIM_BOOL, nimAddInt)(NI a_p0, NI b_p1, NI* res_p2);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
 N_LIB_PRIVATE N_NIMCALL(NI, isp1181StateWalk__isp1181Zstate_u90)(tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag* ctx_p0, NU8* buf_p1, tyEnum_Isp1181StateOp__9bGAbo0PFTiYom6ry7c6G9aQ op_p2, tySequence__jwzrUFjG9akTIJTBBFvvqxw* layout_p3, tyEnum_Isp1181StateStatus__kQkUop1p4dGwN4NqkuI41g* status_p4);
 N_LIB_PRIVATE N_NOINLINE(void, raiseRangeErrorI)(NI64 i_p0, NI64 a_p1, NI64 b_p2);
-N_LIB_PRIVATE N_NIMCALL(void, add__mcf5407Zstate_u122)(tySequence__jwzrUFjG9akTIJTBBFvvqxw* x_p0, tyTuple__XOVT24GHXwqiEj5GCsEGCA y_p1);
+N_LIB_PRIVATE N_NIMCALL(void, add__coldfireZstate_u122)(tySequence__jwzrUFjG9akTIJTBBFvvqxw* x_p0, tyTuple__XOVT24GHXwqiEj5GCsEGCA y_p1);
 static N_INLINE(NIM_BOOL, nimSubInt)(NI a_p0, NI b_p1, NI* res_p2);
 N_LIB_PRIVATE N_NIMCALL(void, putBe16__isp1181Zstate_u33)(NU8* buf_p0, NI at_p1, NU16 value_p2);
 N_LIB_PRIVATE N_NIMCALL(NU16, getBe16__isp1181Zstate_u41)(NU8* buf_p0, NI at_p1);
@@ -222,7 +222,7 @@ LA5_: ;
 			if (nimSubInt(at_1, started_1, &TM__BhBjtTN9abKbC0dL7pDSNxw_8)) { raiseOverflow(); goto BeforeRet_;
 			};
 			T25_.Field1 = (NI)(TM__BhBjtTN9abKbC0dL7pDSNxw_8);
-			add__mcf5407Zstate_u122((&(*layout_p3)), T25_);
+			add__coldfireZstate_u122((&(*layout_p3)), T25_);
 		}
 LA23_: ;
 	}
@@ -256,7 +256,7 @@ LA30_: ;
 			if (nimSubInt(at_1, started_2, &TM__BhBjtTN9abKbC0dL7pDSNxw_14)) { raiseOverflow(); goto BeforeRet_;
 			};
 			T41_.Field1 = (NI)(TM__BhBjtTN9abKbC0dL7pDSNxw_14);
-			add__mcf5407Zstate_u122((&(*layout_p3)), T41_);
+			add__coldfireZstate_u122((&(*layout_p3)), T41_);
 		}
 LA39_: ;
 	}
@@ -273,7 +273,7 @@ LA28_: ;
 			if (nimSubInt(at_1, started_3, &TM__BhBjtTN9abKbC0dL7pDSNxw_17)) { raiseOverflow(); goto BeforeRet_;
 			};
 			T50_.Field1 = (NI)(TM__BhBjtTN9abKbC0dL7pDSNxw_17);
-			add__mcf5407Zstate_u122((&(*layout_p3)), T50_);
+			add__coldfireZstate_u122((&(*layout_p3)), T50_);
 		}
 LA48_: ;
 	}

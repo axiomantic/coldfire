@@ -27,7 +27,7 @@ fi
 
 # Locate nimbase.h from nim dump or toolchain directory walk
 NIM_LIB_DIR=""
-DUMP_OUTPUT="$(nim dump --dump.format:json "${REPO_ROOT}/src/mcf5407.nim" 2>/dev/null || true)"
+DUMP_OUTPUT="$(nim dump --dump.format:json "${REPO_ROOT}/src/coldfire.nim" 2>/dev/null || true)"
 if [[ -n "${DUMP_OUTPUT}" ]]; then
 	NIM_LIB_DIR="$(echo "${DUMP_OUTPUT}" | grep -oE '"libpath":"[^"]+"' | head -n 1 | cut -d'"' -f4 || true)"
 fi
@@ -62,9 +62,9 @@ nim c --compileOnly --noMain \
 	--path:"${REPO_ROOT}/src" \
 	--mm:arc --panics:on -d:release \
 	--cc:clang --os:macosx \
-	--nimMainPrefix:mcf5407_ \
-	--header:mcf5407_nim.h \
-	"${REPO_ROOT}/src/mcf5407.nim"
+	--nimMainPrefix:coldfire_ \
+	--header:coldfire_nim.h \
+	"${REPO_ROOT}/src/coldfire.nim"
 rm -f "${MACOS_DIR}"/*.json
 
 # 3. Linux x86_64
@@ -77,9 +77,9 @@ nim c --compileOnly --noMain \
 	--path:"${REPO_ROOT}/src" \
 	--mm:arc --panics:on -d:release \
 	--cc:gcc --os:linux --cpu:amd64 \
-	--nimMainPrefix:mcf5407_ \
-	--header:mcf5407_nim.h \
-	"${REPO_ROOT}/src/mcf5407.nim"
+	--nimMainPrefix:coldfire_ \
+	--header:coldfire_nim.h \
+	"${REPO_ROOT}/src/coldfire.nim"
 rm -f "${LINUX_DIR}"/*.json
 
 # 4. Windows x86_64
@@ -92,9 +92,9 @@ nim c --compileOnly --noMain \
 	--path:"${REPO_ROOT}/src" \
 	--mm:arc --panics:on -d:release \
 	--cc:vcc --os:windows --cpu:amd64 \
-	--nimMainPrefix:mcf5407_ \
-	--header:mcf5407_nim.h \
-	"${REPO_ROOT}/src/mcf5407.nim"
+	--nimMainPrefix:coldfire_ \
+	--header:coldfire_nim.h \
+	"${REPO_ROOT}/src/coldfire.nim"
 rm -f "${WIN_DIR}"/*.json
 
 echo "C distribution generated successfully in ${REPO_ROOT}/c_src"

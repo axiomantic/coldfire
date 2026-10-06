@@ -18,9 +18,9 @@
 
 cmake_minimum_required(VERSION 3.26)
 
-project(mcf5407
+project(coldfire
     VERSION 0.1.0
-    DESCRIPTION "An MCF5407 ColdFire core and an ISP1181 USB device model"
+    DESCRIPTION "ColdFire family microprocessor core and ISP1181 USB device model"
     LANGUAGES C CXX)
 
 # `enable_testing()` is what makes the test tree reachable. Without it CTest
@@ -87,21 +87,21 @@ endif()
 # ordinary `add_executable` targets and are in ALL already, so
 # `--target mcf5407_tests` is a way to build the test set alone rather than a
 # second path to the same build.
-add_custom_target(mcf5407_tests
-    COMMENT "Building the mcf5407 T0 test set")
+add_custom_target(coldfire_tests
+    COMMENT "Building the coldfire T0 test set")
 
 # CMake drives Nim or builds from pre-generated C distribution.
-# Either path leaves `mcf5407_nim_objs`, `mcf5407` and `mcf5407::mcf5407` defined.
-option(MCF5407_USE_C_DIST
-	"Compile libmcf5407 directly from pre-generated C distribution" OFF)
+# Either path leaves `coldfire_nim_objs`, `coldfire` and `coldfire::coldfire` defined.
+option(COLDFIRE_USE_C_DIST
+	"Compile libcoldfire directly from pre-generated C distribution" OFF)
 
-find_program(MCF5407_NIM_EXECUTABLE nim
-	DOC "The Nim compiler that builds the mcf5407 core")
+find_program(COLDFIRE_NIM_EXECUTABLE nim
+	DOC "The Nim compiler that builds the coldfire core")
 
-if(MCF5407_USE_C_DIST OR NOT MCF5407_NIM_EXECUTABLE)
-	if(NOT MCF5407_NIM_EXECUTABLE AND NOT MCF5407_USE_C_DIST)
+if(COLDFIRE_USE_C_DIST OR NOT COLDFIRE_NIM_EXECUTABLE)
+	if(NOT COLDFIRE_NIM_EXECUTABLE AND NOT COLDFIRE_USE_C_DIST)
 		message(STATUS
-			"mcf5407: Nim compiler not found; falling back to pre-generated C distribution")
+			"coldfire: Nim compiler not found; falling back to pre-generated C distribution")
 	endif()
 	include(cmake/CDist.cmake)
 else()
@@ -109,7 +109,7 @@ else()
 endif()
 
 # The build gate. It registers `t0_build_is_current` -- at top level only --
-# and defines `mcf5407_require_current_build()`, which each registration list
+# and defines `coldfire_require_current_build()`, which each registration list
 # calls at its own end to put its own tests behind that gate. It is included
 # before the test directories because the function must exist when their lists
 # are read, and after `enable_testing()` because it registers a test.
@@ -131,4 +131,4 @@ endif()
 # what makes the `REMOVE_ITEM` inside the function reachable: this is the only
 # scope that holds `t0_build_is_current`, and a gate required to wait for
 # itself never runs.
-mcf5407_require_current_build()
+coldfire_require_current_build()

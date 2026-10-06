@@ -15,7 +15,7 @@
 ## subsystems was the one thing neither suite reached.
 ##
 ## IT DRIVES THE CALLBACKS A CONSUMER INSTALLS, AND THAT IS THE WHOLE POINT. The
-## path is `mcf5407_create`, `mcf5407_reset`, `mcf5407_exec` - the three calls a
+## path is `cf_create`, `cf_reset`, `cf_exec` - the three calls a
 ## board makes - so the values asserted are the values that cross the ABI. A
 ## suite that called `readMem` directly would assert the core's internal
 ## spelling of the argument and would have stayed green through exactly the
@@ -32,7 +32,7 @@
 ## they cannot show that NOTHING ELSE does. The sweep runs every one of the
 ## 65536 opcode words and collects every width any of them presents, so the
 ## claim is measured over the whole opcode space rather than over the encodings
-## someone thought to write. `sizeField` in `src/mcf5407/decode.nim` reports the
+## someone thought to write. `sizeField` in `src/coldfire/decode.nim` reports the
 ## `11` size encoding as 0 and MOVE's own size decode has a 0 arm, so a value
 ## that is not a legal width EXISTS inside the decoder; the sweep is what
 ## establishes that no such value reaches a board.
@@ -49,9 +49,9 @@
 import std/algorithm
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -132,12 +132,12 @@ proc runOne(opWord: uint16) =
   ## instruction: `step` charges at least the fetch, so the loop finds the
   ## budget spent when it next tests it and leaves after that instruction.
   freshBoard(opWord)
-  let ctx = mcf5407_create(addr board, recordingRead, recordingWrite,
+  let ctx = cf_create(addr board, recordingRead, recordingWrite,
                            recordingIack)
-  mcf5407_reset(ctx, initialSp, execBase)
-  discard mcf5407_set_reg(ctx, 8, dataBase)   ## index 8 is a0
-  discard mcf5407_exec(ctx, 1'u32)
-  mcf5407_destroy(ctx)
+  cf_reset(ctx, initialSp, execBase)
+  discard cf_set_reg(ctx, 8, dataBase)   ## index 8 is a0
+  discard cf_exec(ctx, 1'u32)
+  cf_destroy(ctx)
 
 # ---------------------------------------------------------------------------
 # THE NAMED PROGRAMS.

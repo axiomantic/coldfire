@@ -33,7 +33,7 @@
 ## than being silently re-aimed at the old answer.
 ##
 ## THE SIGN EXTENSION IS WRITTEN OUT HERE AND NOT IMPORTED FROM THE CORE. `s8`
-## and `s16` live in `mcf5407/machine`, and a sweep that reached for them would
+## and `s16` live in `coldfire/machine`, and a sweep that reached for them would
 ## compare the core against itself and agree with any sign convention it had.
 ##
 ## THE ODD TARGETS ARE HALF OF THE SWEEP AND THEY ARE NOT AN ASIDE. The base is
@@ -65,9 +65,9 @@
 
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -163,17 +163,17 @@ proc runDisplacement(disp: int): Row =
   boardWrite(board, execBase, 2, 0x6000'u32 or uint32(disp))
   boardWrite(board, execBase + 2'u32, 2, uint32(wordDisplacement))
 
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, stackBase, execBase)
-  discard mcf5407_set_reg(ctx, 16, srDirty)
-  discard mcf5407_exec(ctx, 1'u32)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, stackBase, execBase)
+  discard cf_set_reg(ctx, 16, srDirty)
+  discard cf_exec(ctx, 1'u32)
   result = (disp: disp,
-            pc: mcf5407_get_reg(ctx, 17),
-            sp: mcf5407_get_reg(ctx, 15),
-            sr: mcf5407_get_reg(ctx, 16),
+            pc: cf_get_reg(ctx, 17),
+            sp: cf_get_reg(ctx, 15),
+            sr: cf_get_reg(ctx, 16),
             fault: ctx.fault,
             halted: ctx.halted)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ---------------------------------------------------------------------------
 # The rule, written out from the manual.

@@ -96,7 +96,7 @@ endif()
 # configure error, not a no-op. So each registration list makes this call at
 # its own end, which is also the one place where every test it registers is
 # already known.
-function(mcf5407_require_current_build)
+function(coldfire_require_current_build)
     if(NOT MCF5407_BUILD_GATE_ARMED)
         return()
     endif()
@@ -112,6 +112,10 @@ function(mcf5407_require_current_build)
 
     list(LENGTH dir_tests dir_test_count)
     message(STATUS
-        "mcf5407: the build gate covers ${dir_test_count} test(s) registered in "
+        "coldfire: the build gate covers ${dir_test_count} test(s) registered in "
         "${CMAKE_CURRENT_SOURCE_DIR}")
+endfunction()
+
+function(mcf5407_require_current_build)
+    coldfire_require_current_build()
 endfunction()

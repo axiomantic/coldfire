@@ -8,7 +8,7 @@
 ##
 ##   CLAUSE 1, the vector base. Covered below, end to end: the base arrives by
 ##   `MOVEC`, the exception is raised by running an instruction through
-##   `mcf5407_exec`, and the handler address adjudicates.
+##   `cf_exec`, and the handler address adjudicates.
 ##
 ##   CLAUSE 4, the serialized fields. Covered below: the seven registers
 ##   survive a save, a run and a load, and a byte perturbed inside the register
@@ -32,11 +32,11 @@
 ## low bits of VBR are facts about Motorola silicon, from the MCF5307 User's
 ## Manual (1998) and the ColdFire Family Programmer's Reference Manual, Rev. 3.
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/exception
-import mcf5407/machine
-import mcf5407/state
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/exception
+import coldfire/machine
+import coldfire/state
 
 var failures: seq[string]
 
@@ -160,7 +160,7 @@ const
 # BLOCK 1. THE VECTOR BASE, DRIVEN THROUGH THE PUBLISHED PATH.
 #
 # The base arrives by `MOVEC` and the exception is raised by RUNNING `trap #0`
-# through `mcf5407_exec`, so nothing here reaches around the back of the core
+# through `cf_exec`, so nothing here reaches around the back of the core
 # to call the dispatch directly. `movec %d4,VBR` is `0x4E7B 0x4801`.
 #
 # THE SOURCE VALUE CARRIES LOW BITS THAT ARE NOT PART OF THE BASE. VBR[19-0]
@@ -175,25 +175,25 @@ type Dispatched = tuple[ran: bool, vbrReadBack: uint32, pc: uint32,
                         stackedPc: uint32, reads: seq[uint32]]
 
 proc runMovecVbrThenTrap(source: uint32): Dispatched =
-  ## `movec %d4,VBR` then `trap #0`, both through `mcf5407_exec`.
+  ## `movec %d4,VBR` then `trap #0`, both through `cf_exec`.
   freshBoard([opMovec, 0x4801'u16, opTrap0])
   boardWrite(board, vectorAddress(vbrTableBase, vecTrap0), 4, vbrHandler)
   boardWrite(board, vectorAddress(0'u32, vecTrap0), 4, decoyHandler)
 
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, stackBase, execBase)
-  discard mcf5407_set_reg(ctx, ixD4, source)
-  let movecRan = mcf5407_exec(ctx, 1'u32) > 0'u32
-  discard mcf5407_exec(ctx, 1'u32)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, stackBase, execBase)
+  discard cf_set_reg(ctx, ixD4, source)
+  let movecRan = cf_exec(ctx, 1'u32) > 0'u32
+  discard cf_exec(ctx, 1'u32)
   result = (ran: movecRan,
-            vbrReadBack: mcf5407_get_reg(ctx, ixVbr),
-            pc: mcf5407_get_reg(ctx, ixPc),
-            sp: mcf5407_get_reg(ctx, ixSp),
-            halted: mcf5407_halted(ctx) != 0,
-            fault: mcf5407_faulted(ctx) != 0,
+            vbrReadBack: cf_get_reg(ctx, ixVbr),
+            pc: cf_get_reg(ctx, ixPc),
+            sp: cf_get_reg(ctx, ixSp),
+            halted: cf_halted(ctx) != 0,
+            fault: cf_faulted(ctx) != 0,
             stackedPc: boardReadValue(board, frameBase + 4'u32, 4),
             reads: vectorReads)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # THE STACKED PROGRAM COUNTER IS `execBase + 6`. `MOVEC` is two words and
 # `trap #0` is one, and a trap stacks the address after the instruction that
@@ -268,59 +268,59 @@ const seededFile: ControlFile =
    rambar1: rambar1Seed, mbar: mbarSeed)
 
 proc controlFileOf(ctx: MCF5407Ctx): ControlFile =
-  (cacr: mcf5407_get_reg(ctx, ixCacr),
-   acr0: mcf5407_get_reg(ctx, ixAcr0),
-   acr1: mcf5407_get_reg(ctx, ixAcr1),
-   acr2: mcf5407_get_reg(ctx, ixAcr2),
-   acr3: mcf5407_get_reg(ctx, ixAcr3),
-   vbr: mcf5407_get_reg(ctx, ixVbr),
-   rambar0: mcf5407_get_reg(ctx, ixRambar0),
-   rambar1: mcf5407_get_reg(ctx, ixRambar1),
-   mbar: mcf5407_get_reg(ctx, ixMbar))
+  (cacr: cf_get_reg(ctx, ixCacr),
+   acr0: cf_get_reg(ctx, ixAcr0),
+   acr1: cf_get_reg(ctx, ixAcr1),
+   acr2: cf_get_reg(ctx, ixAcr2),
+   acr3: cf_get_reg(ctx, ixAcr3),
+   vbr: cf_get_reg(ctx, ixVbr),
+   rambar0: cf_get_reg(ctx, ixRambar0),
+   rambar1: cf_get_reg(ctx, ixRambar1),
+   mbar: cf_get_reg(ctx, ixMbar))
 
 proc seededCtx(): MCF5407Ctx =
   freshBoard(controlProgram)
-  result = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(result, stackBase, execBase)
-  discard mcf5407_set_reg(result, ixD0, vbrAfterRun)
-  discard mcf5407_set_reg(result, ixD1, cacrSeed)
-  discard mcf5407_set_reg(result, ixD2, acr0Seed)
-  discard mcf5407_set_reg(result, ixA3, acr1Seed)
-  discard mcf5407_set_reg(result, ixD3, acr2Seed)
-  discard mcf5407_set_reg(result, ixA2, acr3Seed)
-  discard mcf5407_set_reg(result, ixD4, vbrSource)
-  discard mcf5407_set_reg(result, ixA5, rambar0Seed)
-  discard mcf5407_set_reg(result, ixD6, rambar1Seed)
-  discard mcf5407_set_reg(result, ixA6, mbarSeed)
+  result = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(result, stackBase, execBase)
+  discard cf_set_reg(result, ixD0, vbrAfterRun)
+  discard cf_set_reg(result, ixD1, cacrSeed)
+  discard cf_set_reg(result, ixD2, acr0Seed)
+  discard cf_set_reg(result, ixA3, acr1Seed)
+  discard cf_set_reg(result, ixD3, acr2Seed)
+  discard cf_set_reg(result, ixA2, acr3Seed)
+  discard cf_set_reg(result, ixD4, vbrSource)
+  discard cf_set_reg(result, ixA5, rambar0Seed)
+  discard cf_set_reg(result, ixD6, rambar1Seed)
+  discard cf_set_reg(result, ixA6, mbarSeed)
   for _ in 1 .. writeCount:
-    discard mcf5407_exec(result, 1'u32)
+    discard cf_exec(result, 1'u32)
 
 proc be32(bytes: seq[uint8]; at: int): uint32 =
   (uint32(bytes[at]) shl 24) or (uint32(bytes[at + 1]) shl 16) or
     (uint32(bytes[at + 2]) shl 8) or uint32(bytes[at + 3])
 
-var savedBlock = newSeq[uint8](int(mcf5407_state_size()))
+var savedBlock = newSeq[uint8](int(cf_state_size()))
 var afterFirstRun: ControlFile
 var pcAfterFirstRun = 0'u32
 
 block:
   let ctx = seededCtx()
   let atSave = controlFileOf(ctx)
-  let pcAtSave = mcf5407_get_reg(ctx, ixPc)
-  mcf5407_state_save(ctx, addr savedBlock[0])
+  let pcAtSave = cf_get_reg(ctx, ixPc)
+  cf_state_save(ctx, addr savedBlock[0])
 
-  discard mcf5407_exec(ctx, 1'u32)
+  discard cf_exec(ctx, 1'u32)
   afterFirstRun = controlFileOf(ctx)
-  pcAfterFirstRun = mcf5407_get_reg(ctx, ixPc)
+  pcAfterFirstRun = cf_get_reg(ctx, ixPc)
 
   let status = stateLoad(ctx, addr savedBlock[0])
   let restored = controlFileOf(ctx)
-  let pcRestored = mcf5407_get_reg(ctx, ixPc)
+  let pcRestored = cf_get_reg(ctx, ixPc)
 
-  discard mcf5407_exec(ctx, 1'u32)
+  discard cf_exec(ctx, 1'u32)
   let afterSecondRun = controlFileOf(ctx)
-  let pcAfterSecondRun = mcf5407_get_reg(ctx, ixPc)
-  mcf5407_destroy(ctx)
+  let pcAfterSecondRun = cf_get_reg(ctx, ixPc)
+  cf_destroy(ctx)
 
   check((ctl: atSave, pc: pcAtSave),
         (ctl: seededFile, pc: execBase + 4'u32 * uint32(writeCount)),
@@ -372,10 +372,10 @@ proc loadPerturbed(at: int): tuple[status: StateStatus, ctl: ControlFile] =
   var damaged = savedBlock
   damaged[at] = damaged[at] xor 0x01'u8
   let ctx = seededCtx()
-  discard mcf5407_exec(ctx, 1'u32)
+  discard cf_exec(ctx, 1'u32)
   let status = stateLoad(ctx, addr damaged[0])
   result = (status: status, ctl: controlFileOf(ctx))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 check(loadPerturbed(vbrByteOffset),
       (status: stateBadChecksum, ctl: afterFirstRun),

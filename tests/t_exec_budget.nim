@@ -1,8 +1,8 @@
-## `t_exec_budget` - what `mcf5407_exec` RETURNS when the budget runs out in
+## `t_exec_budget` - what `cf_exec` RETURNS when the budget runs out in
 ## the middle of an instruction, asserted as an arithmetic identity rather than
 ## as a flag.
 ##
-## THE PROPERTY. `mcf5407_exec` never abandons an instruction it has started:
+## THE PROPERTY. `cf_exec` never abandons an instruction it has started:
 ## the loop decides whether to continue AFTER a step, so the last instruction of
 ## a call has already retired when the budget is found to be spent. The return
 ## is therefore the cost of everything that RAN, and it may EXCEED the budget -
@@ -24,9 +24,9 @@
 ## the defect this project keeps finding: a cost transcribed beside the code
 ## that computes it, and then left behind when the code moves.
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -109,11 +109,11 @@ proc freshCore(word: uint16; copies: int; tail: uint16): MCF5407Ctx =
     boardWrite(board, execBase + uint32(index * 2), 2, uint32(word))
   boardWrite(board, execBase + uint32(copies * 2), 2, uint32(tail))
 
-  result = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(result, stackBase, execBase)
-  # The status register is set LAST: `mcf5407_reset` writes it, so an earlier
+  result = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(result, stackBase, execBase)
+  # The status register is set LAST: `cf_reset` writes it, so an earlier
   # write would be overwritten.
-  discard mcf5407_set_reg(result, 16, srBase)
+  discard cf_set_reg(result, 16, srBase)
 
 proc costOf(word: uint16): uint32 =
   ## ONE INSTRUCTION'S COST, MEASURED AND NOT TRANSCRIBED. The memory holds one
@@ -122,8 +122,8 @@ proc costOf(word: uint16): uint32 =
   ## halt and never on the budget, so the return is the instruction's whole
   ## cost by a path on which no saturation can occur.
   let ctx = freshCore(word, 1, refusedWord)
-  result = mcf5407_exec(ctx, uint32(memSize))
-  mcf5407_destroy(ctx)
+  result = cf_exec(ctx, uint32(memSize))
+  cf_destroy(ctx)
 
 let nopCost = costOf(nopWord)
 let addqCost = costOf(addqWord)
@@ -159,9 +159,9 @@ proc totalOverSingleCycleBudgets(word: uint16): (uint32, uint32) =
   let ctx = freshCore(word, insWords, refusedWord)
   var total = 0'u32
   for _ in 0 ..< insWords:
-    total = total + mcf5407_exec(ctx, 1'u32)
-  result = (total, mcf5407_get_reg(ctx, 17))
-  mcf5407_destroy(ctx)
+    total = total + cf_exec(ctx, 1'u32)
+  result = (total, cf_get_reg(ctx, 17))
+  cf_destroy(ctx)
 
 let nopRun = totalOverSingleCycleBudgets(nopWord)
 check(nopRun,
@@ -194,8 +194,8 @@ const budgetSweep = 12'u32
 
 for budget in 1'u32 .. budgetSweep:
   let ctx = freshCore(nopWord, insWords, refusedWord)
-  let spent = mcf5407_exec(ctx, budget)
-  mcf5407_destroy(ctx)
+  let spent = cf_exec(ctx, budget)
+  cf_destroy(ctx)
   let wholeInstructions = (budget + nopCost - 1'u32) div nopCost
   check(spent, nopCost * wholeInstructions,
         "a budget of " & $budget & " returns the cost of the instructions it ran")

@@ -1,7 +1,7 @@
 # Pre-generated C distribution integration.
 #
-# When Nim is not available, or when MCF5407_USE_C_DIST is set, this file
-# defines the targets `mcf5407_nim_objs`, `mcf5407` and `mcf5407::mcf5407`
+# When Nim is not available, or when COLDFIRE_USE_C_DIST is set, this file
+# defines the targets `coldfire_nim_objs`, `coldfire` and `coldfire::coldfire`
 # directly from the pre-generated C translation units in `c_src/`.
 
 if(APPLE)
@@ -38,43 +38,42 @@ message(STATUS
 # The OBJECT library.
 #
 # Compiled as C11 with warnings disarmed for generated code.
-add_library(mcf5407_nim_objs OBJECT ${MCF5407_C_SOURCES})
+add_library(coldfire_nim_objs OBJECT ${MCF5407_C_SOURCES})
 
-target_include_directories(mcf5407_nim_objs SYSTEM PRIVATE
+target_include_directories(coldfire_nim_objs SYSTEM PRIVATE
 	"${MCF5407_C_COMMON_DIR}"
 	"${MCF5407_C_DIST_DIR}")
 
-target_compile_options(mcf5407_nim_objs PRIVATE
+target_compile_options(coldfire_nim_objs PRIVATE
 	"$<IF:$<C_COMPILER_ID:MSVC>,/WX-,-Wno-error>")
 
-set_target_properties(mcf5407_nim_objs PROPERTIES
+set_target_properties(coldfire_nim_objs PROPERTIES
 	C_STANDARD 11
 	POSITION_INDEPENDENT_CODE ON)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 if(TARGET Threads::Threads)
-	target_link_libraries(mcf5407_nim_objs PUBLIC Threads::Threads)
+	target_link_libraries(coldfire_nim_objs PUBLIC Threads::Threads)
 endif()
 
 # ---------------------------------------------------------------------------
 # The static library.
-add_library(mcf5407 STATIC $<TARGET_OBJECTS:mcf5407_nim_objs>)
+add_library(coldfire STATIC $<TARGET_OBJECTS:coldfire_nim_objs>)
 
-target_include_directories(mcf5407 PUBLIC
+target_include_directories(coldfire PUBLIC
 	"$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>")
 
 if(TARGET Threads::Threads)
-	target_link_libraries(mcf5407 PUBLIC Threads::Threads)
+	target_link_libraries(coldfire PUBLIC Threads::Threads)
 endif()
 
-set_target_properties(mcf5407 PROPERTIES
+set_target_properties(coldfire PROPERTIES
 	LINKER_LANGUAGE C)
 
 # ---------------------------------------------------------------------------
 # Exported alias for consumers.
-add_library(mcf5407::mcf5407 ALIAS mcf5407)
-add_library(coldfire::coldfire ALIAS mcf5407)
+add_library(coldfire::coldfire ALIAS coldfire)
 
 # ---------------------------------------------------------------------------
 # Published ABI symbols for abi_smoke test.
@@ -111,17 +110,4 @@ set(MCF5407_ABI_VISIBLE
 	isp1181_report
 	isp1181_state_size
 	isp1181_state_save
-	isp1181_state_load
-	mcf5407_runtime_init
-	mcf5407_create
-	mcf5407_destroy
-	mcf5407_reset
-	mcf5407_exec
-	mcf5407_set_reg
-	mcf5407_get_reg
-	mcf5407_halted
-	mcf5407_faulted
-	mcf5407_set_irq
-	mcf5407_state_size
-	mcf5407_state_save
-	mcf5407_state_load)
+	isp1181_state_load)

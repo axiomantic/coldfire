@@ -65,7 +65,6 @@
 
 #include "coldfire.h"
 #include "isp1181.h"
-#include "mcf5407.h"
 
 namespace {
 
@@ -208,8 +207,8 @@ int peek_endpoint0(isp1181_ctx* h, int expect_accepted) {
 /* Non-zero on the first failure. Each return value is distinct so a red run
  * names the case through the exit status alone. */
 int check_backend_macros() {
-    static_assert(MCF5407_ISP1181_BACKEND_STUB !=
-                      MCF5407_ISP1181_BACKEND_FULL_MODEL,
+    static_assert(ISP1181_BACKEND_STUB !=
+                      ISP1181_BACKEND_FULL_MODEL,
                   "abi_smoke: the two backend macros carry the same value, so "
                   "neither selects anything.");
 
@@ -217,11 +216,11 @@ int check_backend_macros() {
     if (h == nullptr) return 10;
 
     int rc = 0;
-    if (isp1181_set_backend(h, MCF5407_ISP1181_BACKEND_FULL_MODEL) != 1) {
+    if (isp1181_set_backend(h, ISP1181_BACKEND_FULL_MODEL) != 1) {
         rc = 11; /* the header's full-model number is not one the model takes */
     } else if (peek_endpoint0(h, 1) != kDelivered) {
         rc = 12; /* it was taken, but it did not select the full model */
-    } else if (isp1181_set_backend(h, MCF5407_ISP1181_BACKEND_STUB) != 1) {
+    } else if (isp1181_set_backend(h, ISP1181_BACKEND_STUB) != 1) {
         rc = 13; /* the header's stub number is not one the model takes */
     } else if (peek_endpoint0(h, 0) != 0x00) {
         rc = 14; /* it was taken, but it did not select the stub */
@@ -239,7 +238,7 @@ int main() {
     /* The concurrent first call, before any other call closes the latch. */
     if (!all_racers_returned()) return 4;
 
-    /* The twice-call. `mcf5407_runtime_init()` is documented as idempotent.
+    /* The twice-call. `cf_runtime_init()` is documented as idempotent.
      * A second call that reaches unmapped memory, that re-enters a partial
      * initialiser, or that panics is a regression in the runtime itself.
      *
@@ -252,7 +251,7 @@ int main() {
     if (cf_runtime_init() != 1) {
         return 2;
     }
-    if (mcf5407_runtime_init() != 1) {
+    if (cf_runtime_init() != 1) {
         return 3;
     }
 

@@ -20,7 +20,7 @@
 #undef powerpc
 #undef unix
 typedef struct tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag;
-typedef struct tyObject_RuntimeLatch__GZ2tSj08UPkbl0xvEp9crxw tyObject_RuntimeLatch__GZ2tSj08UPkbl0xvEp9crxw;
+typedef struct tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w;
 typedef struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ;
 typedef struct tyObject_ISP1181colonObjectType___P6rYUXDSllz1Tt3X1UXm9bg tyObject_ISP1181colonObjectType___P6rYUXDSllz1Tt3X1UXm9bg;
 typedef struct tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw;
@@ -48,7 +48,7 @@ typedef N_CDECL_PTR(void, tyProc__uu7v9a49cyeuzEN3J2FaWf1Q) (void* user_p0, int 
 struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ {
 	_Atomic NI64 value;
 };
-struct tyObject_RuntimeLatch__GZ2tSj08UPkbl0xvEp9crxw {
+struct tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w {
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ state;
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ reported;
 };
@@ -170,7 +170,7 @@ struct tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ {
 };
 struct tySequence__vrjNl4awzOmCciafmd8lLQ_Content { NI cap; tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ data[SEQ_DECL_SIZE]; };
 N_LIB_EXPORT N_CDECL(tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag*, isp1181_create)(void* user_p0, tyProc__EMiXzHvwqlVf9ayQvmgDdgw irq_p1, tyProc__uu7v9a49cyeuzEN3J2FaWf1Q tx_p2);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeAbandoned__mcf5407Zlatch_u51)(tyObject_RuntimeLatch__GZ2tSj08UPkbl0xvEp9crxw* latch_p0);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeAbandoned__coldfireZlatch_u51)(tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w* latch_p0);
 N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___isp1181Zstub_u69)(tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag* dest_p0);
 static N_INLINE(NIM_BOOL, nimDecRefIsLast)(void* p_p0);
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1);
@@ -232,17 +232,17 @@ N_LIB_EXPORT N_CDECL(size_t, isp1181_report)(tyObject_ISP1181CtxcolonObjectType_
 N_LIB_EXPORT N_CDECL(int, isp1181_set_backend)(tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag* ctx_p0, int backend_p1);
 N_LIB_PRIVATE N_NIMCALL(void, setBackend__isp1181Zstub_u40)(tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag* ctx_p0, tyEnum_ISP1181Backend__tjvNMnRLhvjs8qXzcIkebQ value_p1);
 static const struct {
-  NI cap; NIM_CHAR data[22+1];
-} TM__FkASmaITY2HNgFUq3lkV7g_2 = { 22 | NIM_STRLIT_FLAG, "MCF5407_ISP1181_REPORT" };
-static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_3 = {22, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_2};
+  NI cap; NIM_CHAR data[14+1];
+} TM__FkASmaITY2HNgFUq3lkV7g_2 = { 14 | NIM_STRLIT_FLAG, "ISP1181_REPORT" };
+static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_3 = {14, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_2};
 static const struct {
   NI cap; NIM_CHAR data[0+1];
 } TM__FkASmaITY2HNgFUq3lkV7g_4 = { 0 | NIM_STRLIT_FLAG, "" };
 static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_5 = {0, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_4};
 static const struct {
-  NI cap; NIM_CHAR data[39+1];
-} TM__FkASmaITY2HNgFUq3lkV7g_6 = { 39 | NIM_STRLIT_FLAG, "isp1181: MCF5407_ISP1181_REPORT names \"" };
-static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_7 = {39, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_6};
+  NI cap; NIM_CHAR data[31+1];
+} TM__FkASmaITY2HNgFUq3lkV7g_6 = { 31 | NIM_STRLIT_FLAG, "isp1181: ISP1181_REPORT names \"" };
+static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_7 = {31, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_6};
 static const struct {
   NI cap; NIM_CHAR data[63+1];
 } TM__FkASmaITY2HNgFUq3lkV7g_8 = { 63 | NIM_STRLIT_FLAG, "\" and it could not be opened for append; no report was written\012" };
@@ -259,7 +259,7 @@ static const struct {
   NI cap; NIM_CHAR data[1+1];
 } TM__FkASmaITY2HNgFUq3lkV7g_14 = { 1 | NIM_STRLIT_FLAG, "\012" };
 static const NimStringV2 TM__FkASmaITY2HNgFUq3lkV7g_15 = {1, (NimStrPayload*)&TM__FkASmaITY2HNgFUq3lkV7g_14};
-extern tyObject_RuntimeLatch__GZ2tSj08UPkbl0xvEp9crxw runtimeLatch__mcf5407Zlatch_u49;
+extern tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w runtimeLatch__coldfireZlatch_u49;
 extern NIM_THREADVAR NIM_BOOL nimInErrorMode__system_u3441;
 extern NIM_THREADVAR Exception* currException__system_u2982;
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1) {
@@ -327,7 +327,7 @@ NIM_BOOL* nimErr_;
 	{
 		NIM_BOOL T3_;
 		T3_ = (NIM_BOOL)0;
-		T3_ = runtimeAbandoned__mcf5407Zlatch_u51((&runtimeLatch__mcf5407Zlatch_u49));
+		T3_ = runtimeAbandoned__coldfireZlatch_u51((&runtimeLatch__coldfireZlatch_u49));
 		if (!T3_) goto LA4_;
 		result = ((tyObject_ISP1181CtxcolonObjectType___9adPIECkNk85KPZf9cLo0qag*) NIM_NIL);
 		goto BeforeRet_;
@@ -412,7 +412,7 @@ LA4_: ;
 		if (!!(T8_)) goto LA9_;
 		colontmpD_.len = 0; colontmpD_.p = NIM_NIL;
 		T12_.len = 0; T12_.p = NIM_NIL;
-		T12_ = rawNewString(destination_1.len + 102);
+		T12_ = rawNewString(destination_1.len + 94);
 appendString((&T12_), TM__FkASmaITY2HNgFUq3lkV7g_7);
 appendString((&T12_), destination_1);
 appendString((&T12_), TM__FkASmaITY2HNgFUq3lkV7g_9);

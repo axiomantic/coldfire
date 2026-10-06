@@ -6,10 +6,10 @@
 #      mismatch and print both versions.
 #   2  Run the Nim compiler in compile-only mode with the C backend.
 #   3  Read the compile-unit list out of Nim's own JSON build file.
-#   4  Add the listed `.c` files to an OBJECT library `mcf5407_nim_objs`.
-#   5  Add a STATIC library `mcf5407` that carries those objects and the
+#   4  Add the listed `.c` files to an OBJECT library `coldfire_nim_objs`.
+#   5  Add a STATIC library `coldfire` that carries those objects and the
 #      hand-written public header.
-#   6  Export `mcf5407::mcf5407` for consumers.
+#   6  Export `coldfire::coldfire` for consumers.
 #
 # The steps run at configure time and not at build time. Steps 4 and 5 need the
 # unit list to declare their targets, and a CMake target's source list is fixed
@@ -156,7 +156,7 @@ message(STATUS
 # ends the process into a defect that returns a wrong value and exits 0.
 
 set(MCF5407_NIMCACHE "${PROJECT_BINARY_DIR}/nimcache")
-set(MCF5407_NIM_HEADER "mcf5407_nim.h")
+set(MCF5407_NIM_HEADER "coldfire_nim.h")
 
 # The flags that govern the generated code. They are held apart from the
 # command for two reasons. A second Nim project repeats them unchanged, and a
@@ -192,14 +192,14 @@ endif()
 
 if(MCF5407_NIM_CC STREQUAL "")
     message(STATUS
-        "mcf5407: step 2 no Nim `--cc` counterpart is known for "
+        "coldfire: step 2 no Nim `--cc` counterpart is known for "
         "${CMAKE_C_COMPILER_ID}, so Nim selects its own default. The "
         "generated C is then written for whichever compiler Nim assumes, and "
         "step 4 compiles it with ${CMAKE_C_COMPILER}.")
 else()
     list(APPEND MCF5407_NIM_FLAGS "--cc:${MCF5407_NIM_CC}")
     message(STATUS
-        "mcf5407: step 2 the generated C is written for `--cc:"
+        "coldfire: step 2 the generated C is written for `--cc:"
         "${MCF5407_NIM_CC}`, from CMAKE_C_COMPILER_ID "
         "${CMAKE_C_COMPILER_ID}")
 endif()
@@ -209,26 +209,26 @@ endif()
 # Two Nim projects in one binary that keep the default names collide on
 # `NimMain`, `NimMainInner` and `NimMainModule` at link, and the prefix is what
 # keeps them apart.
-set(MCF5407_NIM_ENTRIES mcf5407)
+set(MCF5407_NIM_ENTRIES coldfire)
 
 # Each entry module's source file and its command are written out, and neither
 # is derived from the entry name.
-set(MCF5407_NIM_SOURCE_mcf5407 "${PROJECT_SOURCE_DIR}/src/mcf5407.nim")
+set(MCF5407_NIM_SOURCE_coldfire "${PROJECT_SOURCE_DIR}/src/coldfire.nim")
 # `--path:src` puts the package root on the Nim search path so that the
-# entry module's `import mcf5407/<sub>` resolves to `src/mcf5407/<sub>.nim`.
-# The submodules of the core live under `src/mcf5407/`, and
-# without the path an entry module at `src/mcf5407.nim` cannot import them.
+# entry module's `import coldfire/<sub>` resolves to `src/coldfire/<sub>.nim`.
+# The submodules of the core live under `src/coldfire/`, and
+# without the path an entry module at `src/coldfire.nim` cannot import them.
 set(MCF5407_NIM_PATH "${PROJECT_SOURCE_DIR}/src")
-set(MCF5407_NIM_COMMAND_mcf5407
-    "${MCF5407_NIM_EXECUTABLE}" c
+set(MCF5407_NIM_COMMAND_coldfire
+    "${COLDFIRE_NIM_EXECUTABLE}" c
     --compileOnly
     --noMain
     "--nimcache:${MCF5407_NIMCACHE}"
     "--path:${MCF5407_NIM_PATH}"
     ${MCF5407_NIM_FLAGS}
-    --nimMainPrefix:mcf5407_
+    --nimMainPrefix:coldfire_
     "--header:${MCF5407_NIM_HEADER}"
-    "${MCF5407_NIM_SOURCE_mcf5407}")
+    "${MCF5407_NIM_SOURCE_coldfire}")
 
 # ---------------------------------------------------------------------------
 # Steps 2 to 6 build the FIRST entry module in MCF5407_NIM_ENTRIES, and the
@@ -257,7 +257,6 @@ message(STATUS "mcf5407: nim invocation: ${MCF5407_NIM_COMMAND_TEXT}")
 # The contract headers. They are read here and they are never written here.
 set(MCF5407_ABI_CONTRACT_COLDFIRE "${PROJECT_SOURCE_DIR}/include/coldfire.h")
 set(MCF5407_ABI_CONTRACT_ISP1181 "${PROJECT_SOURCE_DIR}/include/isp1181.h")
-set(MCF5407_ABI_CONTRACT_COMPAT "${PROJECT_SOURCE_DIR}/include/mcf5407.h")
 set(MCF5407_ABI_CONTRACT_FILE "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 
 # Editing a configure-time input must re-run the configure step. The inputs
@@ -271,15 +270,13 @@ set(MCF5407_ABI_CONTRACT_FILE "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 #   `.nim-version`       step 1 compares it against the compiler.
 #   `include/coldfire.h` step 4a reads the published set out of it.
 #   `include/isp1181.h`  step 4a reads the published set out of it.
-#   `include/mcf5407.h`  compatibility header.
 file(GLOB_RECURSE MCF5407_NIM_SOURCES CONFIGURE_DEPENDS
     "${PROJECT_SOURCE_DIR}/src/*.nim")
 set_property(DIRECTORY "${PROJECT_SOURCE_DIR}"
     APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     ${MCF5407_NIM_SOURCES} "${MCF5407_NIM_VERSION_FILE}"
     "${MCF5407_ABI_CONTRACT_COLDFIRE}"
-    "${MCF5407_ABI_CONTRACT_ISP1181}"
-    "${MCF5407_ABI_CONTRACT_COMPAT}")
+    "${MCF5407_ABI_CONTRACT_ISP1181}")
 
 execute_process(
     COMMAND ${MCF5407_NIM_COMMAND}
@@ -461,7 +458,7 @@ message(STATUS
     "mcf5407: step 4 the Nim library directory is ${MCF5407_NIM_LIB_DIR} "
     "(from ${MCF5407_NIM_LIB_DIR_SOURCE})")
 
-add_library(mcf5407_nim_objs OBJECT ${MCF5407_NIM_C_SOURCES})
+add_library(coldfire_nim_objs OBJECT ${MCF5407_NIM_C_SOURCES})
 
 # The generated C is a build product and is not this project's own source. Two
 # mechanisms hold it apart from this project's warning policy.
@@ -482,11 +479,11 @@ add_library(mcf5407_nim_objs OBJECT ${MCF5407_NIM_C_SOURCES})
 #
 # `tests/tests_cpu.cmake` already compiles with `-Wall -Wextra -pedantic
 # -Werror`.
-target_include_directories(mcf5407_nim_objs SYSTEM PRIVATE
+target_include_directories(coldfire_nim_objs SYSTEM PRIVATE
     "${MCF5407_NIM_LIB_DIR}")
-target_compile_options(mcf5407_nim_objs PRIVATE
+target_compile_options(coldfire_nim_objs PRIVATE
     "$<IF:$<C_COMPILER_ID:MSVC>,/WX-,-Wno-error>")
-set_target_properties(mcf5407_nim_objs PROPERTIES
+set_target_properties(coldfire_nim_objs PROPERTIES
     C_STANDARD 11
     POSITION_INDEPENDENT_CODE ON)
 
@@ -506,10 +503,10 @@ set_target_properties(mcf5407_nim_objs PROPERTIES
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
 if(TARGET Threads::Threads)
-    target_link_libraries(mcf5407_nim_objs PUBLIC Threads::Threads)
+    target_link_libraries(coldfire_nim_objs PUBLIC Threads::Threads)
 endif()
 
-message(STATUS "mcf5407: step 4 the object library mcf5407_nim_objs is defined")
+message(STATUS "coldfire: step 4 the object library coldfire_nim_objs is defined")
 
 # ---------------------------------------------------------------------------
 # Step 4a. The visibility gate.
@@ -1221,12 +1218,7 @@ mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_ISP1181 MCF5407_ABI_SENTINELS_I
 mcf5407_abi_check_sentinels("the isp1181 header"
     "${MCF5407_ABI_SENTINELS_ISP1181}" "${MCF5407_ABI_LOST_ISP1181}")
 
-mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_COMPAT MCF5407_ABI_SENTINELS_COMPAT
-    MCF5407_ABI_LOST_COMPAT contract_compat "${MCF5407_ABI_CONTRACT_COMPAT}")
-mcf5407_abi_check_sentinels("the mcf5407 compatibility header"
-    "${MCF5407_ABI_SENTINELS_COMPAT}" "${MCF5407_ABI_LOST_COMPAT}")
-
-set(MCF5407_ABI_PUBLISHED ${MCF5407_ABI_PUBLISHED_COLDFIRE} ${MCF5407_ABI_PUBLISHED_ISP1181} ${MCF5407_ABI_PUBLISHED_COMPAT})
+set(MCF5407_ABI_PUBLISHED ${MCF5407_ABI_PUBLISHED_COLDFIRE} ${MCF5407_ABI_PUBLISHED_ISP1181})
 list(REMOVE_DUPLICATES MCF5407_ABI_PUBLISHED)
 
 if(MCF5407_ABI_PUBLISHED STREQUAL "")
@@ -1407,7 +1399,7 @@ target_include_directories(mcf5407_abi_units SYSTEM PRIVATE
     "@MCF5407_NIM_LIB_DIR@")
 
 # The generated C is not this project's source and is not reviewed here, so a
-# warning in it must not stop a measurement. This mirrors `mcf5407_nim_objs`.
+# warning in it must not stop a measurement. This mirrors `coldfire_nim_objs`.
 target_compile_options(mcf5407_abi_units PRIVATE
     "$<IF:$<C_COMPILER_ID:MSVC>,/WX-,-Wno-error>")
 
@@ -1791,27 +1783,26 @@ endif()
 # it. The compile check for the contract header is the registered test
 # `t0_abi_header`.
 
-add_library(mcf5407 STATIC $<TARGET_OBJECTS:mcf5407_nim_objs>)
+add_library(coldfire STATIC $<TARGET_OBJECTS:coldfire_nim_objs>)
 
-target_include_directories(mcf5407 PUBLIC
+target_include_directories(coldfire PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>")
 if(TARGET Threads::Threads)
-    target_link_libraries(mcf5407 PUBLIC Threads::Threads)
+    target_link_libraries(coldfire PUBLIC Threads::Threads)
 endif()
-set_target_properties(mcf5407 PROPERTIES
+set_target_properties(coldfire PROPERTIES
     LINKER_LANGUAGE C)
 
-message(STATUS "mcf5407: step 5 the static library mcf5407 is defined")
+message(STATUS "coldfire: step 5 the static library coldfire is defined")
 
 # ---------------------------------------------------------------------------
 # Step 6. The consumer-facing name.
 #
-# A consumer writes `mcf5407::mcf5407`, whether it brings this project in with
+# A consumer writes `coldfire::coldfire`, whether it brings this project in with
 # `FetchContent` or finds an installed one. The double-colon name is also what
 # makes a misspelling a CMake error. Without it a misspelled name reaches the
-# linker unchanged as `-lmcf5407`.
+# linker unchanged as `-lcoldfire`.
 
-add_library(mcf5407::mcf5407 ALIAS mcf5407)
-add_library(coldfire::coldfire ALIAS mcf5407)
+add_library(coldfire::coldfire ALIAS coldfire)
 
-message(STATUS "mcf5407: step 6 the target mcf5407::mcf5407 (and coldfire::coldfire) is exported")
+message(STATUS "coldfire: step 6 the target coldfire::coldfire is exported")

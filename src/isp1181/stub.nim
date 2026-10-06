@@ -14,8 +14,8 @@ import std/syncio
 import ./isp1181
 import ./report
 # The one-time runtime latch. `isp1181_create` reads it for the reason
-# `mcf5407/cpu.nim` gives at its own `create`.
-import mcf5407/latch
+# `coldfire/cpu.nim` gives at its own `create`.
+import coldfire/latch
 export Isp1181IrqFn, Isp1181TxFn
 
 type
@@ -57,7 +57,7 @@ proc isp1181_create*(user: pointer; irq: Isp1181IrqFn;
                      tx: Isp1181TxFn): ISP1181Ctx
     {.exportc: "isp1181_create", cdecl, dynlib.} =
   ## It refuses when the runtime was abandoned. See `mcf5407_create` in
-  ## `mcf5407/cpu.nim`: the two allocate, the allocator needs the runtime, and
+  ## `coldfire/cpu.nim`: the two allocate, the allocator needs the runtime, and
   ## a nil handle is a value every `isp1181_*` call already answers for.
   if runtimeAbandoned(runtimeLatch):
     return nil
@@ -66,7 +66,7 @@ proc isp1181_create*(user: pointer; irq: Isp1181IrqFn;
   result.frameNumber = 0'u16
   result.model = newISP1181(user, irq, tx)
 
-const reportEnvVar* = "MCF5407_ISP1181_REPORT"
+const reportEnvVar* = "ISP1181_REPORT"
   ## The variable that names a file to append the teardown report to. A
   ## variable rather than a call so an existing binary emits the account with
   ## no edit of its own.

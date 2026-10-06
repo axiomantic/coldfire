@@ -13,8 +13,8 @@
 ## rule already governs `CLR.B` and `CLR.W`, and it governs the low half of
 ## `EXT.W`.
 ##
-## The cases run through the shipped C entry points - `mcf5407_create`,
-## `mcf5407_reset`, `mcf5407_set_reg`, `mcf5407_exec`, `mcf5407_get_reg` - and
+## The cases run through the shipped C entry points - `cf_create`,
+## `cf_reset`, `cf_set_reg`, `cf_exec`, `cf_get_reg` - and
 ## not through an internal helper reached around the back, so a pass here is a
 ## pass of the path the corpus runner drives. The last case is the one
 ## exception, and it has to be: it asserts what `moveFamily` does with an
@@ -27,11 +27,11 @@
 ##     2:  3200    movew %d0,%d1
 ##     4:  2200    movel %d0,%d1
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/ea
-import mcf5407/machine
-import mcf5407/move
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/ea
+import coldfire/machine
+import coldfire/move
 
 var failures: seq[string]
 
@@ -117,31 +117,31 @@ proc runIns(words: openArray[uint16];
             a: array[8, uint32] = zero8;
             sr: uint32 = srBase): Outcome =
   ## Place `words` at `execBase`, set the register file and the status
-  ## register, run one `mcf5407_exec`, and report the whole machine state.
+  ## register, run one `cf_exec`, and report the whole machine state.
   for i in 0 ..< memSize:
     board.bytes[i] = 0'u8
   for i in 0 ..< words.len:
     boardWrite(board, execBase + 2'u32 * uint32(i), 2, uint32(words[i]))
 
   let sp = if a[7] == 0'u32: stackBase else: a[7]
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, sp, execBase)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, sp, execBase)
   for i in 0 .. 7:
-    discard mcf5407_set_reg(ctx, cint(i), d[i])
+    discard cf_set_reg(ctx, cint(i), d[i])
   for i in 0 .. 6:
-    discard mcf5407_set_reg(ctx, cint(8 + i), a[i])
-  # The status register is set last: `mcf5407_reset` writes it, so an earlier
+    discard cf_set_reg(ctx, cint(8 + i), a[i])
+  # The status register is set last: `cf_reset` writes it, so an earlier
   # write would be overwritten.
-  discard mcf5407_set_reg(ctx, 16, sr)
+  discard cf_set_reg(ctx, 16, sr)
 
-  result.cycles = mcf5407_exec(ctx, 1'u32)
+  result.cycles = cf_exec(ctx, 1'u32)
   result.fault = ctx.fault
   result.halted = ctx.halted
   for i in 0 .. 7:
-    result.d[i] = mcf5407_get_reg(ctx, cint(i))
-    result.a[i] = mcf5407_get_reg(ctx, cint(8 + i))
-  result.sr = mcf5407_get_reg(ctx, 16)
-  mcf5407_destroy(ctx)
+    result.d[i] = cf_get_reg(ctx, cint(i))
+    result.a[i] = cf_get_reg(ctx, cint(8 + i))
+  result.sr = cf_get_reg(ctx, 16)
+  cf_destroy(ctx)
 
 proc expectD(o: Outcome; n: int; want: uint32; wantSr: uint32; label: string) =
   let got = (reg: o.d[n], sr: o.sr, fault: o.fault)
@@ -541,12 +541,12 @@ block:
   # past an instruction that never ran and carry on into whatever followed.
   block:
     zeroMem(addr board, sizeof(TestBoard))
-    let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-    mcf5407_reset(ctx, stackBase, execBase)
+    let ctx = cf_create(addr board, bRead, bWrite, bIack)
+    cf_reset(ctx, stackBase, execBase)
     let d = Decoded(op: opAdd, ea: EA(mode: eaDn, reg: 0'u8), size: 4'u8)
     let cycles = moveFamily(ctx, 0'u16, d)
     let got = (cycles: cycles, fault: ctx.fault, halted: ctx.halted)
-    mcf5407_destroy(ctx)
+    cf_destroy(ctx)
     let wanted = (cycles: 0'u32, fault: true, halted: true)
     check(got == wanted,
       "moveFamily refuses an operation outside the move family",

@@ -1,4 +1,4 @@
-## `t_state` - the snapshot block of `mcf5407/state`.
+## `t_state` - the snapshot block of `coldfire/state`.
 ##
 ##   1. THE EXPECTED FIELD LIST IS WRITTEN BY HAND AND `stateLayout` DERIVES
 ##      THE OTHER SIDE FROM `MCF5407Ctx`. Holding a hand-written list against a
@@ -9,10 +9,10 @@
 ##
 ## Nothing here is a fact about Motorola silicon.
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/irq
-import mcf5407/state
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/irq
+import coldfire/state
 
 var failures: seq[string]
 
@@ -62,7 +62,7 @@ check(measuredLayout == expectedLayout,
       "layout: the snapshot carries these context fields at these widths",
       $measuredLayout, $expectedLayout)
 
-let measuredSize = int(mcf5407_state_size())
+let measuredSize = int(cf_state_size())
 check(measuredSize == 145,
       "size: header, payload and checksum",
       $measuredSize, "145")
@@ -97,7 +97,7 @@ proc savedBlock(ctx: MCF5407Ctx): seq[uint8] =
   var raw: array[guardBytes + blockBytes + guardBytes, uint8]
   for index in 0 ..< raw.len:
     raw[index] = filler
-  mcf5407_state_save(ctx, addr raw[guardBytes])
+  cf_state_save(ctx, addr raw[guardBytes])
   result = newSeq[uint8](blockBytes)
   for index in 0 ..< blockBytes:
     result[index] = raw[guardBytes + index]
@@ -419,9 +419,9 @@ proc bufferAfterSave(ctx: MCF5407Ctx; toNilDestination: bool): seq[uint8] =
   for index in 0 ..< raw.len:
     raw[index] = filler
   if toNilDestination:
-    mcf5407_state_save(ctx, nil)
+    cf_state_save(ctx, nil)
   else:
-    mcf5407_state_save(ctx, addr raw[guardBytes])
+    cf_state_save(ctx, addr raw[guardBytes])
   result = newSeq[uint8](raw.len)
   for index in 0 ..< raw.len:
     result[index] = raw[index]
@@ -432,12 +432,12 @@ for index in 0 ..< untouchedBuffer.len:
 
 let afterNilContext = bufferAfterSave(nil, false)
 check(afterNilContext == untouchedBuffer,
-      "damage: mcf5407_state_save writes nothing when the context is nil",
+      "damage: cf_state_save writes nothing when the context is nil",
       $afterNilContext, $untouchedBuffer)
 
 let afterNilDestination = bufferAfterSave(freshContext(), true)
 check(afterNilDestination == untouchedBuffer,
-      "damage: mcf5407_state_save returns when the destination is nil",
+      "damage: cf_state_save returns when the destination is nil",
       $afterNilDestination, $untouchedBuffer)
 
 # ---------------------------------------------------------------------------
@@ -541,13 +541,13 @@ proc freshCore(): MCF5407Ctx =
     coreBoard.bytes[at] = uint8(opAddqD1 shr 8)
     coreBoard.bytes[at + 1] = uint8(opAddqD1 and 0xFF'u16)
     at += 2
-  result = mcf5407_create(addr coreBoard, coreRead, coreWrite, coreIack)
-  mcf5407_reset(result, 0x800'u32, execBase)
-  mcf5407_set_irq(result, 3.cint, 0x45'u8, 0.cint)
+  result = cf_create(addr coreBoard, coreRead, coreWrite, coreIack)
+  cf_reset(result, 0x800'u32, execBase)
+  cf_set_irq(result, 3.cint, 0x45'u8, 0.cint)
 
 proc runInstructions(ctx: MCF5407Ctx; count: int) =
   for step in 0 ..< count:
-    discard mcf5407_exec(ctx, 1'u32)
+    discard cf_exec(ctx, 1'u32)
 
 let core = freshCore()
 runInstructions(core, runBeforeSave)
@@ -574,12 +574,12 @@ check(secondContinuation == firstContinuation,
       "core: the same instructions after the load reach the same state",
       secondContinuation, firstContinuation)
 
-mcf5407_destroy(core)
+cf_destroy(core)
 
 # ---------------------------------------------------------------------------
 # BLOCK 7. The published C entry points that carry no failure channel.
 #
-# `mcf5407_state_load` IS DECLARED `void` IN `include/mcf5407.h`, so a C caller
+# `cf_state_load` IS DECLARED `void` IN `include/mcf5407.h`, so a C caller
 # is told nothing about a refusal. The only channel left is the state of its
 # own core, so that is what is read here.
 
@@ -589,24 +589,24 @@ let cSnapshot = savedBlock(cCaller)
 let cSaved = renderContext(cCaller)
 
 runInstructions(cCaller, runAfterSave)
-mcf5407_state_load(cCaller, unsafeAddr cSnapshot[0])
+cf_state_load(cCaller, unsafeAddr cSnapshot[0])
 let cAfterLoad = renderContext(cCaller)
 
 check(cAfterLoad == cSaved,
-      "C ABI: mcf5407_state_load restores the state the block carries",
+      "C ABI: cf_state_load restores the state the block carries",
       cAfterLoad, cSaved)
 
 let cDamaged = perturbed(cSnapshot, 20)
 runInstructions(cCaller, runAfterSave)
 let cBeforeRefusal = renderContext(cCaller)
-mcf5407_state_load(cCaller, unsafeAddr cDamaged[0])
+cf_state_load(cCaller, unsafeAddr cDamaged[0])
 let cAfterRefusal = renderContext(cCaller)
 
 check(cAfterRefusal == cBeforeRefusal,
-      "C ABI: mcf5407_state_load leaves the core alone when it refuses",
+      "C ABI: cf_state_load leaves the core alone when it refuses",
       cAfterRefusal, cBeforeRefusal)
 
-mcf5407_destroy(cCaller)
+cf_destroy(cCaller)
 
 # ---------------------------------------------------------------------------
 # BLOCK 8. Every save in this file stayed inside the buffer it was given.
@@ -622,7 +622,7 @@ mcf5407_destroy(cCaller)
 # decides whether an overrun happens at all.
 
 check(everySaveStayedInBounds,
-      "bounds: every save wrote inside mcf5407_state_size and nowhere else",
+      "bounds: every save wrote inside cf_state_size and nowhere else",
       $everySaveStayedInBounds, "true")
 
 

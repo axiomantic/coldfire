@@ -23,11 +23,11 @@
 
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode
-import mcf5407/decode_types
-import mcf5407/ea
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode
+import coldfire/decode_types
+import coldfire/ea
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -89,8 +89,8 @@ proc bIack(user: pointer; level: cint; vector: uint8) {.cdecl.} =
 
 # ---------------------------------------------------------------------------
 # The runner. It is `t_logic`'s and `t_alu`'s: a pass here has to be a pass of
-# the shipped path - `mcf5407_reset`, `mcf5407_set_reg`, `mcf5407_exec`,
-# `mcf5407_get_reg` - and not of an internal helper reached around the back.
+# the shipped path - `cf_reset`, `cf_set_reg`, `cf_exec`,
+# `cf_get_reg` - and not of an internal helper reached around the back.
 
 const
   execBase = 0x100'u32     ## where the instruction words are placed
@@ -108,7 +108,7 @@ const
 
 type Outcome = object
   cycles: uint32
-    ## `mcf5407_exec(ctx, 1)`'s RETURN. It is the WHOLE RETIRED COST of the one
+    ## `cf_exec(ctx, 1)`'s RETURN. It is the WHOLE RETIRED COST of the one
     ## instruction the call ran - `cpu.nim`'s header block is the contract -
     ## and this suite reads only whether it is zero. The `cycles: 0` half of
     ## every trap tuple below asserts "it did not run" and asserts no count;
@@ -126,7 +126,7 @@ proc runIns(words: openArray[uint16];
             sr: uint32 = srBase;
             mem: seq[(uint32, uint32)] = @[]): Outcome =
   ## Place `words` at `execBase`, set the register file and the status
-  ## register, run one `mcf5407_exec`, and report the whole machine state.
+  ## register, run one `cf_exec`, and report the whole machine state.
   for i in 0 ..< memSize:
     board.bytes[i] = 0'u8
   for i in 0 ..< words.len:
@@ -135,26 +135,26 @@ proc runIns(words: openArray[uint16];
     boardWrite(board, address, 4, value)
 
   let sp = if a[7] == 0'u32: stackBase else: a[7]
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, sp, execBase)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, sp, execBase)
   for i in 0 .. 7:
-    discard mcf5407_set_reg(ctx, cint(i), d[i])
+    discard cf_set_reg(ctx, cint(i), d[i])
   for i in 0 .. 6:
-    discard mcf5407_set_reg(ctx, cint(8 + i), a[i])
-  # The status register is set last: `mcf5407_reset` writes it, so an earlier
+    discard cf_set_reg(ctx, cint(8 + i), a[i])
+  # The status register is set last: `cf_reset` writes it, so an earlier
   # write would be overwritten and every case that asserts an untouched
   # condition code would silently run with a clear one.
-  discard mcf5407_set_reg(ctx, 16, sr)
+  discard cf_set_reg(ctx, 16, sr)
 
-  result.cycles = mcf5407_exec(ctx, 1'u32)
+  result.cycles = cf_exec(ctx, 1'u32)
   result.fault = ctx.fault
   result.halted = ctx.halted
   for i in 0 .. 7:
-    result.d[i] = mcf5407_get_reg(ctx, cint(i))
-    result.a[i] = mcf5407_get_reg(ctx, cint(8 + i))
-  result.sr = mcf5407_get_reg(ctx, 16)
-  result.pc = mcf5407_get_reg(ctx, 17)
-  mcf5407_destroy(ctx)
+    result.d[i] = cf_get_reg(ctx, cint(i))
+    result.a[i] = cf_get_reg(ctx, cint(8 + i))
+  result.sr = cf_get_reg(ctx, 16)
+  result.pc = cf_get_reg(ctx, 17)
+  cf_destroy(ctx)
 
 proc mem32(address: uint32): uint32 =
   boardReadValue(board, address, 4)

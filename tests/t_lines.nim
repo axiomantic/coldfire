@@ -2,10 +2,10 @@
 ## core's refusal to execute either of them.
 
 import ./lines
-import mcf5407/cpu
-import mcf5407/decode
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -118,8 +118,8 @@ proc bIack(user: pointer; level: cint; vector: uint8) {.cdecl.} =
 
 # ---------------------------------------------------------------------------
 # The runner. It is `tests/t_control.nim`'s, for the reason that file gives: a
-# pass here has to be a pass of the shipped path - `mcf5407_reset`,
-# `mcf5407_set_reg`, `mcf5407_exec`, `mcf5407_get_reg` - and not of an internal
+# pass here has to be a pass of the shipped path - `cf_reset`,
+# `cf_set_reg`, `cf_exec`, `cf_get_reg` - and not of an internal
 # helper reached around the back.
 
 const
@@ -144,23 +144,23 @@ proc runWord(word: uint16): Outcome =
     board.bytes[i] = 0'u8
   boardWrite(board, execBase, 2, uint32(word))
 
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, stackBase, execBase)
-  discard mcf5407_set_reg(ctx, 0, seedD0)
-  discard mcf5407_set_reg(ctx, 8, seedA0)
-  # The status register is set last: `mcf5407_reset` writes it, so an earlier
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, stackBase, execBase)
+  discard cf_set_reg(ctx, 0, seedD0)
+  discard cf_set_reg(ctx, 8, seedA0)
+  # The status register is set last: `cf_reset` writes it, so an earlier
   # write would be overwritten.
-  discard mcf5407_set_reg(ctx, 16, srBase)
+  discard cf_set_reg(ctx, 16, srBase)
 
-  result.cycles = mcf5407_exec(ctx, 1'u32)
+  result.cycles = cf_exec(ctx, 1'u32)
   result.fault = ctx.fault
   result.halted = ctx.halted
-  result.d0 = mcf5407_get_reg(ctx, 0)
-  result.a0 = mcf5407_get_reg(ctx, 8)
-  result.a7 = mcf5407_get_reg(ctx, 15)
-  result.sr = mcf5407_get_reg(ctx, 16)
-  result.pc = mcf5407_get_reg(ctx, 17)
-  mcf5407_destroy(ctx)
+  result.d0 = cf_get_reg(ctx, 0)
+  result.a0 = cf_get_reg(ctx, 8)
+  result.a7 = cf_get_reg(ctx, 15)
+  result.sr = cf_get_reg(ctx, 16)
+  result.pc = cf_get_reg(ctx, 17)
+  cf_destroy(ctx)
 
 # The whole machine is compared and not the fault bit. A line-A word decoded
 # as some 68000 instruction would write a register, move the stack pointer or
@@ -181,13 +181,13 @@ let lineAOutcome = runWord(0xA001'u16)
 check((cycles: lineAOutcome.cycles, fault: lineAOutcome.fault,
        halted: lineAOutcome.halted, d0: lineAOutcome.d0, a0: lineAOutcome.a0,
        a7: lineAOutcome.a7, sr: lineAOutcome.sr, pc: lineAOutcome.pc),
-      wantTrap, "a line-A word traps through mcf5407_exec")
+      wantTrap, "a line-A word traps through cf_exec")
 
 let lineFOutcome = runWord(0xF468'u16)
 check((cycles: lineFOutcome.cycles, fault: lineFOutcome.fault,
        halted: lineFOutcome.halted, d0: lineFOutcome.d0, a0: lineFOutcome.a0,
        a7: lineFOutcome.a7, sr: lineFOutcome.sr, pc: lineFOutcome.pc),
-      wantTrap, "a line-F word traps through mcf5407_exec")
+      wantTrap, "a line-F word traps through cf_exec")
 
 
 if failures.len > 0:

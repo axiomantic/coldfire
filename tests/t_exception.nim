@@ -1,4 +1,4 @@
-## `t_exception` - the exception model of `mcf5407/exception`, and the frame
+## `t_exception` - the exception model of `coldfire/exception`, and the frame
 ## the shipped core actually writes.
 ##
 ## THE DOCUMENTS THIS FILE CITES ARE OUTSIDE THIS REPOSITORY and each is named
@@ -24,10 +24,10 @@
 
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/exception
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/exception
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -126,7 +126,7 @@ checkEq(uint32(frameVector(0x7C0C2000'u32)), 3'u32,
 # and 11-3. Both tables carry a VECTOR NUMBER column and a VECTOR OFFSET column,
 #
 # THE TWO MANUALS' TABLES ARE NOT IDENTICAL and this file takes only rows where
-# they agree. Their disagreement is recorded in `src/mcf5407/exception.nim`.
+# they agree. Their disagreement is recorded in `src/coldfire/exception.nim`.
 
 checkEq(uint32(vecAccessError), 2'u32, "vector number: access error is 2")
 checkEq(uint32(vecAddressError), 3'u32, "vector number: address error is 3")
@@ -266,8 +266,8 @@ proc mem32(address: uint32): uint32 =
 # ---------------------------------------------------------------------------
 # BLOCK 5. The frame the shipped core writes, and the A7 `RTE` restores.
 #
-# The path is the published one - `mcf5407_create`, `mcf5407_reset`,
-# `mcf5407_exec` - and not an internal helper reached around the back.
+# The path is the published one - `cf_create`, `cf_reset`,
+# `cf_exec` - and not an internal helper reached around the back.
 #
 # MCF5407 User's Manual section 2.8.1, Table 2-20, "Format Field Encoding",
 # folio 2-33, is what makes an A7 whose low two bits are 00, 01, 10 or 11 leave the
@@ -286,14 +286,14 @@ proc runTrapAndRte(startSp: uint32; startSr: uint32;
   boardWrite(board, execBase, 2, uint32(opTrap0))
   boardWrite(board, trapHandler, 2, uint32(opRteWord))
 
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, startSp, execBase)
-  discard mcf5407_set_reg(ctx, 16, startSr)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, startSp, execBase)
+  discard cf_set_reg(ctx, 16, startSr)
 
-  discard mcf5407_exec(ctx, 1'u32)
-  let taken = (sp: mcf5407_get_reg(ctx, 15),
-               pc: mcf5407_get_reg(ctx, 17),
-               sr: mcf5407_get_reg(ctx, 16),
+  discard cf_exec(ctx, 1'u32)
+  let taken = (sp: cf_get_reg(ctx, 15),
+               pc: cf_get_reg(ctx, 17),
+               sr: cf_get_reg(ctx, 16),
                frame: mem32(frameBase),
                framePc: mem32(frameBase + 4'u32),
                reads: vectorReads)
@@ -305,14 +305,14 @@ proc runTrapAndRte(startSp: uint32; startSr: uint32;
                    reads: @[0x080'u32])
   check(taken == wantTaken, label & ": the frame", $taken, $wantTaken)
 
-  discard mcf5407_exec(ctx, 1'u32)
-  let returned = (sp: mcf5407_get_reg(ctx, 15),
-                  pc: mcf5407_get_reg(ctx, 17),
-                  sr: mcf5407_get_reg(ctx, 16))
+  discard cf_exec(ctx, 1'u32)
+  let returned = (sp: cf_get_reg(ctx, 15),
+                  pc: cf_get_reg(ctx, 17),
+                  sr: cf_get_reg(ctx, 16))
   let wantReturned = (sp: startSp, pc: execBase + 2'u32, sr: startSr)
   check(returned == wantReturned, label & ": RTE restores A7",
         $returned, $wantReturned)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # The expected frames are hand-derived exactly as block 1's are. `FS` is 0000
 # for a TRAP - Table 2-21, folio 2-33, defines the field for access and address
@@ -349,8 +349,8 @@ type Taken = tuple[sp: uint32, pc: uint32, halted: bool, vec: uint8,
 
 proc runTakeException(vector: uint8; stackedPc: uint32): Taken =
   freshBoard()
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, 0x800'u32, execBase)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, 0x800'u32, execBase)
   takeException(ctx, vector, stackedPc)
   result = (sp: ctx.sp,
             pc: ctx.pc,
@@ -359,7 +359,7 @@ proc runTakeException(vector: uint8; stackedPc: uint32): Taken =
             frame: mem32(frameBase),
             framePc: mem32(frameBase + 4'u32),
             reads: vectorReads)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 let access = runTakeException(vecAccessError, 0x444'u32)
 check(access == (sp: frameBase, pc: accessHandler, halted: false,
@@ -401,18 +401,18 @@ proc runTakeExceptionWithVbr(vbr: uint32; vector: uint8;
                              stackedPc: uint32): TakenVbr =
   freshBoard(vbrTableBase)
   boardWrite(board, vectorAddress(vbrTableBase, vector), 4, vbrHandler)
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, 0x800'u32, execBase)
-  let setOk = mcf5407_set_reg(ctx, 18, vbr) != 0
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, 0x800'u32, execBase)
+  let setOk = cf_set_reg(ctx, 18, vbr) != 0
   takeException(ctx, vector, stackedPc)
   result = (setOk: setOk,
-            readBack: mcf5407_get_reg(ctx, 18),
+            readBack: cf_get_reg(ctx, 18),
             sp: ctx.sp,
             pc: ctx.pc,
             halted: ctx.halted,
             framePc: mem32(frameBase + 4'u32),
             reads: vectorReads)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 let vbrBased = runTakeExceptionWithVbr(vbrTableBase, vecAccessError, 0x444'u32)
 check(vbrBased == (setOk: true, readBack: vbrTableBase, sp: frameBase,

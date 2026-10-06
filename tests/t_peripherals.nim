@@ -14,14 +14,14 @@
 
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
-import mcf5407/sim
-import mcf5407/intc
-import mcf5407/timer
-import mcf5407/uart
-import mcf5407/mbus
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
+import coldfire/sim
+import coldfire/intc
+import coldfire/timer
+import coldfire/uart
+import coldfire/mbus
 
 var failures: seq[string]
 var passCount = 0
@@ -82,8 +82,8 @@ proc bIack(user: pointer; level: cint; vector: uint8) {.cdecl.} =
 proc freshContext(): MCF5407Ctx =
   for i in 0 ..< memSize:
     board.bytes[i] = 0'u8
-  result = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(result, 0x1000'u32, 0x400'u32)
+  result = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(result, 0x1000'u32, 0x400'u32)
 
 # ===========================================================================
 # Block 1: SIM registers, Chip Selects, DRAM, GPIO
@@ -158,7 +158,7 @@ block:
   let uipcrAfter = readMem(ctx, 0x1000_01D0'u32, 1)
   check(uipcrAfter == 0x0E'u32, "SIM: UIPCR strap is read-only")
 
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ===========================================================================
 # Block 2: 2-Tier Interrupt Controller (INTC)
@@ -223,7 +223,7 @@ block:
 
   setInternalPending(intc, 2, false)
   setInternalPending(intc, 3, false)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ===========================================================================
 # Block 3: Timers 0 & 1
@@ -262,7 +262,7 @@ block:
   check((terCleared and 0x02'u32) == 0'u32, "Timer0: TER bit 1 cleared by writing 1")
   check(ctx.irqLevel == 0, "Timer0: Interrupt deasserts after clearing TER")
 
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ===========================================================================
 # Block 4: DUART Channel A (UART0)
@@ -322,7 +322,7 @@ block:
   check(transmittedByte == 0x90'u8, "UART0: Transmitted byte reached callback",
         $transmittedByte, "0x90")
 
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ===========================================================================
 # Block 5: I2C / M-Bus Controller
@@ -391,7 +391,7 @@ block:
   writeMem(ctx, 0x1000_0288'u32, 1, 0xC0'u32)
   check(mock.stopped == true, "M-Bus: STOP condition reached slave")
 
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ===========================================================================
 # Block 6: Access Size Enforcement & Unmapped Space
@@ -441,7 +441,7 @@ block:
   check(st == Mcf5407BusStatus.busUnmapped,
         "MBAR: Write at offset 0x400 rejected with busUnmapped")
 
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ---------------------------------------------------------------------------
 # Results summary

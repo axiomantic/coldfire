@@ -39,7 +39,7 @@
 #include <string>
 #include <vector>
 
-#include "mcf5407.h"
+#include "coldfire.h"
 
 namespace {
 
@@ -501,13 +501,13 @@ struct MemBoard {
 };
 
 extern "C" uint32_t boardRead(void* user, uint32_t addr, int size,
-                              mcf5407_bus_status* status) {
-  *status = MCF5407_BUS_OK;
+                              cf_bus_status* status) {
+  *status = CF_BUS_OK;
   return static_cast<MemBoard*>(user)->read(addr, size);
 }
 extern "C" void boardWrite(void* user, uint32_t addr, int size, uint32_t value,
-                           mcf5407_bus_status* status) {
-  *status = MCF5407_BUS_OK;
+                           cf_bus_status* status) {
+  *status = CF_BUS_OK;
   static_cast<MemBoard*>(user)->write(addr, size, value);
 }
 extern "C" void boardIack(void* user, int level, uint8_t vector) {
@@ -519,7 +519,7 @@ extern "C" void boardIack(void* user, int level, uint8_t vector) {
 //
 // This is the runner's single integration point for setting the `initial`
 // registers and reading the `expected` registers, through
-// `mcf5407_set_reg`/`mcf5407_get_reg`.
+// `cf_set_reg`/`cf_get_reg`.
 //
 // `sr` is index 16 and it goes through this bridge in both directions. That
 // is the whole mechanism by which a case asserts a condition code: a case
@@ -531,8 +531,8 @@ extern "C" void boardIack(void* user, int level, uint8_t vector) {
 // condition codes. `conformance/generate.py` documents which cases do so and
 // why the incoming word is deliberately dirty.
 //
-// `pc` (index 17) is read-only through this bridge: `mcf5407_set_reg` refuses
-// it and `runCase` routes an initial `pc` through `mcf5407_reset` instead.
+// `pc` (index 17) is read-only through this bridge: `cf_set_reg` refuses
+// it and `runCase` routes an initial `pc` through `cf_reset` instead.
 
 std::string registerBridgeError = "no register bridge";
 
@@ -548,31 +548,31 @@ int registerIndex(const std::string& name) {
   return -1;
 }
 
-bool coreWriteReg(mcf5407_ctx* ctx, const std::string& name, uint32_t value) {
+bool coreWriteReg(cf_ctx* ctx, const std::string& name, uint32_t value) {
   const int idx = registerIndex(name);
   if (idx < 0) {
     registerBridgeError = "no register named '" + name + "'";
     return false;
   }
-  if (idx > 16) {  // pc is set through mcf5407_reset, not through the bridge
+  if (idx > 16) {  // pc is set through cf_reset, not through the bridge
     registerBridgeError = "cannot set '" + name + "' through the bridge";
     return false;
   }
-  if (mcf5407_set_reg(ctx, idx, value) == 0) {
+  if (cf_set_reg(ctx, idx, value) == 0) {
     registerBridgeError =
-        "mcf5407_set_reg refused index " + std::to_string(idx);
+        "cf_set_reg refused index " + std::to_string(idx);
     return false;
   }
   return true;
 }
 
-bool coreReadReg(mcf5407_ctx* ctx, const std::string& name, uint32_t& out) {
+bool coreReadReg(cf_ctx* ctx, const std::string& name, uint32_t& out) {
   const int idx = registerIndex(name);
   if (idx < 0) {
     registerBridgeError = "no register named '" + name + "'";
     return false;
   }
-  out = mcf5407_get_reg(ctx, idx);
+  out = cf_get_reg(ctx, idx);
   return true;
 }
 
@@ -645,8 +645,15 @@ CaseRun runCase(const Case& cs) {
     board.write(pc + 2u * static_cast<uint32_t>(i), 2, w);
   }
 
-  mcf5407_ctx* ctx = mcf5407_create(&board, boardRead, boardWrite, boardIack);
-  mcf5407_reset(ctx, sp, pc);
+  cf_config cfg{};
+  cfg.isa = CF_ISA_A;
+  cfg.vbr_mask = 0xFFFFFFFFu;
+  cfg.user = &board;
+  cfg.rd = boardRead;
+  cfg.wr = boardWrite;
+  cfg.iack = boardIack;
+  cf_ctx* ctx = cf_create(&cfg);
+  cf_reset(ctx, sp, pc);
 
   // Set the non-pc/sp initial registers through the bridge.
   for (const auto& r : cs.initialRegs) {
@@ -657,13 +664,13 @@ CaseRun runCase(const Case& cs) {
       out.reason =
           "cannot set initial register '" + r.first + "': " +
           std::string(registerBridgeError);
-      mcf5407_destroy(ctx);
+      cf_destroy(ctx);
       return out;
     }
   }
 
   // One instruction. See the note on `kBudget` above.
-  const uint32_t cycles = mcf5407_exec(ctx, kBudget);
+  const uint32_t cycles = cf_exec(ctx, kBudget);
 
   // ---------------------------------------------------------------------
   // The run state, asserted before any value is compared.
@@ -676,7 +683,7 @@ CaseRun runCase(const Case& cs) {
   // `fault`, and `d0` and `d1` are untouched.
   //
   // This runner goes through the C ABI, so it reads the two bits through
-  // `mcf5407_halted` and `mcf5407_faulted` (`include/mcf5407.h`).
+  // `cf_halted` and `cf_faulted` (`include/coldfire.h`).
   //
   // The checks are ordered from the most specific reason to the least, so
   // the message names why the case is wrong rather than a register value
@@ -693,33 +700,33 @@ CaseRun runCase(const Case& cs) {
   // it only when `expected.regs` is empty would let naming any register
   // silently remove the runner's only "it ran" assertion. All three checks
   // below run for every case.
-  if (mcf5407_faulted(ctx) != 0) {
+  if (cf_faulted(ctx) != 0) {
     out.ran = true;
     out.ok = false;
     out.reason =
         "the instruction TRAPPED: the core halted with a fault "
-        "(mcf5407_faulted is 1). A bus error, an illegal instruction word, "
+        "(cf_faulted is 1). A bus error, an illegal instruction word, "
         "an illegal effective address, an illegal size or a divide by zero. "
         "The registers this case names may still match, and that is exactly "
         "why this is checked before them.";
-    mcf5407_destroy(ctx);
+    cf_destroy(ctx);
     return out;
   }
-  if (mcf5407_halted(ctx) != 0) {
+  if (cf_halted(ctx) != 0) {
     out.ran = true;
     out.ok = false;
     out.reason =
-        "the core HALTED without a fault (mcf5407_halted is 1, "
-        "mcf5407_faulted is 0). The encoding is valid and its semantics are "
+        "the core HALTED without a fault (cf_halted is 1, "
+        "cf_faulted is 0). The encoding is valid and its semantics are "
         "not written yet.";
-    mcf5407_destroy(ctx);
+    cf_destroy(ctx);
     return out;
   }
   if (cycles == 0) {
     out.ran = true;
     out.ok = false;
     out.reason = "the instruction did not execute (0 cycles returned)";
-    mcf5407_destroy(ctx);
+    cf_destroy(ctx);
     return out;
   }
 
@@ -734,7 +741,7 @@ CaseRun runCase(const Case& cs) {
       out.reason =
           "cannot read expected register '" + r.first + "': " +
           std::string(registerBridgeError);
-      mcf5407_destroy(ctx);
+      cf_destroy(ctx);
       return out;
     }
     if (actual != r.second) {
@@ -743,7 +750,7 @@ CaseRun runCase(const Case& cs) {
       out.mismatchReg = r.first;
       out.expectedValue = r.second;
       out.actualValue = actual;
-      mcf5407_destroy(ctx);
+      cf_destroy(ctx);
       return out;
     }
   }
@@ -760,14 +767,14 @@ CaseRun runCase(const Case& cs) {
           "mem[" + std::to_string(w.addr) + ":" + std::to_string(w.size) + "]";
       out.expectedValue = w.value;
       out.actualValue = actual;
-      mcf5407_destroy(ctx);
+      cf_destroy(ctx);
       return out;
     }
   }
 
   out.ran = true;
   out.ok = true;
-  mcf5407_destroy(ctx);
+  cf_destroy(ctx);
   return out;
 }
 
@@ -787,11 +794,11 @@ int main(int argc, char** argv) {
   // context. It is idempotent and called here rather than per case.
   //
   // The status is read and the run stops on a 0. Every case below calls
-  // `mcf5407_create`, which returns null behind a runtime that did not come
+  // `cf_create`, which returns null behind a runtime that did not come
   // up, and a corpus that reported thousands of cases as "no context" would
   // bury the one fact that matters.
-  if (mcf5407_runtime_init() != 1) {
-    std::cerr << "runner: mcf5407_runtime_init reported that the runtime is "
+  if (cf_runtime_init() != 1) {
+    std::cerr << "runner: cf_runtime_init reported that the runtime is "
                  "not initialised\n";
     return 2;
   }

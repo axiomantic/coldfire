@@ -60,11 +60,11 @@
 ## pair, so each Z assertion separates the two bases. The exact addresses are
 ## on `pcWindow` itself.
 
-import mcf5407/cpu
-import mcf5407/decode
-import mcf5407/decode_types
-import mcf5407/ea
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode
+import coldfire/decode_types
+import coldfire/ea
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -126,8 +126,8 @@ proc bIack(user: pointer; level: cint; vector: uint8) {.cdecl.} =
 
 # ---------------------------------------------------------------------------
 # The runner. It is `t_alu`'s, for the reason that file gives: a pass here has
-# to be a pass of the shipped path - `mcf5407_reset`, `mcf5407_set_reg`,
-# `mcf5407_exec`, `mcf5407_get_reg` - and not of an internal helper reached
+# to be a pass of the shipped path - `cf_reset`, `cf_set_reg`,
+# `cf_exec`, `cf_get_reg` - and not of an internal helper reached
 # around the back.
 
 const
@@ -138,7 +138,7 @@ const
 
 type Outcome = object
   ran: bool
-    ## Did the instruction run? It is `mcf5407_exec(ctx, 1) > 0`, and it is a
+    ## Did the instruction run? It is `cf_exec(ctx, 1) > 0`, and it is a
     ## boolean because that is all the call can tell this suite. The return is
     ## the whole retired cost of the instruction - `cpu.nim`'s header block is
     ## the contract - and that cost differs per encoding, so an expectation
@@ -162,7 +162,7 @@ proc runIns(words: openArray[uint16];
             sr: uint32 = srBase;
             mem: seq[(uint32, uint32)] = @[]): Outcome =
   ## Place `words` at `execBase`, set the register file and the status
-  ## register, run one `mcf5407_exec`, and report the whole machine state.
+  ## register, run one `cf_exec`, and report the whole machine state.
   for i in 0 ..< memSize:
     board.bytes[i] = 0'u8
   for i in 0 ..< words.len:
@@ -171,29 +171,29 @@ proc runIns(words: openArray[uint16];
     boardWrite(board, address, 4, value)
 
   let sp = if a[7] == 0'u32: stackBase else: a[7]
-  let ctx = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(ctx, sp, execBase)
+  let ctx = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(ctx, sp, execBase)
   for i in 0 .. 7:
-    discard mcf5407_set_reg(ctx, cint(i), d[i])
+    discard cf_set_reg(ctx, cint(i), d[i])
   for i in 0 .. 6:
-    discard mcf5407_set_reg(ctx, cint(8 + i), a[i])
-  # The status register is set last: `mcf5407_reset` writes it, so an earlier
+    discard cf_set_reg(ctx, cint(8 + i), a[i])
+  # The status register is set last: `cf_reset` writes it, so an earlier
   # write would be overwritten and every case that asserts an untouched
   # condition code would silently run with a clear one.
-  discard mcf5407_set_reg(ctx, 16, sr)
+  discard cf_set_reg(ctx, 16, sr)
 
   # One instruction, and the budget is what stops the loop after it, exactly as
   # in `t_alu`: the memory after the encoding is zero and `0x0000` is not an
   # instruction this part has. The return is 1 for an instruction that ran and
   # 0 for one that trapped.
-  result.ran = mcf5407_exec(ctx, 1'u32) > 0'u32
+  result.ran = cf_exec(ctx, 1'u32) > 0'u32
   result.fault = ctx.fault
   result.halted = ctx.halted
   for i in 0 .. 7:
-    result.d[i] = mcf5407_get_reg(ctx, cint(i))
-    result.a[i] = mcf5407_get_reg(ctx, cint(8 + i))
-  result.sr = mcf5407_get_reg(ctx, 16)
-  mcf5407_destroy(ctx)
+    result.d[i] = cf_get_reg(ctx, cint(i))
+    result.a[i] = cf_get_reg(ctx, cint(8 + i))
+  result.sr = cf_get_reg(ctx, 16)
+  cf_destroy(ctx)
 
 proc mem32(address: uint32): uint32 =
   boardReadValue(board, address, 4)
@@ -264,8 +264,8 @@ proc freshCtx(): MCF5407Ctx =
   ## `runIns` and the shipped path instead.
   for i in 0 ..< memSize:
     board.bytes[i] = 0'u8
-  result = mcf5407_create(addr board, bRead, bWrite, bIack)
-  mcf5407_reset(result, stackBase, execBase)
+  result = cf_create(addr board, bRead, bWrite, bIack)
+  cf_reset(result, stackBase, execBase)
 
 proc expectUnresolvable(sub: EA7; label: string) =
   ## `eaResolve` must refuse this mode-7 sub-variant: no usable reference, and
@@ -275,7 +275,7 @@ proc expectUnresolvable(sub: EA7; label: string) =
   let got = (kind: r.kind, fault: ctx.fault, halted: ctx.halted)
   let wanted = (kind: erNone, fault: true, halted: true)
   check(got == wanted, label, $got, $wanted)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 proc expectDecode(word: uint16; want: Operation; label: string) =
   let got = decodeWord(word).op

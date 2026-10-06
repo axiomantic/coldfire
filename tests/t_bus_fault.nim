@@ -1,4 +1,4 @@
-## `t_bus_fault` - the bus-fault channel of `mcf5407/bus`.
+## `t_bus_fault` - the bus-fault channel of `coldfire/bus`.
 ##
 ## The documents this file cites are outside this repository and are named in
 ## full, so that a citation can be checked without knowing this project.
@@ -25,10 +25,10 @@
 
 import std/strutils
 
-import mcf5407/bus
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/bus
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -202,8 +202,8 @@ proc freshBoard() =
 # rather than against the other run: two runs compared only with each other
 # would agree just as well if the core had stopped executing altogether.
 #
-# The path is the published one - `mcf5407_create`, `mcf5407_reset`,
-# `mcf5407_exec` - and not an internal helper reached around the back. `trap #0`
+# The path is the published one - `cf_create`, `cf_reset`,
+# `cf_exec` - and not an internal helper reached around the back. `trap #0`
 # then `rte` is chosen because exception entry reads the vector table, writes
 # both longwords of the frame and fetches, so one program exercises the read,
 # the write and the fetch call sites together.
@@ -225,17 +225,17 @@ proc runTrap(rd: Mcf5407ReadFn; wr: Mcf5407WriteFn): Outcome =
   boardWrite(board, trapHandler, 2, uint32(opRteWord))
   boardWrite(board, 4'u32 * uint32(trapVector), 4, trapHandler)
 
-  let ctx = mcf5407_create(addr board, rd, wr, bIack)
-  mcf5407_reset(ctx, 0x800'u32, execBase)
-  discard mcf5407_exec(ctx, 1'u32)
-  result = (sp: mcf5407_get_reg(ctx, 15),
-            pc: mcf5407_get_reg(ctx, 17),
-            sr: mcf5407_get_reg(ctx, 16),
+  let ctx = cf_create(addr board, rd, wr, bIack)
+  cf_reset(ctx, 0x800'u32, execBase)
+  discard cf_exec(ctx, 1'u32)
+  result = (sp: cf_get_reg(ctx, 15),
+            pc: cf_get_reg(ctx, 17),
+            sr: cf_get_reg(ctx, 16),
             halted: ctx.halted,
             fault: ctx.fault,
             frame: boardReadValue(board, frameBase, 4),
             framePc: boardReadValue(board, frameBase + 4'u32, 4))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # THE EXPECTED OUTCOME IS HAND-DERIVED. A7 is 0x800 with its low two bits 00,
 # so Table 2-20, folio 2-33, gives FORMAT 4 and a frame at 0x800 - 8. `trap #0`
@@ -286,8 +286,8 @@ const sweep: array[7, Access] = [
   (address: 0xFFF'u32, size: 1'u8, want: 0x78'u32)]
 
 freshBoard()
-let sweepCtx = mcf5407_create(addr board, silentRead, silentWrite, bIack)
-mcf5407_reset(sweepCtx, 0x800'u32, execBase)
+let sweepCtx = cf_create(addr board, silentRead, silentWrite, bIack)
+cf_reset(sweepCtx, 0x800'u32, execBase)
 for access in sweep:
   writeMem(sweepCtx, access.address, access.size, 0x12345678'u32)
   let seen = (value: readMem(sweepCtx, access.address, access.size),
@@ -298,7 +298,7 @@ for access in sweep:
         "no core-originated status: " & $access.size & " bytes at 0x" &
           toHex(access.address),
         $seen, $wantSeen)
-mcf5407_destroy(sweepCtx)
+cf_destroy(sweepCtx)
 
 # ---------------------------------------------------------------------------
 # BLOCK 5. A non-OK bus status becomes an access fault, and the frame carries a
@@ -370,18 +370,18 @@ proc runProtectedStore(startSp: uint32; readFrameAt: uint32): FaultOutcome =
   boardWrite(board, accessHandler, 2, uint32(opRteWord))
   boardWrite(board, 4'u32 * uint32(vecAccess), 4, accessHandler)
 
-  let ctx = mcf5407_create(addr board, protectedRead, protectedWrite, bIack)
-  mcf5407_reset(ctx, startSp, execBase)
-  discard mcf5407_exec(ctx, 1'u32)
-  result = (sp: mcf5407_get_reg(ctx, 15),
-            pc: mcf5407_get_reg(ctx, 17),
-            sr: mcf5407_get_reg(ctx, 16),
+  let ctx = cf_create(addr board, protectedRead, protectedWrite, bIack)
+  cf_reset(ctx, startSp, execBase)
+  discard cf_exec(ctx, 1'u32)
+  result = (sp: cf_get_reg(ctx, 15),
+            pc: cf_get_reg(ctx, 17),
+            sr: cf_get_reg(ctx, 16),
             halted: ctx.halted,
             fault: ctx.fault,
             frame: boardReadValue(board, readFrameAt, 4),
             framePc: boardReadValue(board, readFrameAt + 4'u32, 4),
             offBoard: offBoardWrites)
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # The expected frame is hand-derived from the bit positions and not from a
 # second call of the encoder. A7 is 0x800 with its low two bits 00, so Table
@@ -425,7 +425,7 @@ check(protectedStore == wantProtected,
 # does not recurse.
 #
 # A fault inside the exception-entry stacking itself is a double fault: the
-# core halts, sets its own fault field, and returns from `mcf5407_exec` with the
+# core halts, sets its own fault field, and returns from `cf_exec` with the
 # cycles it spent. It does not recurse.
 #
 # A7 is 0x1008, so the frame base is 0x1000 and is off the board. The same
@@ -473,8 +473,8 @@ check(doubleFault == wantDoubleFault,
 # sentinel, and the frame itself was correct - `0x4C082700`, `FS` `1100`.
 #
 # THE FIX IS NOT WRITABLE FROM THE FILES THIS SUITE COVERS. It needs a
-# pending-fault field on `MCF5407Ctx` in `src/mcf5407/decode_types.nim`, or a
-# check after the executor returns in `src/mcf5407/cpu.nim`'s `step`.
+# pending-fault field on `MCF5407Ctx` in `src/coldfire/decode_types.nim`, or a
+# check after the executor returns in `src/coldfire/cpu.nim`'s `step`.
 #
 # SO THIS CASE ASSERTS WHAT THE CORE DOES AND SAYS WHY IT IS NOT WHAT THE CORE
 # SHOULD DO. It goes RED the moment the read path is wired, which is the point:
@@ -500,17 +500,17 @@ proc runFaultingRead(): ReadOutcome =
   boardWrite(board, accessHandler, 2, uint32(opRteWord))
   boardWrite(board, 4'u32 * uint32(vecAccess), 4, accessHandler)
 
-  let ctx = mcf5407_create(addr board, protectedRead, protectedWrite, bIack)
-  mcf5407_reset(ctx, 0x800'u32, execBase)
-  discard mcf5407_set_reg(ctx, 1, sentinelD1)
-  discard mcf5407_exec(ctx, 1'u32)
-  result = (d1: mcf5407_get_reg(ctx, 1),
-            pc: mcf5407_get_reg(ctx, 17),
+  let ctx = cf_create(addr board, protectedRead, protectedWrite, bIack)
+  cf_reset(ctx, 0x800'u32, execBase)
+  discard cf_set_reg(ctx, 1, sentinelD1)
+  discard cf_exec(ctx, 1'u32)
+  result = (d1: cf_get_reg(ctx, 1),
+            pc: cf_get_reg(ctx, 17),
             halted: ctx.halted,
             fault: ctx.fault,
             frame: boardReadValue(board, frameBase, 4),
             framePc: boardReadValue(board, frameBase + 4'u32, 4))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # NOTHING IS STACKED, so both frame longwords read back as the zeroed board.
 # The program counter stays where the opcode word and the one `(xxx).W`
@@ -606,18 +606,18 @@ proc runFaultingPush(words: openArray[uint16]; frameAt: uint32): PushOutcome =
   boardWrite(board, accessHandler, 2, uint32(opRteWord))
   boardWrite(board, 4'u32 * uint32(vecAccess), 4, accessHandler)
 
-  let ctx = mcf5407_create(addr board, protectedRead, protectedWrite, bIack)
-  mcf5407_reset(ctx, linkSp, execBase)
-  discard mcf5407_set_reg(ctx, 8, a0Sentinel)
-  discard mcf5407_exec(ctx, 1'u32)
-  result = (pc: mcf5407_get_reg(ctx, 17),
-            sp: mcf5407_get_reg(ctx, 15),
-            a0: mcf5407_get_reg(ctx, 8),
+  let ctx = cf_create(addr board, protectedRead, protectedWrite, bIack)
+  cf_reset(ctx, linkSp, execBase)
+  discard cf_set_reg(ctx, 8, a0Sentinel)
+  discard cf_exec(ctx, 1'u32)
+  result = (pc: cf_get_reg(ctx, 17),
+            sp: cf_get_reg(ctx, 15),
+            a0: cf_get_reg(ctx, 8),
             halted: ctx.halted,
             fault: ctx.fault,
             frame: boardReadValue(board, frameAt, 4),
             framePc: boardReadValue(board, frameAt + 4'u32, 4))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # JSR. Table 2-8, "User-Level Instruction Set Summary", folio 2-20, gives it
 # "SP - 4 -> SP; next sequential PC -> (SP); <ea> -> PC". A7 goes 0x0C04 to

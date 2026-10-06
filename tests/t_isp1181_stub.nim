@@ -1485,7 +1485,7 @@ check(reportTruncation == wantReportTruncation,
 # asked for.
 #
 # The two drives below are the same drive. The only difference between them is
-# whether `MCF5407_ISP1181_REPORT` is set, and every observable of the handle
+# whether `ISP1181_REPORT` is set, and every observable of the handle
 # is captured and compared across the pair, so the unset case is measured and
 # not assumed.
 

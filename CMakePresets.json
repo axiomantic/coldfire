@@ -29,7 +29,7 @@
       "description": "KEEP-GOING IS DELIBERATE AND IT IS NOT A WAY OF IGNORING A BROKEN BUILD - the build still exits non-zero, and a target that did not build leaves its registered test Not Run, which ctest counts as failed. What `-k` buys is which tests those are: without it the targets after the first failure are never attempted, so one broken target reds every suite behind it and the report stops naming the fault. `-k` is the Makefile spelling and the configure preset pins that generator; Ninja's spelling is `-k 0`.",
       "configurePreset": "t0",
       "targets": [
-        "mcf5407_tests"
+        "coldfire_tests"
       ],
       "nativeToolOptions": [
         "-k"

@@ -30,9 +30,9 @@
 
 import std/strutils
 
-import mcf5407/cpu
-import mcf5407/decode_types
-import mcf5407/machine
+import coldfire/cpu
+import coldfire/decode_types
+import coldfire/machine
 
 var failures: seq[string]
 
@@ -149,23 +149,23 @@ proc runWrite(opcode: uint16; at: uint32; a0Init: uint32;
   boardWrite(board, accessHandler, 2, uint32(opRteWord))
   boardWrite(board, 4'u32 * uint32(vecAccess), 4, accessHandler)
 
-  let ctx = mcf5407_create(addr board, protectedRead, protectedWrite, bIack)
-  mcf5407_reset(ctx, startSp, at)
-  discard mcf5407_set_reg(ctx, 0, sourceD0)
-  discard mcf5407_set_reg(ctx, 8, a0Init)
-  discard mcf5407_exec(ctx, 1'u32)
-  result = (outcome: (sp: mcf5407_get_reg(ctx, 15),
-                      pc: mcf5407_get_reg(ctx, 17),
-                      sr: mcf5407_get_reg(ctx, 16),
+  let ctx = cf_create(addr board, protectedRead, protectedWrite, bIack)
+  cf_reset(ctx, startSp, at)
+  discard cf_set_reg(ctx, 0, sourceD0)
+  discard cf_set_reg(ctx, 8, a0Init)
+  discard cf_exec(ctx, 1'u32)
+  result = (outcome: (sp: cf_get_reg(ctx, 15),
+                      pc: cf_get_reg(ctx, 17),
+                      sr: cf_get_reg(ctx, 16),
                       halted: ctx.halted,
                       fault: ctx.fault,
                       frame: boardReadValue(board, frameBase, 4),
-                      a0: mcf5407_get_reg(ctx, 8),
-                      d0: mcf5407_get_reg(ctx, 0),
+                      a0: cf_get_reg(ctx, 8),
+                      d0: cf_get_reg(ctx, 0),
                       stored: boardReadValue(board, target, 4),
                       offBoard: offBoardWrites),
             stackedPc: boardReadValue(board, frameBase + 4'u32, 4))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
 
 # ---------------------------------------------------------------------------
 # Block 1. The fault is taken and the write instruction's register write-back
@@ -294,7 +294,7 @@ check(accepted.outcome == wantAccepted,
 # decode it, so CLR is the whole of the reachable half.
 #
 # WHAT VALUE THE REGISTER TAKES IS NOT IN THE MANUAL. It is this core's choice,
-# argued for at `execClr` in `src/mcf5407/alu.nim` and settled by nothing in
+# argued for at `execClr` in `src/coldfire/alu.nim` and settled by nothing in
 # this repository: the value is CLR's ordinary result, N, V and C clear and Z
 # set. THE LITERALS BELOW PIN THAT CHOICE AND CITE THE MANUAL ONLY FOR THE FACT
 # THAT SOME UPDATE HAPPENS. A run on silicon replaces them.
@@ -390,16 +390,16 @@ block:
   boardWrite(board, 4'u32 * uint32(vecAddress), 4, addressHandler)
   boardWrite(board, 4'u32 * uint32(vecAccess), 4, accessHandler)
 
-  let ctx = mcf5407_create(addr board, protectedRead, protectedWrite, bIack)
-  mcf5407_reset(ctx, doubleSp, execBase)
-  discard mcf5407_exec(ctx, 1'u32)
-  let got = (sp: mcf5407_get_reg(ctx, 15),
-             pc: mcf5407_get_reg(ctx, 17),
+  let ctx = cf_create(addr board, protectedRead, protectedWrite, bIack)
+  cf_reset(ctx, doubleSp, execBase)
+  discard cf_exec(ctx, 1'u32)
+  let got = (sp: cf_get_reg(ctx, 15),
+             pc: cf_get_reg(ctx, 17),
              halted: ctx.halted,
              fault: ctx.fault,
              frame: boardReadValue(board, doubleFrame, 4),
              below: boardReadValue(board, doubleFrame - 8'u32, 4))
-  mcf5407_destroy(ctx)
+  cf_destroy(ctx)
   let wanted = (sp: doubleFrame, pc: addressHandler, halted: true,
                 fault: true, frame: 0x440C2700'u32, below: 0'u32)
   check(got == wanted,

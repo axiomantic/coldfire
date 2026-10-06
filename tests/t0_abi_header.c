@@ -33,13 +33,10 @@
 
 #include "coldfire.h"
 #include "isp1181.h"
-#include "mcf5407.h"
 
 /* The opaque context types. */
 _Static_assert(sizeof(cf_ctx*) == sizeof(void*),
                "cf_ctx must be declared as an opaque context type");
-_Static_assert(sizeof(mcf5407_ctx*) == sizeof(void*),
-               "mcf5407_ctx must be declared as an opaque context type");
 _Static_assert(sizeof(isp1181_ctx*) == sizeof(void*),
                "isp1181_ctx must be declared as an opaque context type");
 
