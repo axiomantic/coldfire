@@ -301,7 +301,8 @@ block:
   writeMem(ctx, 0x1000_01F0'u32, 1, 0x42'u32)
 
   # Receive byte 0xAA into UART0
-  uartReceive(sim, 0, 0xAA'u8)
+  let rxRes = uartReceive(sim, 0, 0xAA'u8)
+  check(rxRes == 0, "UART0: receive byte succeeds")
   let usr1 = readMem(ctx, 0x1000_01C4'u32, 1)
   check((usr1 and 0x01'u32) != 0'u32, "UART0: USR RxRdy set after byte received")
   check(ctx.irqLevel == 5 and ctx.irqVector == 0x42'u8,
@@ -314,11 +315,14 @@ block:
 
   # Test Tx callback
   var transmittedByte: uint8 = 0
-  proc testMidiOut(user: pointer; byte: uint8) {.cdecl.} =
+  var transmittedChannel: cint = -1
+  proc testMidiOut(user: pointer; channel: cint; byte: uint8) {.cdecl.} =
+    transmittedChannel = channel
     transmittedByte = byte
 
   setMidiOut(sim, testMidiOut, nil)
   writeMem(ctx, 0x1000_01CC'u32, 1, 0x90'u32) # Write UTB
+  check(transmittedChannel == 0, "UART0: Transmitted channel is 0")
   check(transmittedByte == 0x90'u8, "UART0: Transmitted byte reached callback",
         $transmittedByte, "0x90")
 

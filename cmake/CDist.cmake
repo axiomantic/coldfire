@@ -91,4 +91,16 @@ set(MCF5407_ABI_VISIBLE
 	cf_set_irq
 	cf_state_size
 	cf_state_save
-	cf_state_load)
+	cf_state_load
+	cf_uart_rx_byte
+	cf_uart_set_tx_handler
+	cf_uart_get_usr
+	cf_timer_tick
+	cf_set_irq_pin
+	cf_intc_get_presented_level
+	cf_intc_get_presented_vector
+	cf_intc_get_presented_autovector
+	cf_mbar_read
+	cf_mbar_write
+	cf_sim_set_port_a_hook
+	cf_sim_set_engine_strap)

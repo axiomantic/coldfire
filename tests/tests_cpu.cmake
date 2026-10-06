@@ -3123,6 +3123,19 @@ add_dependencies(coldfire_tests abi_smoke)
 # and the narrow run would still report every test passed.
 add_test(NAME t0_abi_smoke COMMAND abi_smoke)
 
+add_executable(t_peripheral_c_abi ${CMAKE_CURRENT_LIST_DIR}/t_peripheral_c_abi.cpp)
+target_include_directories(t_peripheral_c_abi PRIVATE
+    "${PROJECT_SOURCE_DIR}/include"
+)
+target_link_libraries(t_peripheral_c_abi PRIVATE coldfire)
+target_compile_features(t_peripheral_c_abi PRIVATE cxx_std_17)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    target_compile_options(t_peripheral_c_abi PRIVATE -Wall -Wextra -pedantic -Werror
+        ${COLDFIRE_TEST_WARNING_RELAXATIONS})
+endif()
+add_dependencies(coldfire_tests t_peripheral_c_abi)
+add_test(NAME t0_peripheral_c_abi COMMAND t_peripheral_c_abi)
+
 # ---------------------------------------------------------------------------
 # Put every test this list registered behind the build gate.
 #

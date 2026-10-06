@@ -20,7 +20,22 @@
 #undef unix
 typedef struct tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ;
 typedef struct tyObject_CfConfig__H6u3pHuGsPH4Ay0lZIilPw tyObject_CfConfig__H6u3pHuGsPH4Ay0lZIilPw;
+typedef N_CDECL_PTR(void, tyProc__f9aaH9agUw9cXBXOefXPK4BRg) (void* user_p0, int channel_p1, NU8 byte_p2);
+typedef NI32 tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow;
+typedef N_CDECL_PTR(NU16, tyProc__B5Rnr1Ri2FHcWIyBRZGBAA) (void* user_p0);
 N_LIB_PRIVATE N_NOCONV(void, signalHandler)(int sign_p0);
+N_LIB_IMPORT N_CDECL(int, cf_uart_rx_byte)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int channel_p1, NU8 byte_p2);
+N_LIB_IMPORT N_CDECL(int, cf_uart_set_tx_handler)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int channel_p1, tyProc__f9aaH9agUw9cXBXOefXPK4BRg fn_p2, void* user_p3);
+N_LIB_IMPORT N_CDECL(NU8, cf_uart_get_usr)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int channel_p1);
+N_LIB_IMPORT N_CDECL(void, cf_timer_tick)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 cycles_p1);
+N_LIB_IMPORT N_CDECL(void, cf_set_irq_pin)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int pin_p1, int asserted_p2);
+N_LIB_IMPORT N_CDECL(int, cf_intc_get_presented_level)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);
+N_LIB_IMPORT N_CDECL(NU8, cf_intc_get_presented_vector)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);
+N_LIB_IMPORT N_CDECL(int, cf_intc_get_presented_autovector)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);
+N_LIB_IMPORT N_CDECL(NU32, cf_mbar_read)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 offset_p1, int size_p2, tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow* status_p3);
+N_LIB_IMPORT N_CDECL(void, cf_mbar_write)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 offset_p1, int size_p2, NU32 value_p3, tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow* status_p4);
+N_LIB_IMPORT N_CDECL(void, cf_sim_set_port_a_hook)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyProc__B5Rnr1Ri2FHcWIyBRZGBAA hook_p1, void* user_p2);
+N_LIB_IMPORT N_CDECL(void, cf_sim_set_engine_strap)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int engineStrap_p1);
 N_LIB_IMPORT N_CDECL(int, cf_set_reg)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int index_p1, NU32 value_p2);
 N_LIB_IMPORT N_CDECL(NU32, cf_get_reg)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, int index_p1);
 N_LIB_IMPORT N_CDECL(int, cf_halted)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);

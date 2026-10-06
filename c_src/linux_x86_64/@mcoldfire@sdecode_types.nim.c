@@ -20,9 +20,6 @@ typedef struct tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ tyOb
 typedef struct tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw;
 typedef struct tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw;
 typedef struct tyObject_EaLegality__NN9aA0XZPSGhd7aTgkLbX6g tyObject_EaLegality__NN9aA0XZPSGhd7aTgkLbX6g;
-struct tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw {
-	NI rc;
-};
 typedef NI32 tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow;
 typedef N_CDECL_PTR(NU32, tyProc__48NbZWzqN9c65MTL6aqhyoQ) (void* user_p0, NU32 address_p1, int size_p2, tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow* status_p3);
 typedef N_CDECL_PTR(void, tyProc__Z520qbkX3ihqF4aEH1pYnQ) (void* user_p0, NU32 address_p1, int size_p2, NU32 value_p3, tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow* status_p4);
@@ -64,6 +61,9 @@ struct tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ {
 	NU32 pendingFaultStatus;
 	NU32 pendingStackedSr;
 };
+struct tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw {
+	NI rc;
+};
 typedef NU8 tyEnum_Operation__pNMdRDkk0kUJ0kZTzV9cpfQ;
 typedef NU8 tyEnum_EAMode__GYzbIutsW1sIc5APH3Hm9bw;
 struct tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw {
@@ -76,12 +76,12 @@ struct tyObject_EaLegality__NN9aA0XZPSGhd7aTgkLbX6g {
 	tySet_tyEnum_EAMode__GYzbIutsW1sIc5APH3Hm9bw modes;
 	tySet_tyEnum_EA7__FaSzBWDgPqsFk7cyrHU07A ea7;
 };
-static N_INLINE(NIM_BOOL, nimDecRefIsLast)(void* p_p0);
+static N_INLINE(void, nimIncRef)(void* p_p0);
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1);
+static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1);
+static N_INLINE(NIM_BOOL, nimDecRefIsLast)(void* p_p0);
 N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___coldfireZintc_u135)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* dest_p0);
 N_LIB_PRIVATE N_NIMCALL(void, nimRawDispose)(void* p_p0, NI alignment_p1);
-static N_INLINE(void, nimIncRef)(void* p_p0);
-static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1);
 N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__coldfireZdecode95types_u232)(tyEnum_Operation__pNMdRDkk0kUJ0kZTzV9cpfQ op_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2);
 N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__NN9aA0XZPSGhd7aTgkLbX6g, eaLegalityFor__coldfireZdecode95types_u176)(tyEnum_Operation__pNMdRDkk0kUJ0kZTzV9cpfQ op_p0, NU8 size_p1);
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1);
@@ -102,6 +102,30 @@ N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__NN9aA0XZPSGhd7aTgkLbX6g eaBitStatic
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1) {
 	NI result;
 	result = ((NI) ((NU)((NU64)(((NU) (x_p0))) - (NU64)(((NU) (y_p1))))));
+	return result;
+}
+static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1) {
+	NI result;
+	result = ((NI) ((NU)((NU64)(((NU) (x_p0))) + (NU64)(((NU) (y_p1))))));
+	return result;
+}
+static N_INLINE(void, nimIncRef)(void* p_p0) {
+	NI T1_;
+	NI T2_;
+	T1_ = (NI)0;
+	T1_ = minuspercent___system_u813(((NI) (ptrdiff_t) (p_p0)), ((NI)8));
+	T2_ = (NI)0;
+	T2_ = minuspercent___system_u813(((NI) (ptrdiff_t) (p_p0)), ((NI)8));
+	(*((tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw*) (T1_))).rc = pluspercent___system_u793((*((tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw*) (T2_))).rc, ((NI)8));
+}
+N_LIB_PRIVATE N_NIMCALL(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ*, eqdup___coldfireZintc_u126)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* src_p0) {
+	tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* result;
+	result = src_p0;
+	{
+		if (!src_p0) goto LA3_;
+		nimIncRef(src_p0);
+	}
+LA3_: ;
 	return result;
 }
 static N_INLINE(NIM_BOOL, nimDecRefIsLast)(void* p_p0) {
@@ -140,30 +164,6 @@ N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___coldfireZintc_u120)(tyObject_MCF5407Ct
 		nimRawDispose(dest_p0, ((NI)8));
 	}
 LA4_: ;
-}
-static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1) {
-	NI result;
-	result = ((NI) ((NU)((NU64)(((NU) (x_p0))) + (NU64)(((NU) (y_p1))))));
-	return result;
-}
-static N_INLINE(void, nimIncRef)(void* p_p0) {
-	NI T1_;
-	NI T2_;
-	T1_ = (NI)0;
-	T1_ = minuspercent___system_u813(((NI) (ptrdiff_t) (p_p0)), ((NI)8));
-	T2_ = (NI)0;
-	T2_ = minuspercent___system_u813(((NI) (ptrdiff_t) (p_p0)), ((NI)8));
-	(*((tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw*) (T1_))).rc = pluspercent___system_u793((*((tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw*) (T2_))).rc, ((NI)8));
-}
-N_LIB_PRIVATE N_NIMCALL(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ*, eqdup___coldfireZintc_u126)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* src_p0) {
-	tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* result;
-	result = src_p0;
-	{
-		if (!src_p0) goto LA3_;
-		nimIncRef(src_p0);
-	}
-LA3_: ;
-	return result;
 }
 static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2) {
 	void* T1_;

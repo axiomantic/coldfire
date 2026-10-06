@@ -49,6 +49,19 @@ static_assert(sizeof(cf_write_fn) == sizeof(void (*)()),
               "cf_write_fn must be a function-pointer type");
 static_assert(sizeof(cf_iack_fn) == sizeof(void (*)()),
               "cf_iack_fn must be a function-pointer type");
+static_assert(sizeof(cf_uart_tx_fn) == sizeof(void (*)()),
+              "cf_uart_tx_fn must be a function-pointer type");
+static_assert(sizeof(cf_port_a_read_fn) == sizeof(void (*)()),
+              "cf_port_a_read_fn must be a function-pointer type");
+
+/* The peripheral enumerations and constants. */
+static_assert(sizeof(cf_irq_pin) >= 1u, "cf_irq_pin must be declared as a type");
+static_assert(CF_IRQ_PIN_7 == 0, "CF_IRQ_PIN_7 must be 0");
+static_assert(CF_IRQ_PIN_5 == 1, "CF_IRQ_PIN_5 must be 1");
+static_assert(CF_IRQ_PIN_3 == 2, "CF_IRQ_PIN_3 must be 2");
+static_assert(CF_IRQ_PIN_1 == 3, "CF_IRQ_PIN_1 must be 3");
+static_assert(CF_UART_CH0 == 0, "CF_UART_CH0 must be 0");
+static_assert(CF_UART_CH1 == 1, "CF_UART_CH1 must be 1");
 
 /* ------------------------------------------------ the address-of expressions
  *
@@ -68,6 +81,18 @@ int main()
     size_t (*const volatile p07)() = &cf_state_size;
     void (*const volatile p08)(const cf_ctx*, void*) = &cf_state_save;
     void (*const volatile p09)(cf_ctx*, const void*) = &cf_state_load;
+    int (*const volatile p10)(cf_ctx*, int, uint8_t) = &cf_uart_rx_byte;
+    int (*const volatile p11)(cf_ctx*, int, cf_uart_tx_fn, void*) = &cf_uart_set_tx_handler;
+    uint8_t (*const volatile p12)(const cf_ctx*, int) = &cf_uart_get_usr;
+    void (*const volatile p13)(cf_ctx*, uint32_t) = &cf_timer_tick;
+    void (*const volatile p14)(cf_ctx*, int, int) = &cf_set_irq_pin;
+    int (*const volatile p15)(const cf_ctx*) = &cf_intc_get_presented_level;
+    uint8_t (*const volatile p16)(const cf_ctx*) = &cf_intc_get_presented_vector;
+    int (*const volatile p17)(const cf_ctx*) = &cf_intc_get_presented_autovector;
+    uint32_t (*const volatile p18)(cf_ctx*, uint32_t, int, cf_bus_status*) = &cf_mbar_read;
+    void (*const volatile p19)(cf_ctx*, uint32_t, int, uint32_t, cf_bus_status*) = &cf_mbar_write;
+    void (*const volatile p20)(cf_ctx*, cf_port_a_read_fn, void*) = &cf_sim_set_port_a_hook;
+    void (*const volatile p21)(cf_ctx*, int) = &cf_sim_set_engine_strap;
 
     int found = 0;
     found += (p01 != nullptr);
@@ -79,8 +104,20 @@ int main()
     found += (p07 != nullptr);
     found += (p08 != nullptr);
     found += (p09 != nullptr);
+    found += (p10 != nullptr);
+    found += (p11 != nullptr);
+    found += (p12 != nullptr);
+    found += (p13 != nullptr);
+    found += (p14 != nullptr);
+    found += (p15 != nullptr);
+    found += (p16 != nullptr);
+    found += (p17 != nullptr);
+    found += (p18 != nullptr);
+    found += (p19 != nullptr);
+    found += (p20 != nullptr);
+    found += (p21 != nullptr);
 
-    if (found != 9) {
+    if (found != 21) {
         return 1;
     }
     return 0;

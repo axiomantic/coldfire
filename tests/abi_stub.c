@@ -105,3 +105,89 @@ void cf_state_load(cf_ctx* ctx, const void* src)
     (void)src;
 }
 
+int cf_uart_rx_byte(cf_ctx* ctx, int channel, uint8_t byte)
+{
+    (void)ctx;
+    (void)channel;
+    (void)byte;
+    return 0;
+}
+
+int cf_uart_set_tx_handler(cf_ctx* ctx, int channel, cf_uart_tx_fn fn, void* user)
+{
+    (void)ctx;
+    (void)channel;
+    (void)fn;
+    (void)user;
+    return 0;
+}
+
+uint8_t cf_uart_get_usr(const cf_ctx* ctx, int channel)
+{
+    (void)ctx;
+    (void)channel;
+    return (uint8_t)0;
+}
+
+void cf_timer_tick(cf_ctx* ctx, uint32_t cycles)
+{
+    (void)ctx;
+    (void)cycles;
+}
+
+void cf_set_irq_pin(cf_ctx* ctx, int pin, int asserted)
+{
+    (void)ctx;
+    (void)pin;
+    (void)asserted;
+}
+
+int cf_intc_get_presented_level(const cf_ctx* ctx)
+{
+    (void)ctx;
+    return 0;
+}
+
+uint8_t cf_intc_get_presented_vector(const cf_ctx* ctx)
+{
+    (void)ctx;
+    return (uint8_t)0;
+}
+
+int cf_intc_get_presented_autovector(const cf_ctx* ctx)
+{
+    (void)ctx;
+    return 0;
+}
+
+uint32_t cf_mbar_read(cf_ctx* ctx, uint32_t offset, int size, cf_bus_status* status)
+{
+    (void)ctx;
+    (void)offset;
+    (void)size;
+    (void)status;
+    return 0u;
+}
+
+void cf_mbar_write(cf_ctx* ctx, uint32_t offset, int size, uint32_t value, cf_bus_status* status)
+{
+    (void)ctx;
+    (void)offset;
+    (void)size;
+    (void)value;
+    (void)status;
+}
+
+void cf_sim_set_port_a_hook(cf_ctx* ctx, cf_port_a_read_fn hook, void* user)
+{
+    (void)ctx;
+    (void)hook;
+    (void)user;
+}
+
+void cf_sim_set_engine_strap(cf_ctx* ctx, int engine_strap)
+{
+    (void)ctx;
+    (void)engine_strap;
+}
+

@@ -3327,9 +3327,6 @@ N_LIB_PRIVATE N_NIMCALL(void, registerSignalHandler__system_u3682)(void) {
 	T6_ = (tyProc__gx1DG571q2UZkCl7Jq3AOg)0;
 	T6_ = signal(((int)13), SIG_IGN);
 }
-N_LIB_PRIVATE N_NOCONV(void, dealloc)(void* p_p0) {
-	deallocImpl__system_u1775(p_p0);
-}
 N_LIB_PRIVATE N_NIMCALL(void*, alloc0__system_u6297)(tyObject_MemRegion__shMb9cZVR8qIRWk65wjaJLA* allocator_p0, NI size_p1) {
 	void* result;
 	result = alloc__system_u6293(allocator_p0, size_p1);
@@ -3340,6 +3337,9 @@ N_LIB_PRIVATE N_NOCONV(void*, alloc0Impl__system_u1773)(NI size_p0) {
 	void* result;
 	result = alloc0__system_u6297((&allocator__system_u6342), size_p0);
 	return result;
+}
+N_LIB_PRIVATE N_NOCONV(void, dealloc)(void* p_p0) {
+	deallocImpl__system_u1775(p_p0);
 }
 static N_INLINE(void, sysFatal__system_u4203)(NimStringV2 message_p1) {
 	NimStringV2 colontmpD_;

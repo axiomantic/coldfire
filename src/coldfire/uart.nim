@@ -37,9 +37,10 @@ const
   gUart1InterruptIndex* = 5
 
 type
-  UartTxFn* = proc(user: pointer; byte: uint8) {.cdecl.}
+  UartTxFn* = proc(user: pointer; channel: cint; byte: uint8) {.cdecl.}
 
   UartObj* = object
+    channel*: cint
     interruptIndex*: int
     intc*: ptr IntcObj
     txCallback*: UartTxFn
@@ -108,7 +109,7 @@ proc reset*(u: ptr UartObj) =
   u.uimr = 0'u8
   u.ubg1 = 0'u8
   u.ubg2 = 0'u8
-  u.uivr = 0x0F'u8
+  u.uivr = if u.interruptIndex == gUart0InterruptIndex: gUart0Vector else: 0x0F'u8
   u.rxCount = 0
   u.rxHead = 0
   u.txEnabled = false
@@ -117,25 +118,30 @@ proc reset*(u: ptr UartObj) =
   u.interruptAsserted = false
   recomputeInterrupt(u)
 
-proc initUart*(u: ptr UartObj; interruptIndex: int; intc: ptr IntcObj = nil) =
+proc initUart*(u: ptr UartObj; channel: cint; interruptIndex: int; intc: ptr IntcObj = nil) =
+  u.channel = channel
   u.interruptIndex = interruptIndex
   u.intc = intc
   u.txCallback = nil
   u.txUser = nil
   reset(u)
+  if not u.intc.isNil:
+    setInternalVector(u.intc, u.interruptIndex, u.uivr)
 
 proc setMidiOut*(u: ptr UartObj; fn: UartTxFn; user: pointer) =
   u.txCallback = fn
   u.txUser = user
 
-proc receive*(u: ptr UartObj; byte: uint8) =
+proc receive*(u: ptr UartObj; byte: uint8): cint =
   if not u.rxEnabled:
-    return
-  if u.rxCount < 4:
-    let tail = (u.rxHead + u.rxCount) mod 4
-    u.rxFifo[tail] = byte
-    u.rxCount += 1
-    recomputeInterrupt(u)
+    return -2
+  if u.rxCount >= 4:
+    return -2
+  let tail = (u.rxHead + u.rxCount) mod 4
+  u.rxFifo[tail] = byte
+  u.rxCount += 1
+  recomputeInterrupt(u)
+  0
 
 proc transmitComplete*(u: ptr UartObj) =
   u.txHoldingValid = false
@@ -225,7 +231,7 @@ proc writeByte*(u: ptr UartObj; offset: uint32; val: uint8) =
       u.txHolding = val
       u.txHoldingValid = true
       if not u.txCallback.isNil:
-        u.txCallback(u.txUser, val)
+        u.txCallback(u.txUser, u.channel, val)
         u.txHoldingValid = false
       recomputeInterrupt(u)
   of 0x10'u32:

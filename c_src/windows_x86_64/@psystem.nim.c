@@ -3753,9 +3753,6 @@ N_LIB_PRIVATE N_NIMCALL(void, registerSignalHandler__system_u3625)(void) {
 N_LIB_PRIVATE N_NOCONV(void, colonanonymous___system_u8187)(void) {
 	DeleteCriticalSection((&echoLock__system_u8186));
 }
-N_LIB_PRIVATE N_NOCONV(void, dealloc)(void* p_p0) {
-	deallocImpl__system_u1775(p_p0);
-}
 N_LIB_PRIVATE N_NIMCALL(void*, alloc0__system_u6402)(tyObject_MemRegion__shMb9cZVR8qIRWk65wjaJLA* allocator_p0, NI size_p1) {
 	void* result;
 	result = alloc__system_u6398(allocator_p0, size_p1);
@@ -3766,6 +3763,9 @@ N_LIB_PRIVATE N_NOCONV(void*, alloc0Impl__system_u1773)(NI size_p0) {
 	void* result;
 	result = alloc0__system_u6402((&allocator__system_u6447), size_p0);
 	return result;
+}
+N_LIB_PRIVATE N_NOCONV(void, dealloc)(void* p_p0) {
+	deallocImpl__system_u1775(p_p0);
 }
 static N_INLINE(void, sysFatal__system_u4162)(NimStringV2 message_p1) {
 	NimStringV2 colontmpD_;
