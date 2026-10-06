@@ -217,12 +217,22 @@ block:
   check(ctx.irqLevel == 5 and ctx.irqVector == 0x52'u8,
         "INTC: Within same level, IP=2 (rank 1) wins over IP=1 (rank 3)")
 
-  # Autovectoring via AVR: set AVR bit for Level 5 (bit 5 = 0x20)
-  writeMem(ctx, 0x1000_004B'u32, 1, 0x20'u32) # AVR
-  check(ctx.irqAutovector == true, "INTC: AVR enables autovectoring for Level 5")
+  # Autovectoring via ICR AVEC: set AVEC bit (bit 7) for Source 3
+  writeMem(ctx, 0x1000_004F'u32, 1, 0x96'u32) # Level 5, IP = 2, AVEC = 1
+  check(ctx.irqAutovector == true, "INTC: ICR AVEC enables autovectoring for internal source")
+
+  # AVR applies to external pins, not internal sources: clear AVEC on Source 3, set AVR bit 5
+  writeMem(ctx, 0x1000_004F'u32, 1, 0x16'u32) # AVEC = 0
+  writeMem(ctx, 0x1000_004B'u32, 1, 0x20'u32) # AVR bit 5
+  check(ctx.irqAutovector == false, "INTC: AVR does not affect internal sources")
 
   setInternalPending(intc, 2, false)
   setInternalPending(intc, 3, false)
+
+  # External pin autovectoring via AVR (pin 1 is IRQ5 at level 5)
+  setExternalPending(intc, 1, true)
+  check(ctx.irqLevel == 5 and ctx.irqAutovector == true, "INTC: AVR enables autovectoring for Level 5")
+  setExternalPending(intc, 1, false)
   cf_destroy(ctx)
 
 # ===========================================================================

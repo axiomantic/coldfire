@@ -15,9 +15,9 @@
 #undef far
 #undef powerpc
 #undef unix
-typedef NI32 tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow;
-typedef NU8 tyEnum_BusAccess__tJiPx6okfC8SVMjGqkKdBA;
-N_LIB_PRIVATE N_NIMCALL(NU32, faultStatusFor__coldfireZbus_u21)(tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow status_p0, tyEnum_BusAccess__tJiPx6okfC8SVMjGqkKdBA access_p1) {
+typedef NI32 tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g;
+typedef NU8 tyEnum_BusAccess__LGYwFed203Bt10HbNEyF4g;
+N_LIB_PRIVATE N_NIMCALL(NU32, faultStatusFor__coldfireZbus_u21)(tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g status_p0, tyEnum_BusAccess__LGYwFed203Bt10HbNEyF4g access_p1) {
 	NU32 result;
 	NU32 colontmpD_;
 	NU32 colontmpD__2;
@@ -26,33 +26,33 @@ N_LIB_PRIVATE N_NIMCALL(NU32, faultStatusFor__coldfireZbus_u21)(tyEnum_Mcf5407Bu
 	colontmpD__2 = (NU32)0;
 	colontmpD__3 = (NU32)0;
 	switch (status_p0) {
-	case ((tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow)0):
+	case ((tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g)0):
 	{
 		colontmpD_ = ((NU32)0);
 		result = colontmpD_;
 	}
 	break;
-	case ((tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow)3):
+	case ((tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g)3):
 	{
 		colontmpD__2 = ((NU32)9);
 		result = colontmpD__2;
 	}
 	break;
-	case ((tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow)1):
-	case ((tyEnum_Mcf5407BusStatus__C9cb6BUv8oWgRdRLqOWt2Ow)2):
+	case ((tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g)1):
+	case ((tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g)2):
 	{
 		NU32 colontmpD__4;
 		NU32 colontmpD__5;
 		colontmpD__4 = (NU32)0;
 		colontmpD__5 = (NU32)0;
 		switch (access_p1) {
-		case ((tyEnum_BusAccess__tJiPx6okfC8SVMjGqkKdBA)0):
+		case ((tyEnum_BusAccess__LGYwFed203Bt10HbNEyF4g)0):
 		{
 			colontmpD__4 = ((NU32)12);
 			colontmpD__3 = colontmpD__4;
 		}
 		break;
-		case ((tyEnum_BusAccess__tJiPx6okfC8SVMjGqkKdBA)1):
+		case ((tyEnum_BusAccess__LGYwFed203Bt10HbNEyF4g)1):
 		{
 			colontmpD__5 = ((NU32)8);
 			colontmpD__3 = colontmpD__5;

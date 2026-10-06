@@ -105,7 +105,7 @@ proc recomputeAndPresent*(intc: ptr IntcObj) =
       winValid = true
       winLevel = level
       winVector = intc.internalVector[i]
-      winAutovector = ((icr and 0x80'u8) != 0'u8) or (((intc.avr shr level) and 1'u8) != 0'u8)
+      winAutovector = (icr and 0x80'u8) != 0'u8
 
   for p in 0 .. 3:
     if not intc.externalPending[p]:

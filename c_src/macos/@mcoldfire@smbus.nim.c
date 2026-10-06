@@ -16,9 +16,9 @@
 #undef far
 #undef powerpc
 #undef unix
-typedef struct tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg;
-typedef struct tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw;
-typedef struct tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA;
+typedef struct tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g;
+typedef struct tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg;
+typedef struct tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ;
 typedef struct tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw tyObject_RefHeader__Bp7bmWv1aLOvl19bz8dx8hw;
 typedef struct RootObj RootObj;
 typedef struct TNimTypeV2 TNimTypeV2;
@@ -27,7 +27,7 @@ typedef NIM_BOOL tyArray__v9awdnBJNClaxp5DAvHayvQ[10];
 typedef NIM_BOOL tyArray__oQcYT9cTpIXElOJwwEHsv5g[4];
 typedef NU8 tyArray__kAtU2KkWJ4IWiiLIkcMTHQ[10];
 typedef NU8 tyArray__ZphrDPKIBlVgF9aQajgV8qQ[4];
-struct tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA {
+struct tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ {
 	void* ctx;
 	NU8 irqpar;
 	NU8 avr;
@@ -43,9 +43,9 @@ struct tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA {
 	NIM_BOOL lastAutovector;
 	NIM_BOOL presentedToCore;
 };
-struct tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw {
-	tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA* intc;
-	tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* slave;
+struct tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg {
+	tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ* intc;
+	tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* slave;
 	NU8 madr;
 	NU8 mfdr;
 	NU8 mbcr;
@@ -73,47 +73,47 @@ struct TNimTypeV2 {
 struct RootObj {
 	TNimTypeV2* m_type;
 };
-struct tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg {
+struct tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g {
 	RootObj Sup;
 };
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u23)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 addr7_p1, NIM_BOOL read_p2);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u30)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 byte_p1);
-N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u36)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0);
-N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u41)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0);
-N_LIB_PRIVATE N_NIMCALL(void, eqcopy___coldfireZmbus_u75)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg** dest_p0, tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* src_p1);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u23)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 addr7_p1, NIM_BOOL read_p2);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u30)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 byte_p1);
+N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u36)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0);
+N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u41)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0);
+N_LIB_PRIVATE N_NIMCALL(void, eqcopy___coldfireZmbus_u75)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g** dest_p0, tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* src_p1);
 static N_INLINE(void, nimIncRef)(void* p_p0);
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1);
 static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1);
 static N_INLINE(NIM_BOOL, nimDecRefIsLast)(void* p_p0);
 N_LIB_PRIVATE N_NIMCALL(void, nimDestroyAndDispose)(void* p_p0);
-N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZmbus_u63)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0);
-N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__coldfireZmbus_u57)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__coldfireZintc_u214)(tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
-N_LIB_PRIVATE N_NIMCALL(NU8, receive__coldfireZmbus_u132)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0);
-N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u39)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0);
+N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZmbus_u63)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0);
+N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__coldfireZmbus_u57)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__coldfireZintc_u210)(tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
+N_LIB_PRIVATE N_NIMCALL(NU8, receive__coldfireZmbus_u132)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0);
+N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u39)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0);
 static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
-N_LIB_PRIVATE N_NIMCALL(void, writeControl__coldfireZmbus_u109)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU8 val_p1);
-N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u43)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0);
-N_LIB_PRIVATE N_NIMCALL(void, transmit__coldfireZmbus_u117)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU8 val_p1);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u28)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 addr7_p1, NIM_BOOL read_p2);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u34)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 byte_p1);
+N_LIB_PRIVATE N_NIMCALL(void, writeControl__coldfireZmbus_u109)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU8 val_p1);
+N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u43)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0);
+N_LIB_PRIVATE N_NIMCALL(void, transmit__coldfireZmbus_u117)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU8 val_p1);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u28)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 addr7_p1, NIM_BOOL read_p2);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u34)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 byte_p1);
 extern NIM_THREADVAR NIM_BOOL nimInErrorMode__system_u3441;
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u23)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 addr7_p1, NIM_BOOL read_p2) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, start__coldfireZmbus_u23)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 addr7_p1, NIM_BOOL read_p2) {
 	NIM_BOOL result;
 	result = NIM_FALSE;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u30)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0, NU8 byte_p1) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__coldfireZmbus_u30)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0, NU8 byte_p1) {
 	NIM_BOOL result;
 	result = NIM_FALSE;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u36)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0) {
+N_LIB_PRIVATE N_NIMCALL(NU8, read__coldfireZmbus_u36)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0) {
 	NU8 result;
 	result = ((NU8)255);
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u41)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* s_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u41)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* s_p0) {
 }
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1) {
 	NI result;
@@ -158,7 +158,7 @@ LA6_: ;
 LA3_: ;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(void, eqcopy___coldfireZmbus_u75)(tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg** dest_p0, tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* src_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, eqcopy___coldfireZmbus_u75)(tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g** dest_p0, tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* src_p1) {
 	{
 		if (!src_p1) goto LA3_;
 		nimIncRef(src_p1);
@@ -174,7 +174,7 @@ LA3_: ;
 LA8_: ;
 	(*dest_p0) = src_p1;
 }
-N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__coldfireZmbus_u57)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__coldfireZmbus_u57)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0) {
 	NIM_BOOL asserted_1;
 	NIM_BOOL T1_;
 	T1_ = (NIM_BOOL)0;
@@ -188,13 +188,13 @@ LA2_: ;
 		(*m_p0).interruptAsserted = asserted_1;
 		{
 			if (!!(((*m_p0).intc == 0))) goto LA9_;
-			setInternalPending__coldfireZintc_u214((*m_p0).intc, ((NI)3), asserted_1);
+			setInternalPending__coldfireZintc_u210((*m_p0).intc, ((NI)3), asserted_1);
 		}
 LA9_: ;
 	}
 LA5_: ;
 }
-N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZmbus_u63)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZmbus_u63)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0) {
 	(*m_p0).madr = ((NU8)0);
 	(*m_p0).mfdr = ((NU8)0);
 	(*m_p0).mbcr = ((NU8)0);
@@ -206,12 +206,12 @@ N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZmbus_u63)(tyObject_MBusObj__yDvIQK
 	(*m_p0).interruptAsserted = NIM_FALSE;
 	recomputeInterrupt__coldfireZmbus_u57(m_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(void, initMBus__coldfireZmbus_u65)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, tyObject_IntcObj__WcCWL1G0pVpaymJgjWS1fA* intc_p1, tyObject_I2cSlavecolonObjectType___jf9buJGMpgvBz0xNtqK8ebg* slave_p2) {
+N_LIB_PRIVATE N_NIMCALL(void, initMBus__coldfireZmbus_u65)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, tyObject_IntcObj__5ifYCTL0km1KOc9aYjdlcYQ* intc_p1, tyObject_I2cSlavecolonObjectType___9bUeCnzpXN2X39bM2Eu6Ue5g* slave_p2) {
 	(*m_p0).intc = intc_p1;
 	eqcopy___coldfireZmbus_u75(&(*m_p0).slave, slave_p2);
 	reset__coldfireZmbus_u63(m_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(NU8, receive__coldfireZmbus_u132)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0) {
+N_LIB_PRIVATE N_NIMCALL(NU8, receive__coldfireZmbus_u132)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0) {
 	NU8 result;
 	NU8 res_1;
 	res_1 = (*m_p0).received;
@@ -247,7 +247,7 @@ static N_INLINE(NIM_BOOL*, nimErrorFlag)(void) {
 	result = (&nimInErrorMode__system_u3441);
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NU8, readByte__coldfireZmbus_u139)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU32 offset_p1) {
+N_LIB_PRIVATE N_NIMCALL(NU8, readByte__coldfireZmbus_u139)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU32 offset_p1) {
 	NU8 result;
 	NU8 T1_;
 NIM_BOOL* nimErr_;
@@ -307,7 +307,7 @@ LA16_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeControl__coldfireZmbus_u109)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU8 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, writeControl__coldfireZmbus_u109)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU8 val_p1) {
 	NIM_BOOL wasMaster_1;
 	NIM_BOOL isMaster_1;
 {	wasMaster_1 = !(((NU8)((*m_p0).mbcr & ((NU8)32)) == ((NU8)0)));
@@ -345,7 +345,7 @@ LA15_: ;
 LA11_: ;
 	}BeforeRet_: ;
 }
-N_LIB_PRIVATE N_NIMCALL(void, transmit__coldfireZmbus_u117)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU8 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, transmit__coldfireZmbus_u117)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU8 val_p1) {
 {	{
 		if (!((NU8)((*m_p0).mbcr & ((NU8)32)) == ((NU8)0))) goto LA3_;
 		goto BeforeRet_;
@@ -398,7 +398,7 @@ LA5_: ;
 	recomputeInterrupt__coldfireZmbus_u57(m_p0);
 	}BeforeRet_: ;
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeByte__coldfireZmbus_u144)(tyObject_MBusObj__yDvIQKseTIJQAoxppfT1rw* m_p0, NU32 offset_p1, NU8 val_p2) {
+N_LIB_PRIVATE N_NIMCALL(void, writeByte__coldfireZmbus_u144)(tyObject_MBusObj__7bxJv9bWIwgp0qVf3JuJEwg* m_p0, NU32 offset_p1, NU8 val_p2) {
 NIM_BOOL* nimErr_;
 {nimErr_ = nimErrorFlag();
 	switch (offset_p1) {
