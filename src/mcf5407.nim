@@ -90,6 +90,7 @@ proc cfRuntimeInit*(): cint {.exportc: "cf_runtime_init",
   else:
     cint(0)
 
-proc mcf5407_runtime_init*(): cint =
+proc mcf5407_runtime_init*(): cint {.exportc: "mcf5407_runtime_init",
+                                     mcf5407Abi.} =
   cfRuntimeInit()
 

@@ -880,7 +880,8 @@ proc cf_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint
     return cast[cint](1)
   cast[cint](0)
 
-proc mcf5407_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint =
+proc mcf5407_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint
+    {.exportc: "mcf5407_set_reg", cdecl, dynlib.} =
   cf_set_reg(ctx, index, value)
 
 proc cf_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
@@ -889,7 +890,8 @@ proc cf_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
     return 0'u32
   regFileGet(ctx, int(index))
 
-proc mcf5407_get_reg*(ctx: MCF5407Ctx; index: cint): uint32 =
+proc mcf5407_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
+    {.exportc: "mcf5407_get_reg", cdecl, dynlib.} =
   cf_get_reg(ctx, index)
 
 # ---------------------------------------------------------------------------
@@ -913,7 +915,8 @@ proc cf_halted*(ctx: MCF5407Ctx): cint
     return cast[cint](0)
   cast[cint](1)
 
-proc mcf5407_halted*(ctx: MCF5407Ctx): cint =
+proc mcf5407_halted*(ctx: MCF5407Ctx): cint
+    {.exportc: "mcf5407_halted", cdecl, dynlib.} =
   cf_halted(ctx)
 
 proc cf_faulted*(ctx: MCF5407Ctx): cint
@@ -922,5 +925,6 @@ proc cf_faulted*(ctx: MCF5407Ctx): cint
     return cast[cint](0)
   cast[cint](1)
 
-proc mcf5407_faulted*(ctx: MCF5407Ctx): cint =
+proc mcf5407_faulted*(ctx: MCF5407Ctx): cint
+    {.exportc: "mcf5407_faulted", cdecl, dynlib.} =
   cf_faulted(ctx)

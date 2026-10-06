@@ -33,69 +33,36 @@ typedef cf_iack_fn mcf5407_iack_fn;
 #define MCF5407_MUST_CHECK CF_MUST_CHECK
 #define MCF5407_MUST_USE CF_MUST_USE
 
-/* Inline forwarding layer */
+/* Function declarations */
 
-static inline int mcf5407_runtime_init(void) {
-	return cf_runtime_init();
-}
+MCF5407_MUST_CHECK int mcf5407_runtime_init(void);
 
-static inline mcf5407_ctx* mcf5407_create(void* user,
-                                          mcf5407_read_fn rd,
-                                          mcf5407_write_fn wr,
-                                          mcf5407_iack_fn iack) {
-	cf_config cfg;
-	cfg.isa = CF_ISA_A;
-	cfg.vbr_mask = 0xFFFFFFFFu;
-	cfg.user = user;
-	cfg.rd = rd;
-	cfg.wr = wr;
-	cfg.iack = iack;
-	return cf_create(&cfg);
-}
+MCF5407_MUST_USE mcf5407_ctx* mcf5407_create(void* user,
+                                              mcf5407_read_fn rd,
+                                              mcf5407_write_fn wr,
+                                              mcf5407_iack_fn iack);
 
-static inline void mcf5407_destroy(mcf5407_ctx* ctx) {
-	cf_destroy(ctx);
-}
+void mcf5407_destroy(mcf5407_ctx* ctx);
 
-static inline void mcf5407_reset(mcf5407_ctx* ctx, uint32_t initial_sp, uint32_t initial_pc) {
-	cf_reset(ctx, initial_sp, initial_pc);
-}
+void mcf5407_reset(mcf5407_ctx* ctx, uint32_t initial_sp, uint32_t initial_pc);
 
-static inline uint32_t mcf5407_exec(mcf5407_ctx* ctx, uint32_t max_cycles) {
-	return cf_exec(ctx, max_cycles);
-}
+uint32_t mcf5407_exec(mcf5407_ctx* ctx, uint32_t max_cycles);
 
-static inline int mcf5407_set_reg(mcf5407_ctx* ctx, int index, uint32_t value) {
-	return cf_set_reg(ctx, index, value);
-}
+int mcf5407_set_reg(mcf5407_ctx* ctx, int index, uint32_t value);
 
-static inline uint32_t mcf5407_get_reg(const mcf5407_ctx* ctx, int index) {
-	return cf_get_reg(ctx, index);
-}
+uint32_t mcf5407_get_reg(const mcf5407_ctx* ctx, int index);
 
-static inline int mcf5407_halted(const mcf5407_ctx* ctx) {
-	return cf_halted(ctx);
-}
+int mcf5407_halted(const mcf5407_ctx* ctx);
 
-static inline int mcf5407_faulted(const mcf5407_ctx* ctx) {
-	return cf_faulted(ctx);
-}
+int mcf5407_faulted(const mcf5407_ctx* ctx);
 
-static inline void mcf5407_set_irq(mcf5407_ctx* ctx, int level, uint8_t vector, int autovector) {
-	cf_set_irq(ctx, level, vector, autovector);
-}
+void mcf5407_set_irq(mcf5407_ctx* ctx, int level, uint8_t vector, int autovector);
 
-static inline size_t mcf5407_state_size(void) {
-	return cf_state_size();
-}
+size_t mcf5407_state_size(void);
 
-static inline void mcf5407_state_save(const mcf5407_ctx* ctx, void* dst) {
-	cf_state_save(ctx, dst);
-}
+void mcf5407_state_save(const mcf5407_ctx* ctx, void* dst);
 
-static inline void mcf5407_state_load(mcf5407_ctx* ctx, const void* src) {
-	cf_state_load(ctx, src);
-}
+void mcf5407_state_load(mcf5407_ctx* ctx, const void* src);
 
 #ifdef __cplusplus
 }

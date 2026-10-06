@@ -16,11 +16,11 @@
 #undef far
 #undef powerpc
 #undef unix
-typedef struct tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ;
-typedef struct tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw;
-struct tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ {
+typedef struct tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg;
+typedef struct tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw;
+struct tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg {
 	NI interruptIndex;
-	tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc;
+	tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw* intc;
 	NU16 tmr;
 	NU16 trr;
 	NU16 tcr;
@@ -34,7 +34,7 @@ typedef NIM_BOOL tyArray__v9awdnBJNClaxp5DAvHayvQ[10];
 typedef NIM_BOOL tyArray__oQcYT9cTpIXElOJwwEHsv5g[4];
 typedef NU8 tyArray__kAtU2KkWJ4IWiiLIkcMTHQ[10];
 typedef NU8 tyArray__ZphrDPKIBlVgF9aQajgV8qQ[4];
-struct tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw {
+struct tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw {
 	void* ctx;
 	NU8 irqpar;
 	NU8 avr;
@@ -50,14 +50,14 @@ struct tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw {
 	NIM_BOOL lastAutovector;
 	NIM_BOOL presentedToCore;
 };
-N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Ztimer_u25)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u214)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
-N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0);
-N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1);
-N_LIB_PRIVATE N_NIMCALL(void, writeTrr__mcf5407Ztimer_u56)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1);
-N_LIB_PRIVATE N_NIMCALL(void, writeTcn__mcf5407Ztimer_u59)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1);
-N_LIB_PRIVATE N_NIMCALL(void, writeTer__mcf5407Ztimer_u62)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU8 val_p1);
-N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Ztimer_u25)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Ztimer_u25)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u214)(tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
+N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0);
+N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1);
+N_LIB_PRIVATE N_NIMCALL(void, writeTrr__mcf5407Ztimer_u56)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1);
+N_LIB_PRIVATE N_NIMCALL(void, writeTcn__mcf5407Ztimer_u59)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1);
+N_LIB_PRIVATE N_NIMCALL(void, writeTer__mcf5407Ztimer_u62)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU8 val_p1);
+N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Ztimer_u25)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0) {
 	NIM_BOOL asserted_1;
 	NIM_BOOL T1_;
 	T1_ = (NIM_BOOL)0;
@@ -77,7 +77,7 @@ LA9_: ;
 	}
 LA5_: ;
 }
-N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0) {
 	(*t_p0).tmr = ((NU16)0);
 	(*t_p0).trr = ((NU16)65535);
 	(*t_p0).tcr = ((NU16)0);
@@ -86,7 +86,7 @@ N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__Zw9aT
 	(*t_p0).prescaler = ((NU32)0);
 	recomputeInterrupt__mcf5407Ztimer_u25(t_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(NU8, readByte__mcf5407Ztimer_u65)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU32 offset_p1) {
+N_LIB_PRIVATE N_NIMCALL(NU8, readByte__mcf5407Ztimer_u65)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU32 offset_p1) {
 	NU8 result;
 	NU8 T1_;
 	result = (NU8)0;
@@ -145,12 +145,12 @@ N_LIB_PRIVATE N_NIMCALL(NU8, readByte__mcf5407Ztimer_u65)(tyObject_TimerObj__Zw9
 	}
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(void, initTimer__mcf5407Ztimer_u33)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NI interruptIndex_p1, tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p2) {
+N_LIB_PRIVATE N_NIMCALL(void, initTimer__mcf5407Ztimer_u33)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NI interruptIndex_p1, tyObject_IntcObj__C0U8JwwIgGoQJ3N5GAvEAw* intc_p2) {
 	(*t_p0).interruptIndex = interruptIndex_p1;
 	(*t_p0).intc = intc_p2;
 	reset__mcf5407Ztimer_u31(t_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1) {
 	(*t_p0).tmr = val_p1;
 	{
 		if (!((NU16)((*t_p0).tmr & ((NU16)1)) == ((NU16)0))) goto LA3_;
@@ -160,17 +160,17 @@ N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__Zw
 LA3_: ;
 	recomputeInterrupt__mcf5407Ztimer_u25(t_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeTrr__mcf5407Ztimer_u56)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, writeTrr__mcf5407Ztimer_u56)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1) {
 	(*t_p0).trr = val_p1;
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeTcn__mcf5407Ztimer_u59)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, writeTcn__mcf5407Ztimer_u59)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU16 val_p1) {
 	(*t_p0).tcn = val_p1;
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeTer__mcf5407Ztimer_u62)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU8 val_p1) {
+N_LIB_PRIVATE N_NIMCALL(void, writeTer__mcf5407Ztimer_u62)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU8 val_p1) {
 	(*t_p0).ter = (NU8)((*t_p0).ter & (NU8)((NU8) ~((NU8)(val_p1 & ((NU8)3)))));
 	recomputeInterrupt__mcf5407Ztimer_u25(t_p0);
 }
-N_LIB_PRIVATE N_NIMCALL(void, writeByte__mcf5407Ztimer_u85)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU32 offset_p1, NU8 val_p2) {
+N_LIB_PRIVATE N_NIMCALL(void, writeByte__mcf5407Ztimer_u85)(tyObject_TimerObj__2PpzEn69aNPm4Xl9bPlI9cqrg* t_p0, NU32 offset_p1, NU8 val_p2) {
 	switch (offset_p1) {
 	case ((NU32)0):
 	{

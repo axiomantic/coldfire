@@ -159,7 +159,8 @@ proc cf_state_size*(): csize_t
     {.exportc: "cf_state_size", cdecl, dynlib.} =
   csize_t(stateHeaderBytes + statePayloadBytes + stateChecksumBytes)
 
-proc mcf5407_state_size*(): csize_t =
+proc mcf5407_state_size*(): csize_t
+    {.exportc: "mcf5407_state_size", cdecl, dynlib.} =
   cf_state_size()
 
 proc cf_state_save*(ctx: MCF5407Ctx; dst: pointer)
@@ -175,7 +176,8 @@ proc cf_state_save*(ctx: MCF5407Ctx; dst: pointer)
   putBe32(buf, stateHeaderBytes + statePayloadBytes,
           stateChecksum(buf, stateHeaderBytes + statePayloadBytes))
 
-proc mcf5407_state_save*(ctx: MCF5407Ctx; dst: pointer) =
+proc mcf5407_state_save*(ctx: MCF5407Ctx; dst: pointer)
+    {.exportc: "mcf5407_state_save", cdecl, dynlib.} =
   cf_state_save(ctx, dst)
 
 proc stateLoad*(ctx: MCF5407Ctx; src: pointer): StateStatus =
@@ -201,6 +203,7 @@ proc cf_state_load*(ctx: MCF5407Ctx; src: pointer)
     {.exportc: "cf_state_load", cdecl, dynlib.} =
   discard stateLoad(ctx, src)
 
-proc mcf5407_state_load*(ctx: MCF5407Ctx; src: pointer) =
+proc mcf5407_state_load*(ctx: MCF5407Ctx; src: pointer)
+    {.exportc: "mcf5407_state_load", cdecl, dynlib.} =
   cf_state_load(ctx, src)
 

@@ -111,4 +111,17 @@ set(MCF5407_ABI_VISIBLE
 	isp1181_report
 	isp1181_state_size
 	isp1181_state_save
-	isp1181_state_load)
+	isp1181_state_load
+	mcf5407_runtime_init
+	mcf5407_create
+	mcf5407_destroy
+	mcf5407_reset
+	mcf5407_exec
+	mcf5407_set_reg
+	mcf5407_get_reg
+	mcf5407_halted
+	mcf5407_faulted
+	mcf5407_set_irq
+	mcf5407_state_size
+	mcf5407_state_save
+	mcf5407_state_load)

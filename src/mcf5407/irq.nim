@@ -84,7 +84,8 @@ proc cf_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
   ctx.irqAutovector = autovector != 0
 
 proc mcf5407_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
-                      autovector: cint) =
+                      autovector: cint)
+    {.exportc: "mcf5407_set_irq", cdecl, dynlib.} =
   cf_set_irq(ctx, level, vector, autovector)
 
 proc resetInterruptEdge*(ctx: MCF5407Ctx) =

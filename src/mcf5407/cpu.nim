@@ -133,7 +133,8 @@ proc cf_create*(config: ptr CfConfig): MCF5407Ctx
   result.cfgVbrMask = cast[pointer](uint(vbrMask))
 
 proc mcf5407_create*(user: pointer; rd: Mcf5407ReadFn; wr: Mcf5407WriteFn;
-                     iack: Mcf5407IackFn): MCF5407Ctx =
+                     iack: Mcf5407IackFn): MCF5407Ctx
+    {.exportc: "mcf5407_create", cdecl, dynlib.} =
   var cfg = CfConfig(
     isa: CF_ISA_A,
     vbrMask: 0xFFFFFFFF'u32,
@@ -155,7 +156,8 @@ proc cf_destroy*(ctx: MCF5407Ctx)
     ctx.iackFn = nil
     freeSim(ctx)
 
-proc mcf5407_destroy*(ctx: MCF5407Ctx) =
+proc mcf5407_destroy*(ctx: MCF5407Ctx)
+    {.exportc: "mcf5407_destroy", cdecl, dynlib.} =
   cf_destroy(ctx)
 
 proc cf_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
@@ -239,7 +241,8 @@ proc cf_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
   # is why a level 7 still asserted across this call is armed again and one
   resetInterruptEdge(ctx)
 
-proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32) =
+proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
+    {.exportc: "mcf5407_reset", cdecl, dynlib.} =
   cf_reset(ctx, initialSp, initialPc)
 
 # ---------------------------------------------------------------------------
@@ -447,5 +450,6 @@ proc cf_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32
     spent = spent + cost
   result = spent
 
-proc mcf5407_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32 =
+proc mcf5407_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32
+    {.exportc: "mcf5407_exec", cdecl, dynlib.} =
   cf_exec(ctx, maxCycles)
