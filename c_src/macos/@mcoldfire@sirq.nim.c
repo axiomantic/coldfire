@@ -70,7 +70,7 @@ N_LIB_PRIVATE N_NIMCALL(NU8, vectorFor__coldfireZirq_u13)(NI level_p0, NU8 vecto
 N_LIB_PRIVATE N_NIMCALL(NU8, autovectorFor__coldfireZexception_u70)(NI level_p0);
 N_LIB_PRIVATE N_NOINLINE(void, raiseRangeErrorI)(NI64 i_p0, NI64 a_p1, NI64 b_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, srIpm__coldfireZirq_u6)(NU32 sr_p0);
-N_LIB_PRIVATE N_NIMCALL(void, takeException__coldfireZmachine_u389)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU8 vector_p1, NU32 stackedPc_p2, NU32 fs_p3);
+N_LIB_PRIVATE N_NIMCALL(void, takeException__coldfireZmachine_u400)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU8 vector_p1, NU32 stackedPc_p2, NU32 fs_p3);
 static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
 static NIM_CONST tyTuple__by4HgyFfCXk326I9cE7T3dg TM__0xRZp3H9cHgeuOhm7vEmXCQ_2 = {NIM_FALSE,
 ((NI)0),
@@ -236,7 +236,7 @@ LA3_: ;
 		(*ctx_p0).irq7Armed = NIM_FALSE;
 	}
 LA7_: ;
-	takeException__coldfireZmachine_u389(ctx_p0, pending_1.Field2, (*ctx_p0).pc, ((NU32)0));
+	takeException__coldfireZmachine_u400(ctx_p0, pending_1.Field2, (*ctx_p0).pc, ((NU32)0));
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA11_;

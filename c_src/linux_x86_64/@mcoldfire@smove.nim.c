@@ -79,22 +79,22 @@ struct tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ {
 typedef NU8 tyEnum_EA7__FaSzBWDgPqsFk7cyrHU07A;
 N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__coldfireZdecode95types_u243)(tyEnum_Operation__pNMdRDkk0kUJ0kZTzV9cpfQ op_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1);
 N_LIB_PRIVATE N_NIMCALL(NU32, execMove__coldfireZmove_u5)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p1);
-N_LIB_PRIVATE N_NIMCALL(NU32, eaRead__coldfireZmachine_u294)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2);
-N_LIB_PRIVATE N_NIMCALL(NI32, s16__coldfireZmachine_u252)(NU16 x_p0);
+N_LIB_PRIVATE N_NIMCALL(NU32, eaRead__coldfireZmachine_u305)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2);
+N_LIB_PRIVATE N_NIMCALL(NI32, s16__coldfireZmachine_u263)(NU16 x_p0);
 N_LIB_PRIVATE N_NIMCALL(void, setRegA__coldfireZmachine_u36)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU8 n_p1, NU32 v_p2);
 N_LIB_PRIVATE N_NOINLINE(void, raiseRangeErrorI)(NI64 i_p0, NI64 a_p1, NI64 b_p2);
-N_LIB_PRIVATE N_NIMCALL(void, eaWrite__coldfireZmachine_u305)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2, NU32 value_p3);
+N_LIB_PRIVATE N_NIMCALL(void, eaWrite__coldfireZmachine_u316)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2, NU32 value_p3);
 N_LIB_PRIVATE N_NIMCALL(void, setNzClearVc__coldfireZmachine_u158)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 value_p1, NU8 size_p2);
 static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
 N_LIB_PRIVATE N_NIMCALL(NU32, execMoveq__coldfireZmove_u20)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU16 word_p1, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p2);
-N_LIB_PRIVATE N_NIMCALL(NI32, s8__coldfireZmachine_u255)(NU16 x_p0);
+N_LIB_PRIVATE N_NIMCALL(NI32, s8__coldfireZmachine_u266)(NU16 x_p0);
 N_LIB_PRIVATE N_NIMCALL(void, setRegD__coldfireZmachine_u32)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU8 n_p1, NU32 v_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, execLea__coldfireZmove_u26)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p1);
-N_LIB_PRIVATE N_NIMCALL(NU32, eaAddr__coldfireZmachine_u279)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2);
+N_LIB_PRIVATE N_NIMCALL(NU32, eaAddr__coldfireZmachine_u290)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_EA__vu8s1WzZCV8fpGlcLcKNYw ea_p1, NU8 size_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, execPea__coldfireZmove_u31)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p1);
-N_LIB_PRIVATE N_NIMCALL(void, writeMem__coldfireZmachine_u225)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 address_p1, NU8 size_p2, NU32 value_p3);
+N_LIB_PRIVATE N_NIMCALL(void, writeMem__coldfireZmachine_u233)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 address_p1, NU8 size_p2, NU32 value_p3);
 N_LIB_PRIVATE N_NIMCALL(NU32, execMovem__coldfireZmove_u58)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p1);
-N_LIB_PRIVATE N_NIMCALL(NU16, fetchExt__coldfireZmachine_u241)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);
+N_LIB_PRIVATE N_NIMCALL(NU16, fetchExt__coldfireZmachine_u252)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0);
 static N_INLINE(NI, countSetBits__coldfireZmove_u63)(NU16 x_p0);
 static N_INLINE(NI, countSetBitsImpl__coldfireZmove_u67)(NU16 x_p0);
 N_CDECL(int, __builtin_popcount)(unsigned int x_p0);
@@ -119,7 +119,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execMove__coldfireZmove_u5)(tyObject_MCF5407Ctxcol
 NIM_BOOL* nimErr_;
 {nimErr_ = nimErrorFlag();
 	result = (NU32)0;
-	src_1 = eaRead__coldfireZmachine_u294(ctx_p0, d_p1.ea, d_p1.size);
+	src_1 = eaRead__coldfireZmachine_u305(ctx_p0, d_p1.ea, d_p1.size);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA3_;
@@ -135,7 +135,7 @@ LA3_: ;
 			NI32 T13_;
 			if (!(d_p1.size == ((NU8)2))) goto LA11_;
 			T13_ = (NI32)0;
-			T13_ = s16__coldfireZmachine_u252(((NU16) ((NU32)(src_1 & ((NU32)65535)))));
+			T13_ = s16__coldfireZmachine_u263(((NU16) ((NU32)(src_1 & ((NU32)65535)))));
 			v_1 = ((NU32) (T13_));
 		}
 LA11_: ;
@@ -165,7 +165,7 @@ LA19_: ;
 			goto BeforeRet_;
 		}
 LA20_: ;
-		eaWrite__coldfireZmachine_u305(ctx_p0, dst_1, d_p1.size, src_1);
+		eaWrite__coldfireZmachine_u316(ctx_p0, dst_1, d_p1.size, src_1);
 		if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 		{
 			if (!(*ctx_p0).halted) goto LA24_;
@@ -186,7 +186,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execMoveq__coldfireZmove_u20)(tyObject_MCF5407Ctxc
 	NI32 T1_;
 	result = (NU32)0;
 	T1_ = (NI32)0;
-	T1_ = s8__coldfireZmachine_u255((NU16)(word_p1 & ((NU16)255)));
+	T1_ = s8__coldfireZmachine_u266((NU16)(word_p1 & ((NU16)255)));
 	v_1 = ((NU32) (T1_));
 	setRegD__coldfireZmachine_u32(ctx_p0, d_p2.destReg, v_1);
 	setNzClearVc__coldfireZmachine_u158(ctx_p0, v_1, ((NU8)4));
@@ -199,7 +199,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execLea__coldfireZmove_u26)(tyObject_MCF5407Ctxcol
 NIM_BOOL* nimErr_;
 {nimErr_ = nimErrorFlag();
 	result = (NU32)0;
-	eaAddress_1 = eaAddr__coldfireZmachine_u279(ctx_p0, d_p1.ea, ((NU8)4));
+	eaAddress_1 = eaAddr__coldfireZmachine_u290(ctx_p0, d_p1.ea, ((NU8)4));
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA3_;
@@ -218,7 +218,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execPea__coldfireZmove_u31)(tyObject_MCF5407Ctxcol
 NIM_BOOL* nimErr_;
 {nimErr_ = nimErrorFlag();
 	result = (NU32)0;
-	eaAddress_1 = eaAddr__coldfireZmachine_u279(ctx_p0, d_p1.ea, ((NU8)4));
+	eaAddress_1 = eaAddr__coldfireZmachine_u290(ctx_p0, d_p1.ea, ((NU8)4));
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA3_;
@@ -227,7 +227,7 @@ NIM_BOOL* nimErr_;
 	}
 LA3_: ;
 	(*ctx_p0).sp = (NU32)((NU32)((*ctx_p0).sp) - (NU32)(((NU32)4)));
-	writeMem__coldfireZmachine_u225(ctx_p0, (*ctx_p0).sp, ((NU8)4), eaAddress_1);
+	writeMem__coldfireZmachine_u233(ctx_p0, (*ctx_p0).sp, ((NU8)4), eaAddress_1);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	result = ((NU32)6);
 	}BeforeRet_: ;
@@ -258,7 +258,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execMovem__coldfireZmove_u58)(tyObject_MCF5407Ctxc
 NIM_BOOL* nimErr_;
 {nimErr_ = nimErrorFlag();
 	result = (NU32)0;
-	mask_1 = fetchExt__coldfireZmachine_u241(ctx_p0);
+	mask_1 = fetchExt__coldfireZmachine_u252(ctx_p0);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA3_;
@@ -267,7 +267,7 @@ NIM_BOOL* nimErr_;
 	}
 LA3_: ;
 	count_1 = countSetBits__coldfireZmove_u63(mask_1);
-	base_1 = eaAddr__coldfireZmachine_u279(ctx_p0, d_p1.ea, ((NU8)4));
+	base_1 = eaAddr__coldfireZmachine_u290(ctx_p0, d_p1.ea, ((NU8)4));
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	{
 		if (!(*ctx_p0).halted) goto LA7_;
@@ -293,7 +293,7 @@ LA7_: ;
 						if (!!(((NU16)(mask_1 & (NU16)((NU16)(((NU16)1)) << (NU16)(i_1 & (16 - 1)))) == ((NU16)0)))) goto LA18_;
 						T20_ = (NU32)0;
 						T20_ = regFileGet__coldfireZmachine_u41(ctx_p0, ((NI) (i_1)));
-						writeMem__coldfireZmachine_u225(ctx_p0, writeAddr_1, ((NU8)4), T20_);
+						writeMem__coldfireZmachine_u233(ctx_p0, writeAddr_1, ((NU8)4), T20_);
 						if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 						{
 							if (!(*ctx_p0).halted) goto LA23_;
@@ -377,14 +377,14 @@ NIM_BOOL* nimErr_;
 	(*ctx_p0).sp = (NU32)((NU32)((*ctx_p0).sp) - (NU32)(((NU32)4)));
 	T1_ = (NU32)0;
 	T1_ = regA__coldfireZmachine_u11(ctx_p0, d_p1.destReg);
-	writeMem__coldfireZmachine_u225(ctx_p0, (*ctx_p0).sp, ((NU8)4), T1_);
+	writeMem__coldfireZmachine_u233(ctx_p0, (*ctx_p0).sp, ((NU8)4), T1_);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	setRegA__coldfireZmachine_u36(ctx_p0, d_p1.destReg, (*ctx_p0).sp);
 	T2_ = (NU16)0;
-	T2_ = fetchExt__coldfireZmachine_u241(ctx_p0);
+	T2_ = fetchExt__coldfireZmachine_u252(ctx_p0);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	T3_ = (NI32)0;
-	T3_ = s16__coldfireZmachine_u252(T2_);
+	T3_ = s16__coldfireZmachine_u263(T2_);
 	(*ctx_p0).sp = (NU32)((NU32)((*ctx_p0).sp) + (NU32)(((NU32) (T3_))));
 	result = ((NU32)8);
 	}BeforeRet_: ;

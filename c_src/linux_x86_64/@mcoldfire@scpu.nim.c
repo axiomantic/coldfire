@@ -115,7 +115,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, logicFamily__coldfireZlogic_u113)(tyObject_MCF5407
 N_LIB_PRIVATE N_NIMCALL(NU32, controlFamily__coldfireZcontrol_u112)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU16 word_p1, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, movecFamily__coldfireZmovec_u58)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU16 word_p1, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, systemControlFamily__coldfireZmovec_u73)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU16 word_p1, tyObject_Decoded__5TcmPDN5hGIQQiyUugATWA d_p2);
-N_LIB_PRIVATE N_NIMCALL(void, takePendingWriteFault__coldfireZmachine_u394)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 insnPc_p1);
+N_LIB_PRIVATE N_NIMCALL(void, takePendingWriteFault__coldfireZmachine_u405)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0, NU32 insnPc_p1);
 static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
 extern tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w runtimeLatch__coldfireZlatch_u49;
 extern NIM_THREADVAR NIM_BOOL nimInErrorMode__system_u3456;
@@ -375,7 +375,7 @@ LA7_: ;
 	break;
 	default: __builtin_unreachable();
 	}
-	takePendingWriteFault__coldfireZmachine_u394(ctx_p0, insnPc_1);
+	takePendingWriteFault__coldfireZmachine_u405(ctx_p0, insnPc_1);
 	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	}BeforeRet_: ;
 	return result;
