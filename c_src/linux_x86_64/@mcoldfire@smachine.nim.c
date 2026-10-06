@@ -116,7 +116,7 @@ N_LIB_PRIVATE N_NOINLINE(void, raiseRangeErrorI)(NI64 i_p0, NI64 a_p1, NI64 b_p2
 N_LIB_PRIVATE N_NIMCALL(void, setRegD__coldfireZmachine_u32)(tyObject_MCF5407CtxcolonObjectType___wR8eRswmbvQqFz6pVtwMdg* ctx_p0, NU8 n_p1, NU32 v_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, mergeSized__coldfireZmachine_u153)(NU32 old_p0, NU32 value_p1, NU8 size_p2);
 N_LIB_PRIVATE N_NIMCALL(void, writeMem__coldfireZmachine_u233)(tyObject_MCF5407CtxcolonObjectType___wR8eRswmbvQqFz6pVtwMdg* ctx_p0, NU32 address_p1, NU8 size_p2, NU32 value_p3);
-N_LIB_PRIVATE N_NIMCALL(void, simWrite__coldfireZsim_u185)(tyObject_SimObj__NESciaEGuOR011fOncqLuQ* sim_p0, NU32 offset_p1, NU8 size_p2, NU32 value_p3, tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g* st_p4);
+N_LIB_PRIVATE N_NIMCALL(void, simWrite__coldfireZsim_u191)(tyObject_SimObj__NESciaEGuOR011fOncqLuQ* sim_p0, NU32 offset_p1, NU8 size_p2, NU32 value_p3, tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g* st_p4);
 N_LIB_PRIVATE N_NIMCALL(NU32, faultStatusFor__coldfireZbus_u21)(tyEnum_Mcf5407BusStatus__QcCiPz55HnkdinXANr4T6g status_p0, tyEnum_BusAccess__LGYwFed203Bt10HbNEyF4g access_p1);
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1);
 static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2);
@@ -1049,7 +1049,7 @@ LA8_: ;
 		offset_1 = (NU32)(address_p1 & ((NU32)4095));
 		T11_ = (tyObject_SimObj__NESciaEGuOR011fOncqLuQ*)0;
 		T11_ = ensureSim__coldfireZsim_u111(ctx_p0);
-		simWrite__coldfireZsim_u185(T11_, offset_1, size_p2, value_p3, (&st_1));
+		simWrite__coldfireZsim_u191(T11_, offset_1, size_p2, value_p3, (&st_1));
 		if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
 	}
 LA9_: ;

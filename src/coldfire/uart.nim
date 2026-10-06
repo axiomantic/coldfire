@@ -28,9 +28,9 @@ const
   usrRxRdy* = 0x01'u8
 
   uisrCos*   = 0x80'u8
-  uisrDb*    = 0x08'u8
-  uisrRxRdy* = 0x04'u8
-  uisrTxRdy* = 0x02'u8
+  uisrDb*    = 0x04'u8
+  uisrRxRdy* = 0x02'u8
+  uisrTxRdy* = 0x01'u8
 
   gUart0Vector* = 0x42'u8
   gUart0InterruptIndex* = 4
