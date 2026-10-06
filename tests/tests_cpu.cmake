@@ -3506,12 +3506,12 @@ if(MCF5407_ABI_GATE)
     endif()
 else()
     # The gate is off, so nothing measured the defined set and this file must
-    # not guess at one. `mcf5407_runtime_init` is the one name the test calls
+    # not guess at one. `cf_runtime_init` is the one name the test calls
     # in its own body, so it is the one name the link needs either way.
-    set(MCF5407_ABI_SMOKE_SYMBOLS mcf5407_runtime_init)
+    set(MCF5407_ABI_SMOKE_SYMBOLS cf_runtime_init)
     message(STATUS
         "mcf5407: tests: MCF5407_ABI_GATE is off, so abi_smoke takes the "
-        "address of `mcf5407_runtime_init` alone. The gate is what measures "
+        "address of `cf_runtime_init` alone. The gate is what measures "
         "which other published names the library defines.")
 endif()
 

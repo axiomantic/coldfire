@@ -74,24 +74,26 @@ set_target_properties(mcf5407 PROPERTIES
 # ---------------------------------------------------------------------------
 # Exported alias for consumers.
 add_library(mcf5407::mcf5407 ALIAS mcf5407)
+add_library(coldfire::coldfire ALIAS mcf5407)
+add_library(coldfire ALIAS mcf5407)
 
 # ---------------------------------------------------------------------------
 # Published ABI symbols for abi_smoke test.
 set(MCF5407_ABI_GATE ON)
 set(MCF5407_ABI_VISIBLE
-	mcf5407_runtime_init
-	mcf5407_create
-	mcf5407_destroy
-	mcf5407_reset
-	mcf5407_exec
-	mcf5407_set_reg
-	mcf5407_get_reg
-	mcf5407_halted
-	mcf5407_faulted
-	mcf5407_set_irq
-	mcf5407_state_size
-	mcf5407_state_save
-	mcf5407_state_load
+	cf_runtime_init
+	cf_create
+	cf_destroy
+	cf_reset
+	cf_exec
+	cf_set_reg
+	cf_get_reg
+	cf_halted
+	cf_faulted
+	cf_set_irq
+	cf_state_size
+	cf_state_save
+	cf_state_load
 	isp1181_create
 	isp1181_destroy
 	isp1181_read

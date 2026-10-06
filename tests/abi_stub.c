@@ -20,53 +20,40 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "mcf5407.h"
+#include "coldfire.h"
+#include "isp1181.h"
 
-/* The runtime bridge. It returns 0, which the contract reads as "the runtime
- * is not initialised". That is the fixed benign value here for the same reason
- * `mcf5407_set_reg` returns 0 below: of the two answers it is the one that
- * claims less, and a caller that believed a stub had brought a runtime up
- * would proceed on the strength of it. */
-int mcf5407_runtime_init(void)
+int cf_runtime_init(void)
 {
     return 0;
 }
 
-mcf5407_ctx* mcf5407_create(void* user,
-                            mcf5407_read_fn rd,
-                            mcf5407_write_fn wr,
-                            mcf5407_iack_fn iack)
+cf_ctx* cf_create(const cf_config* config)
 {
-    (void)user;
-    (void)rd;
-    (void)wr;
-    (void)iack;
+    (void)config;
     return NULL;
 }
 
-void mcf5407_destroy(mcf5407_ctx* ctx)
+void cf_destroy(cf_ctx* ctx)
 {
     (void)ctx;
 }
 
-void mcf5407_reset(mcf5407_ctx* ctx, uint32_t initial_sp, uint32_t initial_pc)
+void cf_reset(cf_ctx* ctx, uint32_t initial_sp, uint32_t initial_pc)
 {
     (void)ctx;
     (void)initial_sp;
     (void)initial_pc;
 }
 
-uint32_t mcf5407_exec(mcf5407_ctx* ctx, uint32_t max_cycles)
+uint32_t cf_exec(cf_ctx* ctx, uint32_t max_cycles)
 {
     (void)ctx;
     (void)max_cycles;
     return 0u;
 }
 
-/* The register bridge. `mcf5407_set_reg` returns 0, which the
- * contract reads as "the write did not happen", and `mcf5407_get_reg` returns
- * 0. Both are the fixed benign value of a stub and neither is a register. */
-int mcf5407_set_reg(mcf5407_ctx* ctx, int index, uint32_t value)
+int cf_set_reg(cf_ctx* ctx, int index, uint32_t value)
 {
     (void)ctx;
     (void)index;
@@ -74,29 +61,27 @@ int mcf5407_set_reg(mcf5407_ctx* ctx, int index, uint32_t value)
     return 0;
 }
 
-uint32_t mcf5407_get_reg(const mcf5407_ctx* ctx, int index)
+uint32_t cf_get_reg(const cf_ctx* ctx, int index)
 {
     (void)ctx;
     (void)index;
     return 0u;
 }
 
-/* The run state. Both return 0, which the contract reads as "not
- * halted" and "not faulted" - the answer it also gives for a nil context. */
-int mcf5407_halted(const mcf5407_ctx* ctx)
+int cf_halted(const cf_ctx* ctx)
 {
     (void)ctx;
     return 0;
 }
 
-int mcf5407_faulted(const mcf5407_ctx* ctx)
+int cf_faulted(const cf_ctx* ctx)
 {
     (void)ctx;
     return 0;
 }
 
-void mcf5407_set_irq(mcf5407_ctx* ctx, int level, uint8_t vector,
-                     int autovector)
+void cf_set_irq(cf_ctx* ctx, int level, uint8_t vector,
+                int autovector)
 {
     (void)ctx;
     (void)level;
@@ -104,18 +89,18 @@ void mcf5407_set_irq(mcf5407_ctx* ctx, int level, uint8_t vector,
     (void)autovector;
 }
 
-size_t mcf5407_state_size(void)
+size_t cf_state_size(void)
 {
     return (size_t)0;
 }
 
-void mcf5407_state_save(const mcf5407_ctx* ctx, void* dst)
+void cf_state_save(const cf_ctx* ctx, void* dst)
 {
     (void)ctx;
     (void)dst;
 }
 
-void mcf5407_state_load(mcf5407_ctx* ctx, const void* src)
+void cf_state_load(cf_ctx* ctx, const void* src)
 {
     (void)ctx;
     (void)src;

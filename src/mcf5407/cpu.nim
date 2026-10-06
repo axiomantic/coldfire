@@ -115,33 +115,38 @@ const
 # layout. It is a Nim `ref` because allocation must happen only inside
 # `mcf5407_create`, never inside `mcf5407_exec`.
 
-proc mcf5407_create*(user: pointer; rd: Mcf5407ReadFn; wr: Mcf5407WriteFn;
-                     iack: Mcf5407IackFn): MCF5407Ctx
-    {.exportc: "mcf5407_create", cdecl, dynlib.} =
-  ## Allocate the context and store the board callbacks. This is the one
-  ## place the core allocates.
-  ##
-  ## It refuses when the runtime was abandoned, and that refusal is what
-  ## replaces an abort. C lets a caller drop a return value, so a status
-  ## nobody is obliged to read cannot carry the guarantee the abort carried.
-  ## This check does: `new(result)` needs the Nim
-  ## allocator, the allocator needs the runtime, and a nil context is a value
-  ## every other call in `include/mcf5407.h` already documents an answer for.
-  ## A caller that ignored the status gets a library that does nothing.
+proc cf_create*(config: ptr CfConfig): MCF5407Ctx
+    {.exportc: "cf_create", cdecl, dynlib.} =
+  ## Allocate the context and store the configuration and callbacks.
   if runtimeAbandoned(runtimeLatch):
     return nil
+  if config.isNil:
+    return nil
   new(result)
-  result.user = user
-  result.readFn = rd
-  result.writeFn = wr
-  result.iackFn = iack
+  result.user = config.user
+  result.readFn = config.rd
+  result.writeFn = config.wr
+  result.iackFn = config.iack
   result.sim = nil
+  result.cfgIsa = cast[pointer](uint(config.isa))
+  let vbrMask = if config.vbrMask != 0'u32: config.vbrMask else: 0xFFF0_0000'u32
+  result.cfgVbrMask = cast[pointer](uint(vbrMask))
 
-proc mcf5407_destroy*(ctx: MCF5407Ctx)
-    {.exportc: "mcf5407_destroy", cdecl, dynlib.} =
-  ## Tear the context down. Under `--mm:arc` the object is reclaimed when the
-  ## owning reference is dropped; this marks it dead so a later use faults
-  ## instead of reading a live object.
+proc mcf5407_create*(user: pointer; rd: Mcf5407ReadFn; wr: Mcf5407WriteFn;
+                     iack: Mcf5407IackFn): MCF5407Ctx =
+  var cfg = CfConfig(
+    isa: CF_ISA_A,
+    vbrMask: 0xFFFFFFFF'u32,
+    user: user,
+    rd: rd,
+    wr: wr,
+    iack: iack
+  )
+  cf_create(addr cfg)
+
+proc cf_destroy*(ctx: MCF5407Ctx)
+    {.exportc: "cf_destroy", cdecl, dynlib.} =
+  ## Tear the context down.
   if not ctx.isNil:
     ctx.halted = true
     ctx.fault = true
@@ -150,16 +155,14 @@ proc mcf5407_destroy*(ctx: MCF5407Ctx)
     ctx.iackFn = nil
     freeSim(ctx)
 
-proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
-    {.exportc: "mcf5407_reset", cdecl, dynlib.} =
+proc mcf5407_destroy*(ctx: MCF5407Ctx) =
+  cf_destroy(ctx)
+
+proc cf_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
+    {.exportc: "cf_reset", cdecl, dynlib.} =
   ## Reset the machine to a known state: the single A7 to `initial_sp`, the
   ## program counter to `initial_pc`, and the status register to the reset
   ## value. `0x2700` is the supervisor, full-mask reset value on this part.
-  ##
-  ## This is a C ABI entry point (`include/mcf5407.h`), so the argument is
-  ## whatever the caller passed and not something the type system has vouched
-  ## for. An entry point that faults on nil while its neighbour returns is a
-  ## contract the header cannot state.
   if ctx.isNil:
     return
   ctx.sp = initialSp
@@ -234,8 +237,10 @@ proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
   # presentation survives - it is the board's state and this call has no newer
   # answer for it. What does not survive is the core's own edge history, which
   # is why a level 7 still asserted across this call is armed again and one
-  # whose pin has been released is not.
   resetInterruptEdge(ctx)
+
+proc mcf5407_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32) =
+  cf_reset(ctx, initialSp, initialPc)
 
 # ---------------------------------------------------------------------------
 # The instruction dispatch.
@@ -368,8 +373,8 @@ proc step(ctx: MCF5407Ctx): uint32 =
   # it. `machine.nim`'s `writeMem` carries the manual reading.
   takePendingWriteFault(ctx, insnPc)
 
-proc mcf5407_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32
-    {.exportc: "mcf5407_exec", cdecl, dynlib.} =
+proc cf_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32
+    {.exportc: "cf_exec", cdecl, dynlib.} =
   ## Run until at least `max_cycles` cycles have been spent and return the
   ## cycles actually spent, which may exceed `max_cycles` by up to the cost of
   ## one instruction: no instruction is abandoned once it has started. The loop
@@ -441,3 +446,6 @@ proc mcf5407_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32
     # a caller.
     spent = spent + cost
   result = spent
+
+proc mcf5407_exec*(ctx: MCF5407Ctx; maxCycles: uint32): uint32 =
+  cf_exec(ctx, maxCycles)

@@ -34,6 +34,8 @@ typedef NU32 tyArray__pIlUFYzWYz8RAGWkyxci4w[7];
 struct tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew {
 	void* user;
 	void* sim;
+	void* cfgIsa;
+	void* cfgVbrMask;
 	tyProc__m3YPy7Spfk9bnIuzLyo9bUPA readFn;
 	tyProc__DPk5mmlbc0hvn8CHsxMHlw writeFn;
 	tyProc__f9aaH9agUw9cXBXOefXPK4BRg iackFn;
@@ -77,16 +79,16 @@ struct tyObject_EaRef__9beOY3Uw0MdwSKhWVQMmCgQ {
 	NU8 reg;
 	NU32 address;
 };
-N_LIB_EXPORT N_CDECL(int, mcf5407_set_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1, NU32 value_p2);
+N_LIB_EXPORT N_CDECL(int, cf_set_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1, NU32 value_p2);
 N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, regFileSet__mcf5407Zmachine_u110)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, NI index_p1, NU32 v_p2);
 static N_INLINE(NIM_BOOL, contains__mcf5407Zmachine_u90)(tyObject_HSlice__Xds12lJEPVUfUpMuvUCkoA s_p0, NI value_p1);
 static N_INLINE(tyObject_HSlice__Xds12lJEPVUfUpMuvUCkoA, dotdot___mcf5407Zmachine_u45)(NI a_p0, NI b_p1);
 N_LIB_PRIVATE N_NOINLINE(void, raiseIndexError2)(NI i_p0, NI n_p1);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
-N_LIB_EXPORT N_CDECL(NU32, mcf5407_get_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1);
+N_LIB_EXPORT N_CDECL(NU32, cf_get_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1);
 N_LIB_PRIVATE N_NIMCALL(NU32, regFileGet__mcf5407Zmachine_u41)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, NI index_p1);
-N_LIB_EXPORT N_CDECL(int, mcf5407_halted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0);
-N_LIB_EXPORT N_CDECL(int, mcf5407_faulted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0);
+N_LIB_EXPORT N_CDECL(int, cf_halted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0);
+N_LIB_EXPORT N_CDECL(int, cf_faulted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0);
 N_LIB_PRIVATE N_NIMCALL(void, takeExceptionCopiedSr__mcf5407Zmachine_u380)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, NU8 vector_p1, NU32 stackedPc_p2, NU32 fs_p3, NU32 stackedSr_p4);
 N_LIB_PRIVATE N_NIMCALL(NU32, exceptionFormat__mcf5407Zmachine_u377)(NU32 sp_p0);
 N_LIB_PRIVATE N_NIMCALL(NU32, exceptionFrameBase__mcf5407Zmachine_u374)(NU32 sp_p0);
@@ -256,7 +258,7 @@ LA2_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_EXPORT N_CDECL(int, mcf5407_set_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1, NU32 value_p2) {
+N_LIB_EXPORT N_CDECL(int, cf_set_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1, NU32 value_p2) {
 	int result;
 {	{
 		NIM_BOOL T3_;
@@ -402,7 +404,7 @@ LA2_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_EXPORT N_CDECL(NU32, mcf5407_get_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1) {
+N_LIB_EXPORT N_CDECL(NU32, cf_get_reg)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, int index_p1) {
 	NU32 result;
 {	{
 		NIM_BOOL T3_;
@@ -426,7 +428,7 @@ LA7_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_EXPORT N_CDECL(int, mcf5407_halted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0) {
+N_LIB_EXPORT N_CDECL(int, cf_halted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0) {
 	int result;
 {	{
 		NIM_BOOL T3_;
@@ -444,7 +446,7 @@ LA5_: ;
 	}BeforeRet_: ;
 	return result;
 }
-N_LIB_EXPORT N_CDECL(int, mcf5407_faulted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0) {
+N_LIB_EXPORT N_CDECL(int, cf_faulted)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0) {
 	int result;
 {	{
 		NIM_BOOL T3_;

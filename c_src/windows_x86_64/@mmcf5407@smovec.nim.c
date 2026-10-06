@@ -45,6 +45,8 @@ typedef NU32 tyArray__pIlUFYzWYz8RAGWkyxci4w[7];
 struct tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew {
 	void* user;
 	void* sim;
+	void* cfgIsa;
+	void* cfgVbrMask;
 	tyProc__m3YPy7Spfk9bnIuzLyo9bUPA readFn;
 	tyProc__DPk5mmlbc0hvn8CHsxMHlw writeFn;
 	tyProc__f9aaH9agUw9cXBXOefXPK4BRg iackFn;

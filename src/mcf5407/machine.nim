@@ -872,19 +872,25 @@ proc transferControl*(ctx: MCF5407Ctx; target: uint32; faultPc: uint32) =
 # it, 0 through `regFileHighIndex`, and 17 is read-only through
 # `mcf5407_set_reg` for the reason given there.
 
-proc mcf5407_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint
-    {.exportc: "mcf5407_set_reg", cdecl, dynlib.} =
+proc cf_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint
+    {.exportc: "cf_set_reg", cdecl, dynlib.} =
   if ctx.isNil or index < 0 or index > regFileHighIndex:
     return cast[cint](0)
   if regFileSet(ctx, int(index), value):
     return cast[cint](1)
   cast[cint](0)
 
-proc mcf5407_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
-    {.exportc: "mcf5407_get_reg", cdecl, dynlib.} =
+proc mcf5407_set_reg*(ctx: MCF5407Ctx; index: cint; value: uint32): cint =
+  cf_set_reg(ctx, index, value)
+
+proc cf_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
+    {.exportc: "cf_get_reg", cdecl, dynlib.} =
   if ctx.isNil or index < 0 or index > regFileHighIndex:
     return 0'u32
   regFileGet(ctx, int(index))
+
+proc mcf5407_get_reg*(ctx: MCF5407Ctx; index: cint): uint32 =
+  cf_get_reg(ctx, index)
 
 # ---------------------------------------------------------------------------
 # The run state the conformance harness needs.
@@ -897,18 +903,24 @@ proc mcf5407_get_reg*(ctx: MCF5407Ctx; index: cint): uint32
 # not written yet" the same answer, and the conformance runner has to separate
 # exactly those two.
 #
-# They report and they do not clear. `mcf5407_reset` is what clears both bits,
+# They report and they do not clear. `cf_reset` is what clears both bits,
 # so a reader may ask twice and get the same answer. A nil context answers 0
 # to both: a caller with no context has no halted core and no faulted one.
 
-proc mcf5407_halted*(ctx: MCF5407Ctx): cint
-    {.exportc: "mcf5407_halted", cdecl, dynlib.} =
+proc cf_halted*(ctx: MCF5407Ctx): cint
+    {.exportc: "cf_halted", cdecl, dynlib.} =
   if ctx.isNil or not ctx.halted:
     return cast[cint](0)
   cast[cint](1)
 
-proc mcf5407_faulted*(ctx: MCF5407Ctx): cint
-    {.exportc: "mcf5407_faulted", cdecl, dynlib.} =
+proc mcf5407_halted*(ctx: MCF5407Ctx): cint =
+  cf_halted(ctx)
+
+proc cf_faulted*(ctx: MCF5407Ctx): cint
+    {.exportc: "cf_faulted", cdecl, dynlib.} =
   if ctx.isNil or not ctx.fault:
     return cast[cint](0)
   cast[cint](1)
+
+proc mcf5407_faulted*(ctx: MCF5407Ctx): cint =
+  cf_faulted(ctx)

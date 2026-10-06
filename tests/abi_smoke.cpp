@@ -63,6 +63,8 @@
 #include <thread>
 #include <vector>
 
+#include "coldfire.h"
+#include "isp1181.h"
 #include "mcf5407.h"
 
 namespace {
@@ -157,7 +159,7 @@ bool all_racers_returned() {
             /* The status is consumed, not discarded: the entry point is
              * MCF5407_MUST_CHECK. No racer stalls the latch, so a healthy
              * runtime answers 1 to every one of them. */
-            if (mcf5407_runtime_init() == 1) {
+            if (cf_runtime_init() == 1) {
                 returned.fetch_add(1, std::memory_order_relaxed);
             }
         });
@@ -247,7 +249,7 @@ int main() {
      * every reason would satisfy it just as well. The answer is read through
      * the published C entry point rather than against the Nim procedure
      * behind it. */
-    if (mcf5407_runtime_init() != 1) {
+    if (cf_runtime_init() != 1) {
         return 2;
     }
     if (mcf5407_runtime_init() != 1) {

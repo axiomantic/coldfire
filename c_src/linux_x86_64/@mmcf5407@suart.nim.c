@@ -64,8 +64,8 @@ struct tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw {
 };
 N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Zuart_u53)(tyObject_UartObj__WN50qc5Vjup9bnmLqgJmwmQ* u_p0);
 N_LIB_PRIVATE N_NIMCALL(NU8, uisr__mcf5407Zuart_u49)(tyObject_UartObj__WN50qc5Vjup9bnmLqgJmwmQ* u_p0);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalVector__mcf5407Zintc_u220)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NU8 vector_p2);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u212)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalVector__mcf5407Zintc_u222)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NU8 vector_p2);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u214)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
 N_LIB_PRIVATE N_NIMCALL(NU8, usr__mcf5407Zuart_u45)(tyObject_UartObj__WN50qc5Vjup9bnmLqgJmwmQ* u_p0);
 N_LIB_PRIVATE N_NOINLINE(void, raiseIndexError2)(NI i_p0, NI n_p1);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
@@ -104,8 +104,8 @@ N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Zuart_u53)(tyObject_Uar
 		(*u_p0).interruptAsserted = asserted_1;
 		{
 			if (!!(((*u_p0).intc == 0))) goto LA7_;
-			setInternalVector__mcf5407Zintc_u220((*u_p0).intc, (*u_p0).interruptIndex, (*u_p0).uivr);
-			setInternalPending__mcf5407Zintc_u212((*u_p0).intc, (*u_p0).interruptIndex, asserted_1);
+			setInternalVector__mcf5407Zintc_u222((*u_p0).intc, (*u_p0).interruptIndex, (*u_p0).uivr);
+			setInternalPending__mcf5407Zintc_u214((*u_p0).intc, (*u_p0).interruptIndex, asserted_1);
 		}
 LA7_: ;
 	}
@@ -425,7 +425,7 @@ LA12_: ;
 			T25_ = (*u_p0).interruptAsserted;
 LA26_: ;
 			if (!T25_) goto LA27_;
-			setInternalVector__mcf5407Zintc_u220((*u_p0).intc, (*u_p0).interruptIndex, (*u_p0).uivr);
+			setInternalVector__mcf5407Zintc_u222((*u_p0).intc, (*u_p0).interruptIndex, (*u_p0).uivr);
 		}
 LA27_: ;
 	}

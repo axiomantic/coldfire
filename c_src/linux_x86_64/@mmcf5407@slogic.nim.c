@@ -47,6 +47,8 @@ typedef NU32 tyArray__pIlUFYzWYz8RAGWkyxci4w[7];
 struct tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew {
 	void* user;
 	void* sim;
+	void* cfgIsa;
+	void* cfgVbrMask;
 	tyProc__m3YPy7Spfk9bnIuzLyo9bUPA readFn;
 	tyProc__DPk5mmlbc0hvn8CHsxMHlw writeFn;
 	tyProc__f9aaH9agUw9cXBXOefXPK4BRg iackFn;
@@ -91,7 +93,7 @@ struct tyObject_EaRef__9beOY3Uw0MdwSKhWVQMmCgQ {
 };
 N_LIB_PRIVATE N_NIMCALL(NU32, execAndOr__mcf5407Zlogic_u12)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, tyObject_Decoded__7Dbj6AEfD9alAhGfE7g37sg d_p1);
 N_LIB_PRIVATE N_NIMCALL(NU32, trap__mcf5407Zlogic_u4)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u225)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u243)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1);
 N_LIB_PRIVATE N_NIMCALL(NU32, eaRead__mcf5407Zmachine_u294)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1, NU8 size_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, combine__mcf5407Zlogic_u7)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, NU32 src_p1, NU32 dst_p2);
 N_LIB_PRIVATE N_NIMCALL(NU32, regD__mcf5407Zmachine_u7)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, NU8 n_p1);
@@ -109,11 +111,11 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execNot__mcf5407Zlogic_u44)(tyObject_MCF5407Ctxcol
 N_LIB_PRIVATE N_NIMCALL(NU32, execBitOp__mcf5407Zlogic_u49)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, tyObject_Decoded__7Dbj6AEfD9alAhGfE7g37sg d_p1);
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1);
 static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2);
-N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u211)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0);
+N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u229)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0);
 N_LIB_PRIVATE N_NIMCALL(NU32, execShift__mcf5407Zlogic_u73)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0, tyObject_Decoded__7Dbj6AEfD9alAhGfE7g37sg d_p1);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
-extern NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaMemoryAlterable__mcf5407Zdecode95types_u145;
-extern NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitStatic__mcf5407Zdecode95types_u153;
+extern NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaMemoryAlterable__mcf5407Zdecode95types_u163;
+extern NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitStatic__mcf5407Zdecode95types_u171;
 extern NIM_THREADVAR NIM_BOOL nimInErrorMode__system_u3456;
 N_LIB_PRIVATE N_NIMCALL(NU32, trap__mcf5407Zlogic_u4)(tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew* ctx_p0) {
 	NU32 result;
@@ -182,7 +184,7 @@ LA3_: ;
 		{
 			NIM_BOOL T11_;
 			T11_ = (NIM_BOOL)0;
-			T11_ = eaIsLegalFor__mcf5407Zdecode95types_u225(d_p1.op, d_p1.ea);
+			T11_ = eaIsLegalFor__mcf5407Zdecode95types_u243(d_p1.op, d_p1.ea);
 			if (!!(T11_)) goto LA12_;
 			result = trap__mcf5407Zlogic_u4(ctx_p0);
 			goto BeforeRet_;
@@ -208,7 +210,7 @@ LA7_: ;
 	{
 		NIM_BOOL T21_;
 		T21_ = (NIM_BOOL)0;
-		T21_ = isEaLegal__mcf5407Zea_u90(eaMemoryAlterable__mcf5407Zdecode95types_u145, d_p1.ea);
+		T21_ = isEaLegal__mcf5407Zea_u90(eaMemoryAlterable__mcf5407Zdecode95types_u163, d_p1.ea);
 		if (!!(T21_)) goto LA22_;
 		result = trap__mcf5407Zlogic_u4(ctx_p0);
 		goto BeforeRet_;
@@ -268,7 +270,7 @@ LA3_: ;
 	{
 		NIM_BOOL T7_;
 		T7_ = (NIM_BOOL)0;
-		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u225(((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)43), d_p1.ea);
+		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u243(((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)43), d_p1.ea);
 		if (!!(T7_)) goto LA8_;
 		result = trap__mcf5407Zlogic_u4(ctx_p0);
 		goto BeforeRet_;
@@ -336,7 +338,7 @@ LA3_: ;
 	{
 		NIM_BOOL T7_;
 		T7_ = (NIM_BOOL)0;
-		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u225(d_p1.op, d_p1.ea);
+		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u243(d_p1.op, d_p1.ea);
 		if (!!(T7_)) goto LA8_;
 		result = trap__mcf5407Zlogic_u4(ctx_p0);
 		goto BeforeRet_;
@@ -375,7 +377,7 @@ LA3_: ;
 	{
 		NIM_BOOL T7_;
 		T7_ = (NIM_BOOL)0;
-		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u225(((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)27), d_p1.ea);
+		T7_ = eaIsLegalFor__mcf5407Zdecode95types_u243(((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)27), d_p1.ea);
 		if (!!(T7_)) goto LA8_;
 		result = trap__mcf5407Zlogic_u4(ctx_p0);
 		goto BeforeRet_;
@@ -419,13 +421,13 @@ NIM_BOOL* nimErr_;
 	colontmpD__4 = (NU32)0;
 	{
 		if (!d_p1.regOperand) goto LA3_;
-		colontmpD_ = eaLegalityFor__mcf5407Zdecode95types_u211(d_p1.op);
+		colontmpD_ = eaLegalityFor__mcf5407Zdecode95types_u229(d_p1.op);
 		mask_1 = colontmpD_;
 	}
 	goto LA1_;
 LA3_: ;
 	{
-		colontmpD__2 = eaBitStatic__mcf5407Zdecode95types_u153;
+		colontmpD__2 = eaBitStatic__mcf5407Zdecode95types_u171;
 		mask_1 = colontmpD__2;
 	}
 LA1_: ;
@@ -569,7 +571,7 @@ N_LIB_PRIVATE N_NIMCALL(NU32, execShift__mcf5407Zlogic_u73)(tyObject_MCF5407Ctxc
 	{
 		NIM_BOOL T3_;
 		T3_ = (NIM_BOOL)0;
-		T3_ = eaIsLegalFor__mcf5407Zdecode95types_u225(d_p1.op, d_p1.ea);
+		T3_ = eaIsLegalFor__mcf5407Zdecode95types_u243(d_p1.op, d_p1.ea);
 		if (!!(T3_)) goto LA4_;
 		result = trap__mcf5407Zlogic_u4(ctx_p0);
 		goto BeforeRet_;

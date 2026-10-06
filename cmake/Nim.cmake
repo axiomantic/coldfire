@@ -254,9 +254,11 @@ set(MCF5407_NIM_BUILT_PREFIX "${CMAKE_MATCH_1}")
 mcf5407_render_command(MCF5407_NIM_COMMAND_TEXT ${MCF5407_NIM_COMMAND})
 message(STATUS "mcf5407: nim invocation: ${MCF5407_NIM_COMMAND_TEXT}")
 
-# The contract header. It is read here and it is never written here. The name is set at this point because the line below has to
-# name it, and step 4a reads the same variable.
-set(MCF5407_ABI_CONTRACT_FILE "${PROJECT_SOURCE_DIR}/include/mcf5407.h")
+# The contract headers. They are read here and they are never written here.
+set(MCF5407_ABI_CONTRACT_COLDFIRE "${PROJECT_SOURCE_DIR}/include/coldfire.h")
+set(MCF5407_ABI_CONTRACT_ISP1181 "${PROJECT_SOURCE_DIR}/include/isp1181.h")
+set(MCF5407_ABI_CONTRACT_COMPAT "${PROJECT_SOURCE_DIR}/include/mcf5407.h")
+set(MCF5407_ABI_CONTRACT_FILE "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 
 # Editing a configure-time input must re-run the configure step. The inputs
 # are enumerated here, and the property below lists every one of them.
@@ -264,16 +266,20 @@ set(MCF5407_ABI_CONTRACT_FILE "${PROJECT_SOURCE_DIR}/include/mcf5407.h")
 # No count is written. A count is a number beside an enumeration that nothing
 # holds to it, and the enumeration is what a reader has to check anyway.
 #
-#   `src/*.nim`        the unit list is read at configure time, and a new
-#                      module adds a unit to it.
-#   `.nim-version`     step 1 compares it against the compiler.
-#   `include/mcf5407.h` step 4a reads the published set out of it.
+#   `src/*.nim`          the unit list is read at configure time, and a new
+#                        module adds a unit to it.
+#   `.nim-version`       step 1 compares it against the compiler.
+#   `include/coldfire.h` step 4a reads the published set out of it.
+#   `include/isp1181.h`  step 4a reads the published set out of it.
+#   `include/mcf5407.h`  compatibility header.
 file(GLOB_RECURSE MCF5407_NIM_SOURCES CONFIGURE_DEPENDS
     "${PROJECT_SOURCE_DIR}/src/*.nim")
 set_property(DIRECTORY "${PROJECT_SOURCE_DIR}"
     APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     ${MCF5407_NIM_SOURCES} "${MCF5407_NIM_VERSION_FILE}"
-    "${MCF5407_ABI_CONTRACT_FILE}")
+    "${MCF5407_ABI_CONTRACT_COLDFIRE}"
+    "${MCF5407_ABI_CONTRACT_ISP1181}"
+    "${MCF5407_ABI_CONTRACT_COMPAT}")
 
 execute_process(
     COMMAND ${MCF5407_NIM_COMMAND}
@@ -1192,23 +1198,37 @@ message(STATUS
 # beside the configure-time dependency list above, so the file this step reads
 # and the file that re-runs this step are one name.
 
-if(NOT EXISTS "${MCF5407_ABI_CONTRACT_FILE}")
+if(NOT EXISTS "${MCF5407_ABI_CONTRACT_COLDFIRE}")
     message(FATAL_ERROR
-        "mcf5407: step 4a failed: ${MCF5407_ABI_CONTRACT_FILE} does not exist. "
+        "mcf5407: step 4a failed: ${MCF5407_ABI_CONTRACT_COLDFIRE} does not exist. "
+        "That header is the published set of this library, and the gate reads "
+        "its names from there.")
+endif()
+if(NOT EXISTS "${MCF5407_ABI_CONTRACT_ISP1181}")
+    message(FATAL_ERROR
+        "mcf5407: step 4a failed: ${MCF5407_ABI_CONTRACT_ISP1181} does not exist. "
         "That header is the published set of this library, and the gate reads "
         "its names from there.")
 endif()
 
-mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED MCF5407_ABI_SENTINELS
-    MCF5407_ABI_LOST contract "${MCF5407_ABI_CONTRACT_FILE}")
-mcf5407_abi_check_sentinels("the contract header"
-    "${MCF5407_ABI_SENTINELS}" "${MCF5407_ABI_LOST}")
+mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_COLDFIRE MCF5407_ABI_SENTINELS_COLDFIRE
+    MCF5407_ABI_LOST_COLDFIRE contract_coldfire "${MCF5407_ABI_CONTRACT_COLDFIRE}")
+mcf5407_abi_check_sentinels("the coldfire header"
+    "${MCF5407_ABI_SENTINELS_COLDFIRE}" "${MCF5407_ABI_LOST_COLDFIRE}")
+
+mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_ISP1181 MCF5407_ABI_SENTINELS_ISP1181
+    MCF5407_ABI_LOST_ISP1181 contract_isp1181 "${MCF5407_ABI_CONTRACT_ISP1181}")
+mcf5407_abi_check_sentinels("the isp1181 header"
+    "${MCF5407_ABI_SENTINELS_ISP1181}" "${MCF5407_ABI_LOST_ISP1181}")
+
+set(MCF5407_ABI_PUBLISHED ${MCF5407_ABI_PUBLISHED_COLDFIRE} ${MCF5407_ABI_PUBLISHED_ISP1181})
+list(REMOVE_DUPLICATES MCF5407_ABI_PUBLISHED)
 
 if(MCF5407_ABI_PUBLISHED STREQUAL "")
     message(FATAL_ERROR
-        "mcf5407: step 4a failed: control C: ${MCF5407_ABI_CONTRACT_FILE} "
-        "publishes no symbol at all.\n"
-        "This project publishes at least `mcf5407_runtime_init`. An empty "
+        "mcf5407: step 4a failed: control C: contract headers "
+        "publish no symbol at all.\n"
+        "This project publishes at least `cf_runtime_init`. An empty "
         "published set makes every verdict below it vacuous, and silence is "
         "not a pass.")
 endif()
@@ -1663,7 +1683,7 @@ endforeach()
 
 if(NOT MCF5407_ABI_HIDDEN STREQUAL "")
     message(FATAL_ERROR
-        "mcf5407: step 4a failed: ${MCF5407_ABI_CONTRACT_FILE} publishes a "
+        "mcf5407: step 4a failed: the contract headers publish a "
         "symbol that the shared object DEFINES AND DOES NOT EXPORT.\n"
         "  hidden          : ${MCF5407_ABI_HIDDEN}\n"
         "  visible         : ${MCF5407_ABI_VISIBLE}\n"
@@ -1686,7 +1706,7 @@ endif()
 #
 # A consumer cannot call a symbol it cannot declare. This check also constrains
 # this project: no new exported symbol can be added in `src/mcf5407.nim` until
-# `include/mcf5407.h` declares it, because this step refuses an export the
+# `include/coldfire.h` or `include/isp1181.h` declares it, because this step refuses an export the
 # contract does not carry.
 set(MCF5407_ABI_UNDECLARED "")
 foreach(name IN LISTS MCF5407_ABI_EXPORTED)
@@ -1701,7 +1721,7 @@ endforeach()
 if(NOT MCF5407_ABI_UNDECLARED STREQUAL "")
     message(FATAL_ERROR
         "mcf5407: step 4a failed: the shared object exports a name that "
-        "${MCF5407_ABI_CONTRACT_FILE} does not declare.\n"
+        "the contract headers do not declare.\n"
         "  undeclared : ${MCF5407_ABI_UNDECLARED}\n"
         "Either the contract lost the declaration, or this project exported "
         "something the contract never promised. A symbol a consumer cannot "
@@ -1716,7 +1736,7 @@ list(LENGTH MCF5407_ABI_VISIBLE MCF5407_ABI_VISIBLE_COUNT)
 list(LENGTH MCF5407_ABI_UNIMPLEMENTED MCF5407_ABI_UNIMPLEMENTED_COUNT)
 
 message(STATUS
-    "mcf5407: step 4a ${MCF5407_ABI_CONTRACT_FILE} publishes "
+    "mcf5407: step 4a contract headers publish "
     "${MCF5407_ABI_PUBLISHED_COUNT} symbol(s), read by ${MCF5407_ABI_PARSER} "
     "(${MCF5407_ABI_PARSER_SOURCE})")
 message(STATUS
@@ -1787,5 +1807,7 @@ message(STATUS "mcf5407: step 5 the static library mcf5407 is defined")
 # linker unchanged as `-lmcf5407`.
 
 add_library(mcf5407::mcf5407 ALIAS mcf5407)
+add_library(coldfire::coldfire ALIAS mcf5407)
+add_library(coldfire ALIAS mcf5407)
 
-message(STATUS "mcf5407: step 6 the target mcf5407::mcf5407 is exported")
+message(STATUS "mcf5407: step 6 the target mcf5407::mcf5407 (and coldfire::coldfire) is exported")

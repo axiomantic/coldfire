@@ -33,6 +33,8 @@ typedef NU32 tyArray__pIlUFYzWYz8RAGWkyxci4w[7];
 struct tyObject_MCF5407CtxcolonObjectType___waHAsSX2E8vFIGegH9axKew {
 	void* user;
 	void* sim;
+	void* cfgIsa;
+	void* cfgVbrMask;
 	tyProc__m3YPy7Spfk9bnIuzLyo9bUPA readFn;
 	tyProc__DPk5mmlbc0hvn8CHsxMHlw writeFn;
 	tyProc__f9aaH9agUw9cXBXOefXPK4BRg iackFn;
@@ -81,22 +83,22 @@ N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___mcf5407Zintc_u135)(tyObject_MCF5407Ctx
 N_LIB_PRIVATE N_NIMCALL(void, nimRawDispose)(void* p_p0, NI alignment_p1);
 static N_INLINE(void, nimIncRef)(void* p_p0);
 static N_INLINE(NI, pluspercent___system_u793)(NI x_p0, NI y_p1);
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u214)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1, NU8 size_p2);
-N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u158)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, NU8 size_p1);
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u232)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1, NU8 size_p2);
+N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u176)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, NU8 size_p1);
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1);
 static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2);
 N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, isEaLegal__mcf5407Zea_u90)(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg leg_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1);
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaDataAddressing__mcf5407Zdecode95types_u146 = {253, 31}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaDataAddressing__mcf5407Zdecode95types_u164 = {253, 31}
 ;
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitDynamic__mcf5407Zdecode95types_u152 = {253, 15}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitDynamic__mcf5407Zdecode95types_u170 = {253, 15}
 ;
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaJumpTarget__mcf5407Zdecode95types_u154 = {228, 15}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaJumpTarget__mcf5407Zdecode95types_u172 = {228, 15}
 ;
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaLeaPeaTarget__mcf5407Zdecode95types_u155 = {228, 15}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaLeaPeaTarget__mcf5407Zdecode95types_u173 = {228, 15}
 ;
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaMemoryAlterable__mcf5407Zdecode95types_u145 = {252, 3}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaMemoryAlterable__mcf5407Zdecode95types_u163 = {252, 3}
 ;
-N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitStatic__mcf5407Zdecode95types_u153 = {61, 0}
+N_LIB_PRIVATE NIM_CONST tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg eaBitStatic__mcf5407Zdecode95types_u171 = {61, 0}
 ;
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1) {
 	NI result;
@@ -172,7 +174,7 @@ static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2)
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1) {
 	nimSetMem__system_u2179(p_p0, ((int)0), size_p1);
 }
-N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u158)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, NU8 size_p1) {
+N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u176)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, NU8 size_p1) {
 	tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg result;
 	tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg colontmpD_;
 	tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg colontmpD__2;
@@ -271,13 +273,13 @@ LA6_: ;
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)24):
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)25):
 	{
-		colontmpD__6 = eaDataAddressing__mcf5407Zdecode95types_u146;
+		colontmpD__6 = eaDataAddressing__mcf5407Zdecode95types_u164;
 		result = colontmpD__6;
 	}
 	break;
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)30):
 	{
-		colontmpD__7 = eaBitDynamic__mcf5407Zdecode95types_u152;
+		colontmpD__7 = eaBitDynamic__mcf5407Zdecode95types_u170;
 		result = colontmpD__7;
 	}
 	break;
@@ -322,7 +324,7 @@ LA6_: ;
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)52):
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)53):
 	{
-		colontmpD__11 = eaJumpTarget__mcf5407Zdecode95types_u154;
+		colontmpD__11 = eaJumpTarget__mcf5407Zdecode95types_u172;
 		result = colontmpD__11;
 	}
 	break;
@@ -346,7 +348,7 @@ LA6_: ;
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)5):
 	case ((tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww)6):
 	{
-		colontmpD__14 = eaLeaPeaTarget__mcf5407Zdecode95types_u155;
+		colontmpD__14 = eaLeaPeaTarget__mcf5407Zdecode95types_u173;
 		result = colontmpD__14;
 	}
 	break;
@@ -374,12 +376,12 @@ LA6_: ;
 	}
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u214)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1, NU8 size_p2) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u232)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1, NU8 size_p2) {
 	NIM_BOOL result;
 	tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg legality_1;
 	NIM_BOOL T1_;
 	tySet_tyEnum_EAMode__3aOOvktwifK3OZLaWIYGHQ T2_;
-	legality_1 = eaLegalityFor__mcf5407Zdecode95types_u158(op_p0, size_p2);
+	legality_1 = eaLegalityFor__mcf5407Zdecode95types_u176(op_p0, size_p2);
 	T1_ = (NIM_BOOL)0;
 	T2_ = 0;
 	T1_ = !((legality_1.modes == T2_));
@@ -389,13 +391,13 @@ LA3_: ;
 	result = T1_;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u225)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, eaIsLegalFor__mcf5407Zdecode95types_u243)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0, tyObject_EA__KI3RB4YzJz8SR6dkI0rRzQ ea_p1) {
 	NIM_BOOL result;
-	result = eaIsLegalFor__mcf5407Zdecode95types_u214(op_p0, ea_p1, ((NU8)4));
+	result = eaIsLegalFor__mcf5407Zdecode95types_u232(op_p0, ea_p1, ((NU8)4));
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u211)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0) {
+N_LIB_PRIVATE N_NIMCALL(tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg, eaLegalityFor__mcf5407Zdecode95types_u229)(tyEnum_Operation__6TLKcNpVQyj7eqVm9aG23ww op_p0) {
 	tyObject_EaLegality__B9cV9bJERue2rs9cppMM10ugg result;
-	result = eaLegalityFor__mcf5407Zdecode95types_u158(op_p0, ((NU8)4));
+	result = eaLegalityFor__mcf5407Zdecode95types_u176(op_p0, ((NU8)4));
 	return result;
 }

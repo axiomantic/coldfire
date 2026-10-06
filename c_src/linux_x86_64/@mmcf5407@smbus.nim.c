@@ -80,7 +80,7 @@ N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, write__mcf5407Zmbus_u30)(tyObject_I2cSlavecolo
 N_LIB_PRIVATE N_NIMCALL(NU8, read__mcf5407Zmbus_u36)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0);
 N_LIB_PRIVATE N_NIMCALL(void, stop__mcf5407Zmbus_u41)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0);
 N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Zmbus_u57)(tyObject_MBusObj__622p2UAp51RM4Oo3uDXqEg* m_p0);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u212)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u214)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
 N_LIB_PRIVATE N_NIMCALL(NU8, receive__mcf5407Zmbus_u132)(tyObject_MBusObj__622p2UAp51RM4Oo3uDXqEg* m_p0);
 N_LIB_PRIVATE N_NIMCALL(NU8, read__mcf5407Zmbus_u39)(tyObject_I2cSlavecolonObjectType___mY1FFAQdRwZDF3yblr0kgg* s_p0);
 static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
@@ -128,7 +128,7 @@ LA2_: ;
 		(*m_p0).interruptAsserted = asserted_1;
 		{
 			if (!!(((*m_p0).intc == 0))) goto LA9_;
-			setInternalPending__mcf5407Zintc_u212((*m_p0).intc, ((NI)3), asserted_1);
+			setInternalPending__mcf5407Zintc_u214((*m_p0).intc, ((NI)3), asserted_1);
 		}
 LA9_: ;
 	}

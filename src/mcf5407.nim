@@ -70,33 +70,26 @@ proc mcf5407_NimMain() {.importc: "mcf5407_NimMain", cdecl, gcsafe,
                          raises: [].}
 
 # ---------------------------------------------------------------------------
-# `mcf5407_runtime_init` - the published entry point.
+# `cf_runtime_init` - the published entry point.
 #
 # The mechanism is in `mcf5407/latch` and not here. Two other modules ask the
 # same latch whether the runtime was abandoned before they allocate, and a
 # suite drives it directly; that module states why neither can reach it
 # through this one.
 
-proc mcf5407RuntimeInit(): cint {.exportc: "mcf5407_runtime_init",
-                                  mcf5407Abi.} =
+proc cfRuntimeInit*(): cint {.exportc: "cf_runtime_init",
+                              mcf5407Abi.} =
   ## Runs the Nim runtime's initializer once and reports whether it succeeded.
   ##
   ## C++ never names `mcf5407_NimMain`. It calls this procedure instead.
   ##
   ## The return is 1 for usable and 0 for not, which is the convention every
-  ## other `int` in `include/mcf5407.h` already uses. It is not a POSIX-style
-  ## error code, and mixing the two conventions inside one contract is the
-  ## footgun that decided it.
-  ##
-  ## Why the status alone is not the guarantee. A caller must not proceed with
-  ## a runtime that does not exist. C lets a caller drop
-  ## a return value, so the status alone would not have kept that guarantee.
-  ## `mcf5407_create` and `isp1181_create` read the latch themselves and hand
-  ## back no context once it is abandoned, and every other call in the contract
-  ## already answers a documented benign value for a nil context. A caller that
-  ## ignores this status therefore gets a library that does nothing, and never
-  ## one that answers from an uninitialized runtime.
+  ## other `int` in `include/coldfire.h` already uses.
   if runtimeInitOnce(runtimeLatch, mcf5407_NimMain):
     cint(1)
   else:
     cint(0)
+
+proc mcf5407_runtime_init*(): cint =
+  cfRuntimeInit()
+

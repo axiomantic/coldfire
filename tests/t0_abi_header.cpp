@@ -28,29 +28,33 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "coldfire.h"
+#include "isp1181.h"
 #include "mcf5407.h"
 
+static_assert(sizeof(cf_ctx*) == sizeof(void*),
+              "cf_ctx must be declared as an opaque context type");
 static_assert(sizeof(mcf5407_ctx*) == sizeof(void*),
               "mcf5407_ctx must be declared as an opaque context type");
 static_assert(sizeof(isp1181_ctx*) == sizeof(void*),
               "isp1181_ctx must be declared as an opaque context type");
 
-static_assert(sizeof(mcf5407_bus_status) >= 1u,
-              "mcf5407_bus_status must be declared as a type");
-static_assert(MCF5407_BUS_OK == 0, "MCF5407_BUS_OK must be 0");
-static_assert(MCF5407_BUS_UNMAPPED == 1, "MCF5407_BUS_UNMAPPED must be 1");
-static_assert(MCF5407_BUS_SIZE_ILLEGAL == 2,
-              "MCF5407_BUS_SIZE_ILLEGAL must be 2");
-static_assert(MCF5407_BUS_FAULT == 3, "MCF5407_BUS_FAULT must be 3");
+static_assert(sizeof(cf_bus_status) >= 1u,
+              "cf_bus_status must be declared as a type");
+static_assert(CF_BUS_OK == 0, "CF_BUS_OK must be 0");
+static_assert(CF_BUS_UNMAPPED == 1, "CF_BUS_UNMAPPED must be 1");
+static_assert(CF_BUS_SIZE_ILLEGAL == 2,
+              "CF_BUS_SIZE_ILLEGAL must be 2");
+static_assert(CF_BUS_FAULT == 3, "CF_BUS_FAULT must be 3");
 
-static_assert(MCF5407_IRQ_NONE == 0, "MCF5407_IRQ_NONE must be 0");
+static_assert(CF_IRQ_NONE == 0, "CF_IRQ_NONE must be 0");
 
-static_assert(sizeof(mcf5407_read_fn) == sizeof(void (*)()),
-              "mcf5407_read_fn must be a function-pointer type");
-static_assert(sizeof(mcf5407_write_fn) == sizeof(void (*)()),
-              "mcf5407_write_fn must be a function-pointer type");
-static_assert(sizeof(mcf5407_iack_fn) == sizeof(void (*)()),
-              "mcf5407_iack_fn must be a function-pointer type");
+static_assert(sizeof(cf_read_fn) == sizeof(void (*)()),
+              "cf_read_fn must be a function-pointer type");
+static_assert(sizeof(cf_write_fn) == sizeof(void (*)()),
+              "cf_write_fn must be a function-pointer type");
+static_assert(sizeof(cf_iack_fn) == sizeof(void (*)()),
+              "cf_iack_fn must be a function-pointer type");
 static_assert(sizeof(isp1181_irq_fn) == sizeof(void (*)()),
               "isp1181_irq_fn must be a function-pointer type");
 static_assert(sizeof(isp1181_tx_fn) == sizeof(void (*)()),
@@ -65,16 +69,15 @@ static_assert(sizeof(isp1181_tx_fn) == sizeof(void (*)()),
 
 int main()
 {
-    int (*const volatile p01)() = &mcf5407_runtime_init;
-    mcf5407_ctx* (*const volatile p02)(void*, mcf5407_read_fn, mcf5407_write_fn,
-                              mcf5407_iack_fn) = &mcf5407_create;
-    void (*const volatile p03)(mcf5407_ctx*) = &mcf5407_destroy;
-    void (*const volatile p04)(mcf5407_ctx*, uint32_t, uint32_t) = &mcf5407_reset;
-    uint32_t (*const volatile p05)(mcf5407_ctx*, uint32_t) = &mcf5407_exec;
-    void (*const volatile p06)(mcf5407_ctx*, int, uint8_t, int) = &mcf5407_set_irq;
-    size_t (*const volatile p07)() = &mcf5407_state_size;
-    void (*const volatile p08)(const mcf5407_ctx*, void*) = &mcf5407_state_save;
-    void (*const volatile p09)(mcf5407_ctx*, const void*) = &mcf5407_state_load;
+    int (*const volatile p01)() = &cf_runtime_init;
+    cf_ctx* (*const volatile p02)(const cf_config*) = &cf_create;
+    void (*const volatile p03)(cf_ctx*) = &cf_destroy;
+    void (*const volatile p04)(cf_ctx*, uint32_t, uint32_t) = &cf_reset;
+    uint32_t (*const volatile p05)(cf_ctx*, uint32_t) = &cf_exec;
+    void (*const volatile p06)(cf_ctx*, int, uint8_t, int) = &cf_set_irq;
+    size_t (*const volatile p07)() = &cf_state_size;
+    void (*const volatile p08)(const cf_ctx*, void*) = &cf_state_save;
+    void (*const volatile p09)(cf_ctx*, const void*) = &cf_state_load;
 
     isp1181_ctx* (*const volatile p10)(void*, isp1181_irq_fn,
                               isp1181_tx_fn) = &isp1181_create;

@@ -103,9 +103,26 @@ type
                          value: uint32; status: ptr Mcf5407BusStatus) {.cdecl.}
   Mcf5407IackFn* = proc(user: pointer; level: cint; vector: uint8) {.cdecl.}
 
+  CfIsaVariant* {.size: sizeof(cint).} = enum
+    CF_ISA_A = 0
+    CF_ISA_A_PLUS = 1
+    CF_ISA_B = 2
+    CF_ISA_C = 3
+    CF_ISA_EMAC = 0x100
+
+  CfConfig* = object
+    isa*: CfIsaVariant
+    vbrMask*: uint32
+    user*: pointer
+    rd*: Mcf5407ReadFn
+    wr*: Mcf5407WriteFn
+    iack*: Mcf5407IackFn
+
   MCF5407Ctx* = ref object
     user*: pointer
     sim*: pointer
+    cfgIsa*: pointer
+    cfgVbrMask*: pointer
     readFn*: Mcf5407ReadFn 
     writeFn*: Mcf5407WriteFn 
     iackFn*: Mcf5407IackFn 

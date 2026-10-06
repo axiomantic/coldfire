@@ -155,12 +155,15 @@ proc stateLayout*(): seq[(string, int)] =
   var probe: Mcf5407CtxObj
   discard stateWalk(probe, nil, stateMeasure, addr result)
 
-proc mcf5407_state_size*(): csize_t
-    {.exportc: "mcf5407_state_size", cdecl, dynlib.} =
+proc cf_state_size*(): csize_t
+    {.exportc: "cf_state_size", cdecl, dynlib.} =
   csize_t(stateHeaderBytes + statePayloadBytes + stateChecksumBytes)
 
-proc mcf5407_state_save*(ctx: MCF5407Ctx; dst: pointer)
-    {.exportc: "mcf5407_state_save", cdecl, dynlib.} =
+proc mcf5407_state_size*(): csize_t =
+  cf_state_size()
+
+proc cf_state_save*(ctx: MCF5407Ctx; dst: pointer)
+    {.exportc: "cf_state_save", cdecl, dynlib.} =
   if ctx.isNil or dst.isNil:
     return
   let buf = cast[StateBuf](dst)
@@ -172,14 +175,12 @@ proc mcf5407_state_save*(ctx: MCF5407Ctx; dst: pointer)
   putBe32(buf, stateHeaderBytes + statePayloadBytes,
           stateChecksum(buf, stateHeaderBytes + statePayloadBytes))
 
+proc mcf5407_state_save*(ctx: MCF5407Ctx; dst: pointer) =
+  cf_state_save(ctx, dst)
+
 proc stateLoad*(ctx: MCF5407Ctx; src: pointer): StateStatus =
-  ## Restores the core from a block `mcf5407_state_save` wrote, or names the
+  ## Restores the core from a block `cf_state_save` wrote, or names the
   ## reason it will not.
-  ##
-  ## Every check precedes the decode, and the order is the point. The context
-  ## is written only after the block has been accepted whole, so a refusal
-  ## leaves the caller with the state it had rather than with a core half
-  ## restored from a block that was never valid.
   if ctx.isNil or src.isNil:
     return stateNilArgument
   let buf = cast[StateBuf](src)
@@ -196,11 +197,10 @@ proc stateLoad*(ctx: MCF5407Ctx; src: pointer): StateStatus =
                     stateLoad, nil)
   stateOk
 
-proc mcf5407_state_load*(ctx: MCF5407Ctx; src: pointer)
-    {.exportc: "mcf5407_state_load", cdecl, dynlib.} =
-  ## The refusal is dropped here and it is not lost. `stateLoad` names it, and
-  ## `include/mcf5407.h` gives this entry point no result, no out-parameter and
-  ## no status call to carry it out to C. What a C caller is left with is the
-  ## state it already had, which is the strongest report a `void` signature
-  ## admits.
+proc cf_state_load*(ctx: MCF5407Ctx; src: pointer)
+    {.exportc: "cf_state_load", cdecl, dynlib.} =
   discard stateLoad(ctx, src)
+
+proc mcf5407_state_load*(ctx: MCF5407Ctx; src: pointer) =
+  cf_state_load(ctx, src)
+

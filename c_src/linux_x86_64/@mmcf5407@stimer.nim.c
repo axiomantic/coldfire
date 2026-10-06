@@ -50,7 +50,7 @@ struct tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw {
 	NIM_BOOL presentedToCore;
 };
 N_LIB_PRIVATE N_NIMCALL(void, recomputeInterrupt__mcf5407Ztimer_u25)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0);
-N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u212)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
+N_LIB_PRIVATE N_NIMCALL(void, setInternalPending__mcf5407Zintc_u214)(tyObject_IntcObj__kTm3cySf2gpO9cgORuQF9blw* intc_p0, NI index_p1, NIM_BOOL asserted_p2);
 N_LIB_PRIVATE N_NIMCALL(void, reset__mcf5407Ztimer_u31)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0);
 N_LIB_PRIVATE N_NIMCALL(void, writeTmr__mcf5407Ztimer_u53)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1);
 N_LIB_PRIVATE N_NIMCALL(void, writeTrr__mcf5407Ztimer_u56)(tyObject_TimerObj__Zw9aTbg0iBpjvoaMdBDmkpQ* t_p0, NU16 val_p1);
@@ -70,7 +70,7 @@ LA2_: ;
 		(*t_p0).interruptAsserted = asserted_1;
 		{
 			if (!!(((*t_p0).intc == 0))) goto LA9_;
-			setInternalPending__mcf5407Zintc_u212((*t_p0).intc, (*t_p0).interruptIndex, asserted_1);
+			setInternalPending__mcf5407Zintc_u214((*t_p0).intc, (*t_p0).interruptIndex, asserted_1);
 		}
 LA9_: ;
 	}

@@ -27,7 +27,7 @@ struct tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ {
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ state;
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ reported;
 };
-N_LIB_EXPORT N_CDECL(int, mcf5407_runtime_init)(void);
+N_LIB_EXPORT N_CDECL(int, cf_runtime_init)(void);
 N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeInitOnce__mcf5407Zlatch_u131)(tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ* latch_p0, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ initializer_p1, NI64 waitMillis_p2);
 N_CDECL(void, mcf5407_NimMain)(void);
 N_LIB_PRIVATE N_NIMCALL(void, nimTestErrorFlag)(void);
@@ -42,7 +42,7 @@ N_LIB_PRIVATE N_NIMCALL(void, atpsystemdotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, atpwinleandotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, mcf5407_NimMainModule)(void);
 extern tyObject_RuntimeLatch__FvwLkoo8lInKmmveZ6rFRQ runtimeLatch__mcf5407Zlatch_u36;
-N_LIB_EXPORT N_CDECL(int, mcf5407_runtime_init)(void) {
+N_LIB_EXPORT N_CDECL(int, cf_runtime_init)(void) {
 	int result;
 	int colontmpD_;
 	int colontmpD__2;

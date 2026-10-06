@@ -31,61 +31,53 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "coldfire.h"
+#include "isp1181.h"
 #include "mcf5407.h"
 
-/* The opaque context types. Neither is complete here and neither may be,
- * so the assertion is over a pointer to it: the type NAME must exist. */
+/* The opaque context types. */
+_Static_assert(sizeof(cf_ctx*) == sizeof(void*),
+               "cf_ctx must be declared as an opaque context type");
 _Static_assert(sizeof(mcf5407_ctx*) == sizeof(void*),
                "mcf5407_ctx must be declared as an opaque context type");
 _Static_assert(sizeof(isp1181_ctx*) == sizeof(void*),
                "isp1181_ctx must be declared as an opaque context type");
 
-/* The bus status enumeration, and each of its enumerators by VALUE.
- * The values are part of the contract: the board writes them and the core
- * reads them across a compiled boundary. */
-_Static_assert(sizeof(mcf5407_bus_status) >= 1u,
-               "mcf5407_bus_status must be declared as a type");
-_Static_assert(MCF5407_BUS_OK == 0, "MCF5407_BUS_OK must be 0");
-_Static_assert(MCF5407_BUS_UNMAPPED == 1, "MCF5407_BUS_UNMAPPED must be 1");
-_Static_assert(MCF5407_BUS_SIZE_ILLEGAL == 2,
-               "MCF5407_BUS_SIZE_ILLEGAL must be 2");
-_Static_assert(MCF5407_BUS_FAULT == 3, "MCF5407_BUS_FAULT must be 3");
-_Static_assert(MCF5407_IRQ_NONE == 0, "MCF5407_IRQ_NONE must be 0");
+/* The bus status enumeration. */
+_Static_assert(sizeof(cf_bus_status) >= 1u,
+               "cf_bus_status must be declared as a type");
+_Static_assert(CF_BUS_OK == 0, "CF_BUS_OK must be 0");
+_Static_assert(CF_BUS_UNMAPPED == 1, "CF_BUS_UNMAPPED must be 1");
+_Static_assert(CF_BUS_SIZE_ILLEGAL == 2,
+               "CF_BUS_SIZE_ILLEGAL must be 2");
+_Static_assert(CF_BUS_FAULT == 3, "CF_BUS_FAULT must be 3");
+_Static_assert(CF_IRQ_NONE == 0, "CF_IRQ_NONE must be 0");
 
-/* The function-pointer types. Each must exist as a type name and each
- * must be a function pointer, which is what the comparison against a bare
- * function-pointer type asserts. The SIGNATURES are asserted below, where
- * `mcf5407_create` and `isp1181_create` take them as parameters. */
-_Static_assert(sizeof(mcf5407_read_fn) == sizeof(void (*)(void)),
-               "mcf5407_read_fn must be a function-pointer type");
-_Static_assert(sizeof(mcf5407_write_fn) == sizeof(void (*)(void)),
-               "mcf5407_write_fn must be a function-pointer type");
-_Static_assert(sizeof(mcf5407_iack_fn) == sizeof(void (*)(void)),
-               "mcf5407_iack_fn must be a function-pointer type");
+/* The function-pointer types. */
+_Static_assert(sizeof(cf_read_fn) == sizeof(void (*)(void)),
+               "cf_read_fn must be a function-pointer type");
+_Static_assert(sizeof(cf_write_fn) == sizeof(void (*)(void)),
+               "cf_write_fn must be a function-pointer type");
+_Static_assert(sizeof(cf_iack_fn) == sizeof(void (*)(void)),
+               "cf_iack_fn must be a function-pointer type");
 _Static_assert(sizeof(isp1181_irq_fn) == sizeof(void (*)(void)),
                "isp1181_irq_fn must be a function-pointer type");
 _Static_assert(sizeof(isp1181_tx_fn) == sizeof(void (*)(void)),
                "isp1181_tx_fn must be a function-pointer type");
 
-/* ------------------------------------------------ the address-of expressions
- *
- * The `status` out-parameter of the memory callbacks is asserted here as
- * well: a draft that returned the status instead of writing it through a
- * pointer would not match these declared types.
- */
+/* ------------------------------------------------ the address-of expressions */
 
 int main(void)
 {
-    int (*const volatile p01)(void) = &mcf5407_runtime_init;
-    mcf5407_ctx* (*const volatile p02)(void*, mcf5407_read_fn, mcf5407_write_fn,
-                              mcf5407_iack_fn) = &mcf5407_create;
-    void (*const volatile p03)(mcf5407_ctx*) = &mcf5407_destroy;
-    void (*const volatile p04)(mcf5407_ctx*, uint32_t, uint32_t) = &mcf5407_reset;
-    uint32_t (*const volatile p05)(mcf5407_ctx*, uint32_t) = &mcf5407_exec;
-    void (*const volatile p06)(mcf5407_ctx*, int, uint8_t, int) = &mcf5407_set_irq;
-    size_t (*const volatile p07)(void) = &mcf5407_state_size;
-    void (*const volatile p08)(const mcf5407_ctx*, void*) = &mcf5407_state_save;
-    void (*const volatile p09)(mcf5407_ctx*, const void*) = &mcf5407_state_load;
+    int (*const volatile p01)(void) = &cf_runtime_init;
+    cf_ctx* (*const volatile p02)(const cf_config*) = &cf_create;
+    void (*const volatile p03)(cf_ctx*) = &cf_destroy;
+    void (*const volatile p04)(cf_ctx*, uint32_t, uint32_t) = &cf_reset;
+    uint32_t (*const volatile p05)(cf_ctx*, uint32_t) = &cf_exec;
+    void (*const volatile p06)(cf_ctx*, int, uint8_t, int) = &cf_set_irq;
+    size_t (*const volatile p07)(void) = &cf_state_size;
+    void (*const volatile p08)(const cf_ctx*, void*) = &cf_state_save;
+    void (*const volatile p09)(cf_ctx*, const void*) = &cf_state_load;
 
     isp1181_ctx* (*const volatile p10)(void*, isp1181_irq_fn,
                               isp1181_tx_fn) = &isp1181_create;

@@ -1,26 +1,34 @@
-# mcf5407
+# coldfire / mcf5407
 
-An emulator for the Motorola MCF5407 ColdFire processor and a functional model of the Philips ISP1181 USB device controller.
+A modular, high-performance emulator for Motorola and Freescale ColdFire processors (MCF5407, MCF5307, MCF5249) and a functional model of the Philips ISP1181 USB device controller.
 
-The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/mcf5407.h`](include/mcf5407.h). The library can be consumed either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler.
+The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/coldfire.h`](include/coldfire.h) and [`include/isp1181.h`](include/isp1181.h). Downstream consumers can consume the library either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler. Full backward compatibility is maintained via [`include/mcf5407.h`](include/mcf5407.h).
 
 ---
 
 ## Key Features
 
 - **Pure C11 ABI Boundary**: Communicates strictly via standard types, opaque context pointers, and C function pointers. No Nim runtime internals, garbage collector handles, or C++ virtual tables cross the interface.
+- **Header Architecture**:
+  - [`include/coldfire.h`](include/coldfire.h): Canonical ColdFire processor API (`cf_*`).
+  - [`include/isp1181.h`](include/isp1181.h): Dedicated Philips ISP1181 USB controller API (`isp1181_*`).
+  - [`include/mcf5407.h`](include/mcf5407.h): Seamless backward-compatibility inline alias header forwarding to `coldfire.h` and `isp1181.h`.
+- **Supported Architecture & ISA Variants**:
+  - **ColdFire ISA_A**: MCF5307 and baseline V3 architectural features.
+  - **ColdFire ISA_A+**: MCF5249, MCF5272 with hardware divider and enhanced MAC support.
+  - **ColdFire ISA_B**: MCF5407 V4 core with dual-issue superscalar pipeline semantics, branch prediction, and supervisor extensions.
+  - **ColdFire ISA_C & EMAC**: Extended Multiply-Accumulate unit instructions and pipeline registers.
 - **Dual Build Modes**:
   - **Native Nim Mode**: Drives the pinned Nim compiler directly via CMake for active core development.
   - **Pre-Generated C Distribution**: Downstream consumers do **not** require a Nim installation. Standard C11 builds are supported on macOS, Linux x86_64, and Windows x86_64.
-- **ColdFire V4 Core Emulation**: Accurate instruction decoding, arithmetic logic unit (ALU), move control operations (`MOVEC`), supervisor registers (VBR, CACR, ACR0–3, RAMBAR0–1, MBAR), cycle-budgeted execution, bus fault handling, and prioritized multi-level interrupt servicing.
-- **ISP1181 USB Device Controller**: Complete endpoint register file, double-buffered FIFOs, setup packet handling, OUT/IN token processing, and diagnostic ring logging.
+- **Philips ISP1181 USB Device Controller**: Complete endpoint register file, double-buffered FIFOs, setup packet handling, OUT/IN token processing, and diagnostic ring logging.
 - **Deterministic State Serialization**: Full snapshot capture and restore for deterministic replay and state persistence.
 
 ---
 
 ## Pre-Generated C Distribution
 
-To ensure frictionless integration into consumer projects without introducing a Nim toolchain dependency, `mcf5407` includes pre-generated C translation units in `c_src/`:
+To ensure frictionless integration into consumer projects without introducing a Nim toolchain dependency, pre-generated C translation units are provided in `c_src/`:
 
 ```
 c_src/
@@ -58,13 +66,20 @@ This script verifies that the installed Nim compiler version matches [`.nim-vers
 |---|---|---|
 | `MCF5407_USE_C_DIST` | `OFF` (or `ON` if `nim` missing) | Compiles `libmcf5407` directly from `c_src/` using standard C11. |
 
+### Exported Targets
+
+- `coldfire::coldfire` (canonical target)
+- `coldfire` (unqualified alias)
+- `mcf5407::mcf5407` (backward compatibility alias)
+- `mcf5407` (unqualified alias)
+
 ### Consuming via `FetchContent`
 
 ```cmake
 include(FetchContent)
 
 FetchContent_Declare(
-    mcf5407
+    coldfire
     GIT_REPOSITORY https://github.com/axiomantic/mcf5407.git
     GIT_TAG        main # Or pinned commit hash
 )
@@ -72,65 +87,77 @@ FetchContent_Declare(
 # Optional: Force pre-generated C distribution (no Nim dependency required)
 set(MCF5407_USE_C_DIST ON CACHE BOOL "" FORCE)
 
-FetchContent_MakeAvailable(mcf5407)
+FetchContent_MakeAvailable(coldfire)
 
 # Link against your application or plugin target
-target_link_libraries(my_emulator PRIVATE mcf5407::mcf5407)
+target_link_libraries(my_emulator PRIVATE coldfire::coldfire)
 ```
 
 ### Consuming via `add_subdirectory`
 
 ```cmake
-add_subdirectory(path/to/mcf5407)
-target_link_libraries(my_emulator PRIVATE mcf5407::mcf5407)
+add_subdirectory(path/to/coldfire)
+target_link_libraries(my_emulator PRIVATE coldfire::coldfire)
 ```
 
-The exported target `mcf5407::mcf5407` automatically propagates the include directory for [`include/mcf5407.h`](include/mcf5407.h).
+The exported targets automatically propagate the include directory for `coldfire.h`, `isp1181.h`, and `mcf5407.h`.
 
 ---
 
 ## Quick API Overview
 
-The C interface is defined in [`include/mcf5407.h`](include/mcf5407.h). Full documentation is available in the [API Documentation Guide](docs/api.md).
+Full documentation is available in the [API Documentation Guide](docs/api.md).
 
-### Initialization and Execution Lifecycle
+### Processor Core Lifecycle (`coldfire.h`)
 
 ```c
-#include "mcf5407.h"
+#include "coldfire.h"
 
 // 1. Initialize runtime primitives once (idempotent, thread-safe)
-if (!mcf5407_runtime_init()) {
+if (!cf_runtime_init()) {
     // Handle initialization failure
 }
 
-// 2. Instantiate core with memory callbacks and user context
-mcf5407_ctx* cpu = mcf5407_create(board_ptr, board_read, board_write, board_iack);
+// 2. Configure processor core parameters
+cf_config cfg = {
+    .isa = CF_ISA_A,               // Or CF_ISA_B, CF_ISA_A_PLUS, etc.
+    .vbr_mask = 0xFFF00000,        // Hardware VBR alignment mask
+    .user = board_ptr,
+    .rd = board_read,
+    .wr = board_write,
+    .iack = board_iack
+};
 
-// 3. Reset processor with initial stack pointer and program counter
-mcf5407_reset(cpu, 0x00040000, 0x00000400);
+// 3. Instantiate core
+cf_ctx* cpu = cf_create(&cfg);
 
-// 4. Execute for a quantum (instruction-boundary accurate)
-uint32_t cycles_spent = mcf5407_exec(cpu, 1000);
+// 4. Reset processor with initial stack pointer and program counter
+cf_reset(cpu, 0x00040000, 0x00000400);
 
-// 5. Inspect execution status
-if (mcf5407_halted(cpu)) {
-    if (mcf5407_faulted(cpu)) {
-        // Core encountered an illegal instruction, bus error, or trap
+// 5. Execute for a quantum (instruction-boundary accurate)
+uint32_t cycles_spent = cf_exec(cpu, 1000);
+
+// 6. Inspect execution status
+if (cf_halted(cpu)) {
+    if (cf_faulted(cpu)) {
+        // Core encountered an illegal instruction, bus error, or unhandled trap
     }
 }
 
-// 6. Tear down context
-mcf5407_destroy(cpu);
+// 7. Tear down context
+cf_destroy(cpu);
 ```
 
-### ISP1181 USB Controller Lifecycle
+### ISP1181 USB Controller Lifecycle (`isp1181.h`)
 
 ```c
+#include "isp1181.h"
+
 // Instantiate controller model
 isp1181_ctx* usb = isp1181_create(board_ptr, on_usb_irq, on_usb_tx);
 
 // Activate full device emulation model
-isp1181_set_backend(usb, MCF5407_ISP1181_BACKEND_FULL_MODEL);
+isp1181_set_backend(usb, ISP1181_BACKEND_FULL_MODEL);
 
 // Deliver host packet to endpoint FIFO
 int accepted = isp1181_rx(usb, 1, packet_data, packet_len);
@@ -141,7 +168,18 @@ isp1181_tick(usb, 1);
 isp1181_destroy(usb);
 ```
 
----
+### Backward Compatibility (`mcf5407.h`)
+
+Existing consumers can continue including `mcf5407.h` without code changes. All `mcf5407_*` functions and macros transparently forward to the canonical `cf_*` and `isp1181_*` functions via inline wrappers:
+
+```c
+#include "mcf5407.h"
+
+mcf5407_ctx* cpu = mcf5407_create(board_ptr, board_read, board_write, board_iack);
+mcf5407_reset(cpu, 0x00040000, 0x00000400);
+mcf5407_exec(cpu, 1000);
+mcf5407_destroy(cpu);
+```
 
 ## Building and Testing
 

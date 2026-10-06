@@ -65,21 +65,10 @@ proc vectorFor(level: int; vector: uint8; autovector: bool): uint8 =
   ## cannot fail.
   if autovector: autovectorFor(level) else: vector
 
-proc mcf5407_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
-                      autovector: cint)
-    {.exportc: "mcf5407_set_irq", cdecl, dynlib.} =
+proc cf_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
+                    autovector: cint)
+    {.exportc: "cf_set_irq", cdecl, dynlib.} =
   ## Present the board's current highest-priority pending interrupt.
-  ##
-  ## It is a whole-state write and therefore idempotent by construction: the
-  ## level-7 arm below is conditional on a change of level, so the second of
-  ## two identical calls arms nothing. A model that accumulated instead of
-  ## overwriting would need a comparison here to stay idempotent, and would
-  ## make the core hold a second copy of the board's pending state.
-  ##
-  ## A level outside 0 to 7 is stored and never taken, and that is a property
-  ## of the comparisons below rather than a rule this module states. What the
-  ## code guarantees is only that no such value can reach `autovectorFor`,
-  ## whose parameter is a checked range.
   if ctx.isNil:
     return
   # The arm is tested before the presentation is overwritten, because the test
@@ -93,6 +82,10 @@ proc mcf5407_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
   ctx.irqLevel = level
   ctx.irqVector = vector
   ctx.irqAutovector = autovector != 0
+
+proc mcf5407_set_irq*(ctx: MCF5407Ctx; level: cint; vector: uint8;
+                      autovector: cint) =
+  cf_set_irq(ctx, level, vector, autovector)
 
 proc resetInterruptEdge*(ctx: MCF5407Ctx) =
   ## What a RESET does to the level-7 edge latch: clear it, then re-observe the
