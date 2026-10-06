@@ -102,6 +102,9 @@ void testDuart(cf_ctx* ctx) {
 	cf_mbar_write(ctx, 0x1D4, 1, 0x04, &st);
 	// Map UART0 to Level 5 via ICR4 (MBAR+0x050)
 	cf_mbar_write(ctx, 0x050, 1, 0x14, &st);
+	// Program UIVR vector to 0x42 (MBAR+0x1F0)
+	cf_mbar_write(ctx, 0x1F0, 1, 0x42, &st);
+	CHECK(st == CF_BUS_OK, "DUART: write UIVR vector 0x42 succeeds");
 
 	// Feed first byte
 	CHECK(cf_uart_rx_byte(ctx, CF_UART_CH0, 0xAA) == 0, "DUART: rx_byte 1 succeeds");

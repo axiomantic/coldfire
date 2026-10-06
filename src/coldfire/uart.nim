@@ -109,7 +109,7 @@ proc reset*(u: ptr UartObj) =
   u.uimr = 0'u8
   u.ubg1 = 0'u8
   u.ubg2 = 0'u8
-  u.uivr = if u.interruptIndex == gUart0InterruptIndex: gUart0Vector else: 0x0F'u8
+  u.uivr = 0x0F'u8
   u.rxCount = 0
   u.rxHead = 0
   u.txEnabled = false

@@ -205,7 +205,6 @@ proc cf_reset*(ctx: MCF5407Ctx; initialSp: uint32; initialPc: uint32)
   ctx.rambar0 = 0'u32
   ctx.rambar1 = 0'u32
   ctx.mbar = 0'u32
-  resetSim(ctx)
 
   # A reset discards a store's recorded access error rather than carrying it
   # into the reset handler. The capture names a status register of the program

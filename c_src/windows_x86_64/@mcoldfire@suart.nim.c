@@ -116,7 +116,6 @@ LA7_: ;
 LA3_: ;
 }
 N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZuart_u62)(tyObject_UartObj__3Zve532YLh0NK8W5o9c6lKA* u_p0) {
-	NU8 T1_;
 	(*u_p0).umr1 = ((NU8)0);
 	(*u_p0).umr2 = ((NU8)0);
 	(*u_p0).modeUmr1 = NIM_TRUE;
@@ -125,17 +124,7 @@ N_LIB_PRIVATE N_NIMCALL(void, reset__coldfireZuart_u62)(tyObject_UartObj__3Zve53
 	(*u_p0).uimr = ((NU8)0);
 	(*u_p0).ubg1 = ((NU8)0);
 	(*u_p0).ubg2 = ((NU8)0);
-	T1_ = (NU8)0;
-	{
-		if (!((*u_p0).interruptIndex == ((NI)4))) goto LA4_;
-		(*u_p0).uivr = ((NU8)66);
-	}
-	goto LA2_;
-LA4_: ;
-	{
-		(*u_p0).uivr = ((NU8)15);
-	}
-LA2_: ;
+	(*u_p0).uivr = ((NU8)15);
 	(*u_p0).rxCount = ((NI)0);
 	(*u_p0).rxHead = ((NI)0);
 	(*u_p0).txEnabled = NIM_FALSE;

@@ -1329,10 +1329,3 @@ N_LIB_PRIVATE N_NIMCALL(void, freeSim__coldfireZsim_u115)(tyObject_MCF5407Ctxcol
 	}
 LA3_: ;
 }
-N_LIB_PRIVATE N_NIMCALL(void, resetSim__coldfireZsim_u118)(tyObject_MCF5407CtxcolonObjectType___m5aCvzByibF3dd3pf8T9cOQ* ctx_p0) {
-	{
-		if (!!(((*ctx_p0).sim == 0))) goto LA3_;
-		reset__coldfireZsim_u65(((tyObject_SimObj__BpVhl06QQC3N9bA8zEV8uSA*) ((*ctx_p0).sim)));
-	}
-LA3_: ;
-}
