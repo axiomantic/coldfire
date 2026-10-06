@@ -203,6 +203,10 @@ proc simRead*(sim: Sim; offset: uint32; size: uint8;
     st = Mcf5407BusStatus.busSizeIllegal
     return 0'u32
 
+  if offset == 0x248'u32 and size == 2'u8 and not sim.portAHook.isNil:
+    let rows = sim.portAHook(sim.portAUser) and not 0x0200'u16
+    return uint32(rows)
+
   var res = 0'u32
   for b in 0 ..< int(size):
     res = (res shl 8) or uint32(readByteInternal(sim, offset + uint32(b)))

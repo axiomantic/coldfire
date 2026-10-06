@@ -19,25 +19,25 @@
 #undef far
 #undef powerpc
 #undef unix
-typedef struct tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w;
+typedef struct tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw;
 typedef struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ;
 struct tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ {
 	NI64 value;
 };
-struct tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w {
+struct tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw {
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ state;
 	tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ reported;
 };
 typedef NU8 tyEnum_MemoryOrder__RwK0ZMz1e8upJ4twxNbCtQ;
 typedef N_CDECL_PTR(void, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ) (void);
 static N_INLINE(NI, load__coldfireZlatch_u47)(tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ* location_p0, tyEnum_MemoryOrder__RwK0ZMz1e8upJ4twxNbCtQ order_p1);
-N_LIB_PRIVATE N_NIMCALL(void, reportStall__coldfireZlatch_u82)(tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w* latch_p0);
+N_LIB_PRIVATE N_NIMCALL(void, reportStall__coldfireZlatch_u82)(tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw* latch_p0);
 static N_INLINE(NIM_BOOL, compareExchange__coldfireZlatch_u97)(tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ* location_p0, NI* expected_p1, NI desired_p2, tyEnum_MemoryOrder__RwK0ZMz1e8upJ4twxNbCtQ success_p3, tyEnum_MemoryOrder__RwK0ZMz1e8upJ4twxNbCtQ failure_p4);
 N_LIB_PRIVATE N_NIMCALL(NI64, monotonicMillis__coldfireZlatch_u4)(void);
 N_LIB_PRIVATE N_NOINLINE(void, raiseRangeErrorNoArgs)(void);
 static N_INLINE(NIM_BOOL, nimAddInt64)(NI64 a_p0, NI64 b_p1, NI64* res_p2);
 N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
-N_LIB_PRIVATE tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w runtimeLatch__coldfireZlatch_u36;
+N_LIB_PRIVATE tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw runtimeLatch__coldfireZlatch_u36;
 N_LIB_PRIVATE NIM_THREADVAR NIM_BOOL initializing__coldfireZlatch_u37;
 static N_INLINE(NI, load__coldfireZlatch_u47)(tyObject_Atomic__bx9bL9c7GTpG6vY8xhUjCeDQ* location_p0, tyEnum_MemoryOrder__RwK0ZMz1e8upJ4twxNbCtQ order_p1) {
 	NI result;
@@ -47,7 +47,7 @@ static N_INLINE(NI, load__coldfireZlatch_u47)(tyObject_Atomic__bx9bL9c7GTpG6vY8x
 	result = ((NI) (T1_));
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeAbandoned__coldfireZlatch_u38)(tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w* latch_p0) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeAbandoned__coldfireZlatch_u38)(tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw* latch_p0) {
 	NIM_BOOL result;
 	NI T1_;
 	T1_ = (NI)0;
@@ -64,7 +64,7 @@ static N_INLINE(NIM_BOOL, compareExchange__coldfireZlatch_u97)(tyObject_Atomic__
 	result = (((NI) (T1_)) == (*expected_p1));
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(void, reportStall__coldfireZlatch_u82)(tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w* latch_p0) {
+N_LIB_PRIVATE N_NIMCALL(void, reportStall__coldfireZlatch_u82)(tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw* latch_p0) {
 	NI expected_1;
 	int T6_;
 	int T7_;
@@ -136,7 +136,7 @@ LA5_: ;
 LA1_: ;
 	return result;
 }
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeInitOnce__coldfireZlatch_u131)(tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w* latch_p0, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ initializer_p1, NI64 waitMillis_p2) {
+N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, runtimeInitOnce__coldfireZlatch_u131)(tyObject_RuntimeLatch__Pgw2bTOcdQprjVQ80ARxKw* latch_p0, tyProc__ln4kdL5W9bbX4a1xl8nnVXQ initializer_p1, NI64 waitMillis_p2) {
 	NIM_BOOL result;
 	NI entryState_1;
 	NI expected_1;

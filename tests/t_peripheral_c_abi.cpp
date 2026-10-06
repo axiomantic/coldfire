@@ -76,9 +76,15 @@ void onTx(void* user, int channel, uint8_t byte) {
 	rec->count++;
 }
 
+struct PortARecord {
+	uint16_t value = 0;
+	int count = 0;
+};
+
 uint16_t onPortA(void* user) {
-	auto* val = static_cast<uint16_t*>(user);
-	return *val;
+	auto* rec = static_cast<PortARecord*>(user);
+	rec->count++;
+	return rec->value;
 }
 
 void testDuart(cf_ctx* ctx) {
@@ -222,11 +228,23 @@ void testSimAndMbar(cf_ctx* ctx) {
 	cf_bus_status st = CF_BUS_OK;
 
 	// Port A read hook
-	uint16_t rowBits = 0xFEFF; // bit 9 clear, other bits high
-	cf_sim_set_port_a_hook(ctx, onPortA, &rowBits);
+	PortARecord portARec{0xFEFF, 0}; // bit 9 clear, other bits high
+	cf_sim_set_port_a_hook(ctx, onPortA, &portARec);
 	uint32_t padat = cf_mbar_read(ctx, 0x248, 2, &st);
 	CHECK(st == CF_BUS_OK, "SIM: read PADAT completes");
 	CHECK(padat == 0xFCFFu, "SIM: PADAT returns rowBits with strap bit 9 cleared (0xFEFF & ~0x0200 = 0xFCFF)");
+	CHECK(portARec.count == 1, "SIM: 16-bit word read of PADAT invokes hook exactly once");
+
+	// 8-bit reads of PADAT high and low bytes
+	portARec.count = 0;
+	uint32_t padatHi = cf_mbar_read(ctx, 0x248, 1, &st);
+	CHECK(st == CF_BUS_OK && padatHi == 0xFCu, "SIM: read PADAT high byte (0xFC)");
+	CHECK(portARec.count == 1, "SIM: 8-bit read of PADAT high byte invokes hook once");
+
+	portARec.count = 0;
+	uint32_t padatLo = cf_mbar_read(ctx, 0x249, 1, &st);
+	CHECK(st == CF_BUS_OK && padatLo == 0xFFu, "SIM: read PADAT low byte (0xFF)");
+	CHECK(portARec.count == 1, "SIM: 8-bit read of PADAT low byte invokes hook once");
 
 	// Engine strap configuration
 	cf_sim_set_engine_strap(ctx, 1);
