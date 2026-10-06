@@ -24,11 +24,6 @@ import coldfire/timer
 import coldfire/uart
 import coldfire/mbus
 import coldfire/sim
-# The ISP1181 device model. It is a sibling of the core rather than a part of
-# it, and it is named here for the same reason the core submodules are: the
-# compiler builds a module this entry module reaches and no other.
-import isp1181/state
-import isp1181/stub
 {.pop.}
 
 # The latch. It is imported outside the pushed warning mask because this

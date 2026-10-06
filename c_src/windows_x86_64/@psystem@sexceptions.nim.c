@@ -31,9 +31,6 @@ typedef struct tyObject_OverflowDefect__F23GBccIoz6Crr2vWGudFg tyObject_Overflow
 typedef struct tyObject_ArithmeticDefect__gszmQNGgGMDTjegKrKPFNA tyObject_ArithmeticDefect__gszmQNGgGMDTjegKrKPFNA;
 typedef struct tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA;
 typedef struct tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ;
-typedef struct tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg;
-typedef struct tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg;
-typedef struct tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ;
 typedef struct tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ;
 struct TNimTypeV2 {
 	void* destructor;
@@ -92,15 +89,6 @@ struct tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA {
 struct tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ {
 	tyObject_ArithmeticDefect__gszmQNGgGMDTjegKrKPFNA Sup;
 };
-struct tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg {
-	Exception Sup;
-};
-struct tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg {
-	tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg Sup;
-};
-struct tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ {
-	tyObject_Defect__BqN81v581jmOWyLfkgmixA Sup;
-};
 struct tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ {
 	NCSTRING procname;
 	NI line;
@@ -122,17 +110,11 @@ N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u62)(void* dest_p0)
 N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___system_u3857)(tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA* dest_p0);
 N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u64)(void* dest_p0);
 N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___system_u4169)(tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ* dest_p0);
-N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u66)(void* dest_p0);
-N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___system_u8195)(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg* dest_p0);
-N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u68)(void* dest_p0);
-N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___stdZassertions_u37)(tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ* dest_p0);
 N_LIB_PRIVATE TNimTypeV2 NTIv2__in3acHRzIMQLRhBbJM7T9aA_;
 N_LIB_PRIVATE TNimTypeV2 NTIv2__fBIodcxTiyoHUmbOIRbM4w_;
 N_LIB_PRIVATE TNimTypeV2 NTIv2__F23GBccIoz6Crr2vWGudFg_;
 N_LIB_PRIVATE TNimTypeV2 NTIv2__A7AWUvdU8wDKgzeVWVtkYA_;
 N_LIB_PRIVATE TNimTypeV2 NTIv2__yMsVk0wROJoXQ6kGYmXDUQ_;
-N_LIB_PRIVATE TNimTypeV2 NTIv2__qHTJpUiwp9bYgLH9aiBfd6Hg_;
-N_LIB_PRIVATE TNimTypeV2 NTIv2__9bxoo9cu9cP5xLlKgJ9bkLNNqQ_;
 static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_2[4] = {3701606400, 1285336064, 2742867456, 2111467520};
 N_LIB_PRIVATE TNimTypeV2 NTIv2__in3acHRzIMQLRhBbJM7T9aA_ = {.destructor = (void*)rttiDestroy__systemZexceptions_u56, .size = sizeof(tyObject_RangeDefect__in3acHRzIMQLRhBbJM7T9aA), .align = (NI16) NIM_ALIGNOF(tyObject_RangeDefect__in3acHRzIMQLRhBbJM7T9aA), .depth = 3, .display = TM__TzI3paKQY09cLjc9cmCvur3A_2, .traceImpl = (void*)NIM_NIL, .flags = 0};
 static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_3[4] = {3701606400, 1285336064, 2742867456, 304641280};
@@ -143,10 +125,6 @@ static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_5[4] = {3701606400, 128533606
 N_LIB_PRIVATE TNimTypeV2 NTIv2__A7AWUvdU8wDKgzeVWVtkYA_ = {.destructor = (void*)rttiDestroy__systemZexceptions_u62, .size = sizeof(tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA), .align = (NI16) NIM_ALIGNOF(tyObject_FieldDefect__A7AWUvdU8wDKgzeVWVtkYA), .depth = 3, .display = TM__TzI3paKQY09cLjc9cmCvur3A_5, .traceImpl = (void*)NIM_NIL, .flags = 0};
 static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_6[5] = {3701606400, 1285336064, 2742867456, 3437641728, 3407188736};
 N_LIB_PRIVATE TNimTypeV2 NTIv2__yMsVk0wROJoXQ6kGYmXDUQ_ = {.destructor = (void*)rttiDestroy__systemZexceptions_u64, .size = sizeof(tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ), .align = (NI16) NIM_ALIGNOF(tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ), .depth = 4, .display = TM__TzI3paKQY09cLjc9cmCvur3A_6, .traceImpl = (void*)NIM_NIL, .flags = 0};
-static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_7[4] = {3701606400, 1285336064, 3025789184, 1959372032};
-N_LIB_PRIVATE TNimTypeV2 NTIv2__qHTJpUiwp9bYgLH9aiBfd6Hg_ = {.destructor = (void*)rttiDestroy__systemZexceptions_u66, .size = sizeof(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg), .align = (NI16) NIM_ALIGNOF(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg), .depth = 3, .display = TM__TzI3paKQY09cLjc9cmCvur3A_7, .traceImpl = (void*)NIM_NIL, .flags = 0};
-static NIM_CONST NU32 TM__TzI3paKQY09cLjc9cmCvur3A_8[4] = {3701606400, 1285336064, 2742867456, 438894080};
-N_LIB_PRIVATE TNimTypeV2 NTIv2__9bxoo9cu9cP5xLlKgJ9bkLNNqQ_ = {.destructor = (void*)rttiDestroy__systemZexceptions_u68, .size = sizeof(tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ), .align = (NI16) NIM_ALIGNOF(tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ), .depth = 3, .display = TM__TzI3paKQY09cLjc9cmCvur3A_8, .traceImpl = (void*)NIM_NIL, .flags = 0};
 static N_INLINE(NI, minuspercent___system_u813)(NI x_p0, NI y_p1) {
 	NI result;
 	result = ((NI) ((NU)((NU64)(((NU) (x_p0))) - (NU64)(((NU) (y_p1))))));
@@ -300,54 +278,4 @@ LA9_: ;
 }
 N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u64)(void* dest_p0) {
 	eqdestroy___system_u4169(((tyObject_DivByZeroDefect__yMsVk0wROJoXQ6kGYmXDUQ*) (dest_p0)));
-}
-N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___system_u8195)(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg* dest_p0) {
-	{
-		NIM_BOOL T3_;
-		T3_ = (NIM_BOOL)0;
-		T3_ = nimDecRefIsLast((*dest_p0).Sup.Sup.up);
-		if (!T3_) goto LA4_;
-		nimDestroyAndDispose((*dest_p0).Sup.Sup.up);
-	}
-LA4_: ;
-	eqdestroy___system_u3016((*dest_p0).Sup.Sup.trace);
-	if ((*dest_p0).Sup.Sup.message.p && !((*dest_p0).Sup.Sup.message.p->cap & NIM_STRLIT_FLAG)) {
- deallocShared((*dest_p0).Sup.Sup.message.p);
-}
-	{
-		NIM_BOOL T8_;
-		T8_ = (NIM_BOOL)0;
-		T8_ = nimDecRefIsLast((*dest_p0).Sup.Sup.parent);
-		if (!T8_) goto LA9_;
-		nimDestroyAndDispose((*dest_p0).Sup.Sup.parent);
-	}
-LA9_: ;
-}
-N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u66)(void* dest_p0) {
-	eqdestroy___system_u8195(((tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg*) (dest_p0)));
-}
-N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___stdZassertions_u37)(tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ* dest_p0) {
-	{
-		NIM_BOOL T3_;
-		T3_ = (NIM_BOOL)0;
-		T3_ = nimDecRefIsLast((*dest_p0).Sup.Sup.up);
-		if (!T3_) goto LA4_;
-		nimDestroyAndDispose((*dest_p0).Sup.Sup.up);
-	}
-LA4_: ;
-	eqdestroy___system_u3016((*dest_p0).Sup.Sup.trace);
-	if ((*dest_p0).Sup.Sup.message.p && !((*dest_p0).Sup.Sup.message.p->cap & NIM_STRLIT_FLAG)) {
- deallocShared((*dest_p0).Sup.Sup.message.p);
-}
-	{
-		NIM_BOOL T8_;
-		T8_ = (NIM_BOOL)0;
-		T8_ = nimDecRefIsLast((*dest_p0).Sup.Sup.parent);
-		if (!T8_) goto LA9_;
-		nimDestroyAndDispose((*dest_p0).Sup.Sup.parent);
-	}
-LA9_: ;
-}
-N_LIB_PRIVATE N_NIMCALL(void, rttiDestroy__systemZexceptions_u68)(void* dest_p0) {
-	eqdestroy___stdZassertions_u37(((tyObject_AssertionDefect__9bxoo9cu9cP5xLlKgJ9bkLNNqQ*) (dest_p0)));
 }

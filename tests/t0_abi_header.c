@@ -32,13 +32,10 @@
 #include <stdint.h>
 
 #include "coldfire.h"
-#include "isp1181.h"
 
 /* The opaque context types. */
 _Static_assert(sizeof(cf_ctx*) == sizeof(void*),
                "cf_ctx must be declared as an opaque context type");
-_Static_assert(sizeof(isp1181_ctx*) == sizeof(void*),
-               "isp1181_ctx must be declared as an opaque context type");
 
 /* The bus status enumeration. */
 _Static_assert(sizeof(cf_bus_status) >= 1u,
@@ -57,10 +54,6 @@ _Static_assert(sizeof(cf_write_fn) == sizeof(void (*)(void)),
                "cf_write_fn must be a function-pointer type");
 _Static_assert(sizeof(cf_iack_fn) == sizeof(void (*)(void)),
                "cf_iack_fn must be a function-pointer type");
-_Static_assert(sizeof(isp1181_irq_fn) == sizeof(void (*)(void)),
-               "isp1181_irq_fn must be a function-pointer type");
-_Static_assert(sizeof(isp1181_tx_fn) == sizeof(void (*)(void)),
-               "isp1181_tx_fn must be a function-pointer type");
 
 /* ------------------------------------------------ the address-of expressions */
 
@@ -75,18 +68,6 @@ int main(void)
     size_t (*const volatile p07)(void) = &cf_state_size;
     void (*const volatile p08)(const cf_ctx*, void*) = &cf_state_save;
     void (*const volatile p09)(cf_ctx*, const void*) = &cf_state_load;
-
-    isp1181_ctx* (*const volatile p10)(void*, isp1181_irq_fn,
-                              isp1181_tx_fn) = &isp1181_create;
-    void (*const volatile p11)(isp1181_ctx*) = &isp1181_destroy;
-    uint8_t (*const volatile p12)(isp1181_ctx*, uint32_t) = &isp1181_read;
-    void (*const volatile p13)(isp1181_ctx*, uint32_t, uint8_t) = &isp1181_write;
-    int (*const volatile p14)(isp1181_ctx*, int, const uint8_t*,
-                     size_t) = &isp1181_rx;
-    void (*const volatile p15)(isp1181_ctx*, uint32_t) = &isp1181_tick;
-    size_t (*const volatile p16)(void) = &isp1181_state_size;
-    void (*const volatile p17)(const isp1181_ctx*, void*) = &isp1181_state_save;
-    void (*const volatile p18)(isp1181_ctx*, const void*) = &isp1181_state_load;
 
     /* Every one is counted, so that no declaration can be
      * dropped from the list above without changing the result. The
@@ -103,17 +84,8 @@ int main(void)
     found += (p07 != NULL);
     found += (p08 != NULL);
     found += (p09 != NULL);
-    found += (p10 != NULL);
-    found += (p11 != NULL);
-    found += (p12 != NULL);
-    found += (p13 != NULL);
-    found += (p14 != NULL);
-    found += (p15 != NULL);
-    found += (p16 != NULL);
-    found += (p17 != NULL);
-    found += (p18 != NULL);
 
-    if (found != 18) {
+    if (found != 9) {
         return 1;
     }
     return 0;

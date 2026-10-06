@@ -91,23 +91,4 @@ set(MCF5407_ABI_VISIBLE
 	cf_set_irq
 	cf_state_size
 	cf_state_save
-	cf_state_load
-	isp1181_create
-	isp1181_destroy
-	isp1181_read
-	isp1181_write
-	isp1181_rx
-	isp1181_setup
-	isp1181_in_token
-	isp1181_set_backend
-	isp1181_tick
-	isp1181_log_written
-	isp1181_log_retained
-	isp1181_log_line
-	isp1181_config_slots
-	isp1181_config_slot
-	isp1181_slot_buffer
-	isp1181_report
-	isp1181_state_size
-	isp1181_state_save
-	isp1181_state_load)
+	cf_state_load)

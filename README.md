@@ -1,8 +1,8 @@
 # coldfire
 
-A modular, high-performance emulator for Motorola and Freescale ColdFire processors (MCF5407, MCF5307, MCF5249) and a functional model of the Philips ISP1181 USB device controller.
+A modular, high-performance emulator for Motorola and Freescale ColdFire processors (MCF5407, MCF5307, MCF5249).
 
-The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/coldfire.h`](include/coldfire.h) and [`include/isp1181.h`](include/isp1181.h). Downstream consumers can consume the library either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler.
+The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/coldfire.h`](include/coldfire.h). Downstream consumers can consume the library either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler.
 
 ---
 
@@ -11,7 +11,6 @@ The core implementation is authored in Nim, exposing a pure C application binary
 - **Pure C11 ABI Boundary**: Communicates strictly via standard types, opaque context pointers, and C function pointers. No Nim runtime internals, garbage collector handles, or C++ virtual tables cross the interface.
 - **Header Architecture**:
   - [`include/coldfire.h`](include/coldfire.h): Canonical ColdFire processor API (`cf_*`).
-  - [`include/isp1181.h`](include/isp1181.h): Dedicated Philips ISP1181 USB controller API (`isp1181_*`).
 - **Supported Architecture & ISA Variants**:
   - **ColdFire ISA_A**: MCF5307 and baseline V3 architectural features.
   - **ColdFire ISA_A+**: MCF5249, MCF5272 with hardware divider and enhanced MAC support.
@@ -20,7 +19,6 @@ The core implementation is authored in Nim, exposing a pure C application binary
 - **Dual Build Modes**:
   - **Native Nim Mode**: Drives the pinned Nim compiler directly via CMake for active core development.
   - **Pre-Generated C Distribution**: Downstream consumers do **not** require a Nim installation. Standard C11 builds are supported on macOS, Linux x86_64, and Windows x86_64.
-- **Philips ISP1181 USB Device Controller**: Complete endpoint register file, double-buffered FIFOs, setup packet handling, OUT/IN token processing, and diagnostic ring logging.
 - **Deterministic State Serialization**: Full snapshot capture and restore for deterministic replay and state persistence.
 
 ---
@@ -96,7 +94,7 @@ add_subdirectory(path/to/coldfire)
 target_link_libraries(my_emulator PRIVATE coldfire::coldfire)
 ```
 
-The exported target automatically propagates the include directory for `coldfire.h` and `isp1181.h`.
+The exported target automatically propagates the include directory for `coldfire.h`.
 
 ---
 
@@ -144,25 +142,6 @@ if (cf_halted(cpu)) {
 cf_destroy(cpu);
 ```
 
-### ISP1181 USB Controller Lifecycle (`isp1181.h`)
-
-```c
-#include "isp1181.h"
-
-// Instantiate controller model
-isp1181_ctx* usb = isp1181_create(board_ptr, on_usb_irq, on_usb_tx);
-
-// Activate full device emulation model
-isp1181_set_backend(usb, ISP1181_BACKEND_FULL_MODEL);
-
-// Deliver host packet to endpoint FIFO
-int accepted = isp1181_rx(usb, 1, packet_data, packet_len);
-
-// Advance 1 ms USB SOF frame
-isp1181_tick(usb, 1);
-
-isp1181_destroy(usb);
-```
 
 ## Building and Testing
 

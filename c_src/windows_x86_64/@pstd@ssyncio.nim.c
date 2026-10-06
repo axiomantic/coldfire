@@ -22,15 +22,6 @@
 #undef unix
 typedef struct NimStrPayload NimStrPayload;
 typedef struct NimStringV2 NimStringV2;
-typedef struct tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg;
-typedef struct tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg;
-typedef struct tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg;
-typedef struct Exception Exception;
-typedef struct RootObj RootObj;
-typedef struct TNimTypeV2 TNimTypeV2;
-typedef struct tySequence__vrjNl4awzOmCciafmd8lLQ tySequence__vrjNl4awzOmCciafmd8lLQ;
-typedef struct tySequence__vrjNl4awzOmCciafmd8lLQ_Content tySequence__vrjNl4awzOmCciafmd8lLQ_Content;
-typedef struct tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ;
 struct NimStrPayload {
 	NI cap;
 	NIM_CHAR data[SEQ_DECL_SIZE];
@@ -47,50 +38,6 @@ void* ClE_0;
 } tyProc__HzVCwACFYM9cx9aV62PdjtuA;
 typedef N_CLOSURE_PTR(void, TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_14) (void* ClE_0);
 typedef N_CLOSURE_PTR(void, TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_17) (void* ClE_0);
-typedef NU8 tyEnum_FileMode__Emd9bK9bdqM63yA9cTr3Vt9b5g;
-struct tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg {
-	NI bytes;
-	NI16* data;
-};
-typedef NI16 tyUncheckedArray__Tyd4y3haUOOHTj71TPIRag[1];
-typedef NCSTRING tyArray__fFZRQvVsJFw7L9ateWbhnqg[5];
-struct TNimTypeV2 {
-	void* destructor;
-	NI size;
-	NI16 align;
-	NI16 depth;
-	NU32* display;
-	void* traceImpl;
-	void* typeInfoV1;
-	NI flags;
-	void* vTable[SEQ_DECL_SIZE];
-};
-struct RootObj {
-	TNimTypeV2* m_type;
-};
-struct tySequence__vrjNl4awzOmCciafmd8lLQ {
-  NI len; tySequence__vrjNl4awzOmCciafmd8lLQ_Content* p;
-};
-struct Exception {
-	RootObj Sup;
-	Exception* parent;
-	NCSTRING name;
-	NimStringV2 message;
-	tySequence__vrjNl4awzOmCciafmd8lLQ trace;
-	Exception* up;
-};
-struct tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg {
-	Exception Sup;
-};
-struct tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg {
-	tyObject_CatchableError__0bRZ4X5ZULV3Nw3cc55Jgg Sup;
-};
-struct tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ {
-	NCSTRING procname;
-	NI line;
-	NCSTRING filename;
-};
-struct tySequence__vrjNl4awzOmCciafmd8lLQ_Content { NI cap; tyObject_StackTraceEntry__H2mszH5tR6s19a9c7VBraDTQ data[SEQ_DECL_SIZE]; };
 N_LIB_PRIVATE N_NIMCALL(void*, nimLoadLibrary)(NimStringV2 path_p0);
 N_LIB_PRIVATE N_NIMCALL(void, nimLoadLibraryError)(NimStringV2 path_p0);
 N_LIB_PRIVATE N_NIMCALL(void*, nimGetProcAddr)(void* lib_p0, NCSTRING name_p1);
@@ -99,20 +46,6 @@ N_LIB_PRIVATE N_NIMCALL(void, restoreConsoleOutputCP__stdZsyncio_u587)(void);
 static N_INLINE(void, nimZeroMem)(void* p_p0, NI size_p1);
 static N_INLINE(void, nimSetMem__system_u2179)(void* a_p0, int v_p1, NI size_p2);
 N_LIB_PRIVATE N_NIMCALL(void, restoreConsoleCP__stdZsyncio_u588)(void);
-N_LIB_PRIVATE N_NIMCALL(void*, fopen__stdZsyncio_u471)(NCSTRING filename_p0, NCSTRING mode_p1);
-N_LIB_PRIVATE N_NIMCALL(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg, newWideCString__stdZwidestrs_u310)(NCSTRING s_p0);
-static N_INLINE(NI16*, toWideCString__stdZwidestrs_u46)(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg x_p0);
-N_LIB_PRIVATE N_NIMCALL(void, eqdestroy___stdZwidestrs_u7)(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg a_p0);
-static N_INLINE(NCSTRING, nimToCStringConv)(NimStringV2 s_p0);
-N_LIB_PRIVATE N_NIMCALL(void, writeWindows__stdZsyncio_u232)(FILE* f_p0, NimStringV2 s_p1, NIM_BOOL doRaise_p2);
-N_LIB_PRIVATE N_NOINLINE(void, raiseIndexError2)(NI i_p0, NI n_p1);
-N_LIB_PRIVATE N_NOINLINE(void, raiseEIO__stdZsyncio_u93)(NimStringV2 msg_p0);
-N_LIB_PRIVATE N_NIMCALL(void*, nimNewObj)(NI size_p0, NI alignment_p1);
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, eqdup___system_u2696)(NimStringV2 src_p0);
-N_LIB_PRIVATE N_NIMCALL(void, raiseExceptionEx)(Exception* e_p0, NCSTRING ename_p1, NCSTRING procname_p2, NCSTRING filename_p3, NI line_p4);
-static N_INLINE(NIM_BOOL, nimAddInt)(NI a_p0, NI b_p1, NI* res_p2);
-N_LIB_PRIVATE N_NOINLINE(void, raiseOverflow)(void);
-static N_INLINE(NIM_BOOL*, nimErrorFlag)(void);
 N_LIB_PRIVATE N_NIMCALL(void, nimTestErrorFlag)(void);
 static const struct {
   NI cap; NIM_CHAR data[8+1];
@@ -122,18 +55,6 @@ static const struct {
   NI cap; NIM_CHAR data[8+1];
 } TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_6 = { 8 | NIM_STRLIT_FLAG, "kernel32" };
 static const NimStringV2 TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_7 = {8, (NimStrPayload*)&TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_6};
-extern TNimTypeV2 NTIv2__qHTJpUiwp9bYgLH9aiBfd6Hg_;
-static const struct {
-  NI cap; NIM_CHAR data[27+1];
-} TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_18 = { 27 | NIM_STRLIT_FLAG, "cannot write string to file" };
-static const NimStringV2 TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_19 = {27, (NimStrPayload*)&TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_18};
-static const NimStringV2 TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_21 = {27, (NimStrPayload*)&TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_18};
-N_LIB_PRIVATE NIM_CONST tyArray__fFZRQvVsJFw7L9ateWbhnqg FormatOpen__stdZsyncio_u502 = {"rbN",
-"wbN",
-"w+bN",
-"r+bN",
-"abN"}
-;
 N_LIB_PRIVATE unsigned int consoleOutputCP__stdZsyncio_u585;
 static void* TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_2;
 tyProc__rXUriTjpoKqEo8PAmJmKqQ Dl_553648710_;
@@ -141,7 +62,6 @@ N_LIB_PRIVATE unsigned int consoleCP__stdZsyncio_u586;
 tyProc__rXUriTjpoKqEo8PAmJmKqQ Dl_553648711_;
 tyProc__6fyjfWNeKFW9aeUK79c9c8S4g Dl_553648706_;
 tyProc__6fyjfWNeKFW9aeUK79c9c8S4g Dl_553648708_;
-extern NIM_THREADVAR NIM_BOOL nimInErrorMode__system_u3415;
 N_LIB_PRIVATE N_NIMCALL(void, restoreConsoleOutputCP__stdZsyncio_u587)(void) {
 	NI32 T1_;
 	T1_ = (NI32)0;
@@ -161,208 +81,6 @@ N_LIB_PRIVATE N_NIMCALL(void, restoreConsoleCP__stdZsyncio_u588)(void) {
 	T1_ = (NI32)0;
 	T1_ = Dl_553648708_(consoleCP__stdZsyncio_u586);
 	(void)(T1_);
-}
-static N_INLINE(NI16*, toWideCString__stdZwidestrs_u46)(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg x_p0) {
-	NI16* result;
-	result = x_p0.data;
-	return result;
-}
-N_LIB_PRIVATE N_NIMCALL(void*, fopen__stdZsyncio_u471)(NCSTRING filename_p0, NCSTRING mode_p1) {
-	void* result;
-	tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg f_1;
-	tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg m_1;
-	NI16* T1_;
-	NI16* T2_;
-	nimZeroMem((void*)(&f_1), sizeof(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg));
-	nimZeroMem((void*)(&m_1), sizeof(tyObject_WideCStringObj__Bn29c34hEoo8h9cZ0kltBm9cg));
-	f_1 = newWideCString__stdZwidestrs_u310(filename_p0);
-	m_1 = newWideCString__stdZwidestrs_u310(mode_p1);
-	T1_ = (NI16*)0;
-	T1_ = toWideCString__stdZwidestrs_u46(f_1);
-	T2_ = (NI16*)0;
-	T2_ = toWideCString__stdZwidestrs_u46(m_1);
-	result = _wfopen(T1_, T2_);
-	eqdestroy___stdZwidestrs_u7(m_1);
-	eqdestroy___stdZwidestrs_u7(f_1);
-	return result;
-}
-static N_INLINE(NCSTRING, nimToCStringConv)(NimStringV2 s_p0) {
-	NCSTRING result;
-	{
-		if (!(s_p0.len == ((NI)0))) goto LA3_;
-		result = "";
-	}
-	goto LA1_;
-LA3_: ;
-	{
-		result = ((NCSTRING) ((*s_p0.p).data));
-	}
-LA1_: ;
-	return result;
-}
-N_LIB_PRIVATE N_NIMCALL(NIM_BOOL, open__stdZsyncio_u503)(FILE** f_p0, NimStringV2 filename_p1, tyEnum_FileMode__Emd9bK9bdqM63yA9cTr3Vt9b5g mode_p2, NI bufSize_p3) {
-	NIM_BOOL result;
-	void* p_1;
-	p_1 = fopen__stdZsyncio_u471(nimToCStringConv(filename_p1), FormatOpen__stdZsyncio_u502[(mode_p2)- 0]);
-	{
-		FILE* f2_1;
-		if (!!((p_1 == NIM_NIL))) goto LA3_;
-		f2_1 = ((FILE*) (p_1));
-		result = NIM_TRUE;
-		(*f_p0) = ((FILE*) (p_1));
-		{
-			NIM_BOOL T7_;
-			int T11_;
-			T7_ = (NIM_BOOL)0;
-			T7_ = (((NI)0) < bufSize_p3);
-			if (!(T7_)) goto LA8_;
-			T7_ = ((NU64)(((NU) (bufSize_p3))) <= (NU64)(((NU)-1)));
-LA8_: ;
-			if (!T7_) goto LA9_;
-			T11_ = (int)0;
-			T11_ = setvbuf((*f_p0), NIM_NIL, _IOFBF, ((size_t) (bufSize_p3)));
-			(void)(T11_);
-		}
-		goto LA5_;
-LA9_: ;
-		{
-			int T15_;
-			if (!(bufSize_p3 == ((NI)0))) goto LA13_;
-			T15_ = (int)0;
-			T15_ = setvbuf((*f_p0), NIM_NIL, _IONBF, ((size_t)0));
-			(void)(T15_);
-		}
-		goto LA5_;
-LA13_: ;
-LA5_: ;
-	}
-	goto LA1_;
-LA3_: ;
-	{
-		result = NIM_FALSE;
-	}
-LA1_: ;
-	return result;
-}
-N_LIB_PRIVATE N_NOINLINE(void, raiseEIO__stdZsyncio_u93)(NimStringV2 msg_p0) {
-	NimStringV2 colontmpD_;
-	tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg* T1_;
-{	T1_ = NIM_NIL;
-	T1_ = (tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg*) nimNewObj(sizeof(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg), NIM_ALIGNOF(tyObject_IOError__qHTJpUiwp9bYgLH9aiBfd6Hg));
-	(*T1_).Sup.Sup.Sup.m_type = (&NTIv2__qHTJpUiwp9bYgLH9aiBfd6Hg_);
-	(*T1_).Sup.Sup.name = "IOError";
-	colontmpD_ = eqdup___system_u2696(msg_p0);
-	(*T1_).Sup.Sup.message = colontmpD_;
-	(*T1_).Sup.Sup.parent = ((Exception*) NIM_NIL);
-	raiseExceptionEx((Exception*)T1_, "IOError", "raiseEIO", "syncio.nim", 161);
-goto BeforeRet_;
-	}BeforeRet_: ;
-}
-static N_INLINE(NIM_BOOL, nimAddInt)(NI a_p0, NI b_p1, NI* res_p2) {
-	NIM_BOOL result;
-	NI r_1;
-	result = (NIM_BOOL)0;
-	r_1 = ((NI) ((NU)((NU64)(((NU) (a_p0))) + (NU64)(((NU) (b_p1))))));
-	{
-		NIM_BOOL T3_;
-		T3_ = (NIM_BOOL)0;
-		T3_ = (((NI)0) <= (NI)(r_1 ^ a_p0));
-		if (T3_) goto LA4_;
-		T3_ = (((NI)0) <= (NI)(r_1 ^ b_p1));
-LA4_: ;
-		if (!T3_) goto LA5_;
-		(*res_p2) = r_1;
-	}
-	goto LA1_;
-LA5_: ;
-	{
-		result = NIM_TRUE;
-	}
-LA1_: ;
-	return result;
-}
-static N_INLINE(NIM_BOOL*, nimErrorFlag)(void) {
-	NIM_BOOL* result;
-	result = (&nimInErrorMode__system_u3415);
-	return result;
-}
-N_LIB_PRIVATE N_NIMCALL(void, writeWindows__stdZsyncio_u232)(FILE* f_p0, NimStringV2 s_p1, NIM_BOOL doRaise_p2) {
-	NI i_1;
-	int T1_;
-NIM_BOOL* nimErr_;
-{nimErr_ = nimErrorFlag();
-	T1_ = (int)0;
-	T1_ = fprintf(f_p0, "%s", nimToCStringConv(s_p1));
-	i_1 = ((NI) (T1_));
-	{
-		while (1) {
-			if (!(i_1 < s_p1.len)) goto LA3;
-			{
-				int w_1;
-				NI TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_20;
-				if (i_1 < 0 || i_1 >= s_p1.len){ raiseIndexError2(i_1,s_p1.len-1); goto BeforeRet_;
-				}
-				if (!((NU8)(s_p1.p->data[i_1]) == (NU8)(0))) goto LA6_;
-				w_1 = fputc(0, f_p0);
-				{
-					if (!!((w_1 == ((NI32)0)))) goto LA10_;
-					{
-						if (!doRaise_p2) goto LA14_;
-						raiseEIO__stdZsyncio_u93(TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_19);
-						if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
-					}
-LA14_: ;
-					goto LA2;
-				}
-LA10_: ;
-				if (nimAddInt(i_1, ((NI)1), &TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_20)) { raiseOverflow(); goto BeforeRet_;
-				};
-				i_1 = (NI)(TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_20);
-			}
-			goto LA4_;
-LA6_: ;
-			{
-				int w_2;
-				NI TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_22;
-				if (i_1 < 0 || i_1 >= s_p1.len){ raiseIndexError2(i_1,s_p1.len-1); goto BeforeRet_;
-				}
-				w_2 = fprintf(f_p0, "%s", (&s_p1.p->data[i_1]));
-				{
-					if (!(w_2 <= ((NI32)0))) goto LA19_;
-					{
-						if (!doRaise_p2) goto LA23_;
-						raiseEIO__stdZsyncio_u93(TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_21);
-						if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
-					}
-LA23_: ;
-					goto LA2;
-				}
-LA19_: ;
-				if (nimAddInt(i_1, w_2, &TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_22)) { raiseOverflow(); goto BeforeRet_;
-				};
-				i_1 = (NI)(TM__xNF6mvRQ4Pd1hTNM9cEHXwQ_22);
-			}
-LA4_: ;
-		} LA3: ;
-	} LA2: ;
-	}BeforeRet_: ;
-}
-N_LIB_PRIVATE N_NIMCALL(void, write__stdZsyncio_u249)(FILE* f_p0, NimStringV2 s_p1) {
-NIM_BOOL* nimErr_;
-{nimErr_ = nimErrorFlag();
-	writeWindows__stdZsyncio_u232(f_p0, s_p1, NIM_TRUE);
-	if (NIM_UNLIKELY(*nimErr_)) goto BeforeRet_;
-	}BeforeRet_: ;
-}
-N_LIB_PRIVATE N_NIMCALL(void, close__stdZsyncio_u267)(FILE* f_p0) {
-	{
-		int T5_;
-		if (!!((f_p0 == 0))) goto LA3_;
-		T5_ = (int)0;
-		T5_ = fclose(f_p0);
-		(void)(T5_);
-	}
-LA3_: ;
 }
 N_LIB_PRIVATE N_NIMCALL(void, atpstdatssynciodotnim_Init000)(void) {
 {

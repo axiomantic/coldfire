@@ -33,7 +33,6 @@ static const struct {
 } TM__n49a9aYp5BrbXv9a6OCpJYm0g_2 = { 0 | NIM_STRLIT_FLAG, "" };
 static const NimStringV2 TM__n49a9aYp5BrbXv9a6OCpJYm0g_3 = {0, (NimStrPayload*)&TM__n49a9aYp5BrbXv9a6OCpJYm0g_2};
 static const NimStringV2 TM__n49a9aYp5BrbXv9a6OCpJYm0g_4 = {0, (NimStrPayload*)&TM__n49a9aYp5BrbXv9a6OCpJYm0g_2};
-static const NimStringV2 TM__n49a9aYp5BrbXv9a6OCpJYm0g_5 = {0, (NimStrPayload*)&TM__n49a9aYp5BrbXv9a6OCpJYm0g_2};
 N_LIB_PRIVATE N_NIMCALL(NimStringV2, dollar___systemZdollars_u34)(NI64 xX60gensym4__p0) {
 	NimStringV2 result;
 	result = TM__n49a9aYp5BrbXv9a6OCpJYm0g_3;
@@ -47,11 +46,5 @@ N_LIB_PRIVATE N_NIMCALL(NimStringV2, dollar___systemZdollars_u14)(NI xX60gensym0
 	NimStringV2 result;
 	result = TM__n49a9aYp5BrbXv9a6OCpJYm0g_4;
 	addInt__stdZprivateZdigitsutils_u195((&result), xX60gensym0__p0);
-	return result;
-}
-N_LIB_PRIVATE N_NIMCALL(NimStringV2, dollar___systemZdollars_u29)(NI32 xX60gensym3__p0) {
-	NimStringV2 result;
-	result = TM__n49a9aYp5BrbXv9a6OCpJYm0g_5;
-	addInt__stdZprivateZdigitsutils_u195((&result), ((NI) (xX60gensym3__p0)));
 	return result;
 }

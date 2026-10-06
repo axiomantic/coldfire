@@ -4,8 +4,8 @@
 ## Why this is its own module and not part of `src/mcf5407.nim`. Readers
 ## outside the entry module need the latch, and none may import that module.
 ##
-##   `coldfire/cpu` and `isp1181/stub` ask whether the runtime was abandoned
-##   before they allocate anything. The entry module imports both of them, so
+##   `coldfire/cpu` asks whether the runtime was abandoned
+##   before it allocates anything. The entry module imports it, so
 ##   an import the other way is a cycle.
 ##
 ##   `tests/t_runtime_latch` drives the latch directly. The entry module
@@ -137,8 +137,8 @@ const reportNotYetMade = 0
 const reportMade = 1
 
 var runtimeLatch*: RuntimeLatch
-  ## The one instance the published ABI uses. `mcf5407_runtime_init` drives
-  ## this one, `mcf5407_create` and `isp1181_create` read it, and no shipped
+  ## The one instance the published ABI uses. `cf_runtime_init` drives
+  ## this one, `cf_create` reads it, and no shipped
   ## build makes another.
 
 var initializing {.threadvar.}: bool
@@ -163,10 +163,10 @@ proc runtimeAbandoned*(latch: var RuntimeLatch): bool =
   ## True once a waiter has reported a stall on `latch`.
   ##
   ## This is the refusal every other entry point reads. A C caller may drop the
-  ## status `mcf5407_runtime_init` returns - the language allows it and no
+  ## status `cf_runtime_init` returns - the language allows it and no
   ## attribute can make it impossible - so the library may not depend on the
-  ## caller having read it. `mcf5407_create` and `isp1181_create` ask this
-  ## question instead and hand back no context when the answer is true.
+  ## caller having read it. `cf_create` asks this
+  ## question instead and hands back no context when the answer is true.
   latch.state.load(moAcquire) == latchAbandoned
 
 proc reportStall(latch: var RuntimeLatch) =

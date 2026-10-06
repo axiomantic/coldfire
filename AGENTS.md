@@ -1,9 +1,8 @@
 # mcf5407 — agent instructions
 
-An emulator for the Motorola MCF5407 ColdFire processor, and a model of the
-Philips ISP1181 USB device controller. The core is written in Nim. CMake drives
-the Nim compiler and produces a static library plus a C header for a C or C++
-caller.
+An emulator for the Motorola MCF5407 ColdFire processor. The core is written
+in Nim. CMake drives the Nim compiler and produces a static library plus a C
+header for a C or C++ caller.
 
 Repository: `axiomantic/mcf5407`. Licence: MIT.
 
@@ -140,7 +139,7 @@ Targets:
 
 | Target | Content |
 |---|---|
-| `mcf5407` | The static library. The core and the ISP1181 model. |
+| `mcf5407` | The static library. The processor core. |
 | `mcf5407_tests` | The unit tests. |
 | `mcf5407_conformance` | The runner for the generated ColdFire conformance corpus. |
 
@@ -345,7 +344,7 @@ asserts no exclusivity and no sequence. What goes is ONLY, FIRST, NEXT, and
 whole of the rule.
 
 **A DATASHEET CITATION IS NOT A PLAN REFERENCE, and it stays.** "CFPRM Rev. 3
-§2.2.11", "MCF5407 User's Manual §10.4", an ISP1181 register table — these name a
+§2.2.11", "MCF5407 User's Manual §10.4", a peripheral register table — these name a
 primary source the reader needs to check the line beside them, they belong to a
 published document that does not renumber under us, and this tree's prose is
 mostly hardware explanation of exactly that kind. **Do not cull them by
@@ -460,5 +459,5 @@ that class of change. The removal stands.
 
 ## Related
 
-This library is a general-purpose ColdFire MCF5407 core and ISP1181 USB model.
+This library is a general-purpose ColdFire MCF5407 core.
 A program that needs a ColdFire processor can use it alone.

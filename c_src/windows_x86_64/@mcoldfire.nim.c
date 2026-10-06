@@ -39,7 +39,6 @@ N_LIB_PRIVATE N_NIMCALL(void, atpstdatsexitprocsdotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, atpstdatssynciodotnim_DatInit000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, atpstdatssynciodotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, atpsystemdotnim_Init000)(void);
-N_LIB_PRIVATE N_NIMCALL(void, atpwinleandotnim_Init000)(void);
 N_LIB_PRIVATE N_NIMCALL(void, coldfire_NimMainModule)(void);
 extern tyObject_RuntimeLatch__FwSBr6ruqdX5txI9cZ4YM3w runtimeLatch__coldfireZlatch_u36;
 N_LIB_EXPORT N_CDECL(int, cf_runtime_init)(void) {
@@ -95,7 +94,6 @@ N_LIB_PRIVATE N_NIMCALL(void, stop__coldfireZmbus_u43)(tyObject_I2cSlavecolonObj
 N_LIB_PRIVATE void coldfire_PreMainInner(void) {
 	atpstdatsexitprocsdotnim_Init000();
 	atpstdatssynciodotnim_Init000();
-	atpwinleandotnim_Init000();
 }
 
 N_LIB_PRIVATE void coldfire_PreMain(void) {

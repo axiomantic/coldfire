@@ -1,16 +1,16 @@
 # coldfire / mcf5407 Documentation
 
-Welcome to the documentation for **`coldfire` / `mcf5407`**, an emulator for Motorola and Freescale ColdFire processor cores (supporting ISA_A, ISA_A+, ISA_B, ISA_C, and EMAC architectures, including MCF5407, MCF5307, and MCF5249) and a functional model of the Philips ISP1181 USB device controller.
+Welcome to the documentation for **`coldfire` / `mcf5407`**, an emulator for Motorola and Freescale ColdFire processor cores (supporting ISA_A, ISA_A+, ISA_B, ISA_C, and EMAC architectures, including MCF5407, MCF5307, and MCF5249).
 
 ---
 
 ## Documentation Sections
 
 - **[API Specification](api.md)**  
-  Comprehensive reference for the C application binary interface declared in `include/coldfire.h` and `include/isp1181.h` (with backward compatibility in `include/mcf5407.h`). Details initialization lifecycle, execution budgeting, memory/bus callbacks, interrupt servicing, USB controller interfaces, and deterministic state serialization.
+  Comprehensive reference for the C application binary interface declared in `include/coldfire.h`. Details initialization lifecycle, execution budgeting, memory/bus callbacks, interrupt servicing, and deterministic state serialization.
 
 - **[Sources and Architectural References](sources.md)**  
-  Hardware manual citations, register decodes, chip-select configurations, and clean-room implementation rationale derived from Motorola/Freescale and Philips documentation.
+  Hardware manual citations, register decodes, chip-select configurations, and clean-room implementation rationale derived from Motorola/Freescale documentation.
 
 ---
 
@@ -18,13 +18,11 @@ Welcome to the documentation for **`coldfire` / `mcf5407`**, an emulator for Mot
 
 The core is authored in Nim and compiled to native C translation units. Downstream consumers interact exclusively through a pure C11 ABI boundary:
 
-- **Canonical Headers**:
+- **Canonical Header**:
   - `include/coldfire.h`: Primary processor core C ABI (`cf_*`).
-  - `include/isp1181.h`: Dedicated Philips ISP1181 USB device controller ABI (`isp1181_*`).
-  - `include/mcf5407.h`: Seamless backward-compatibility inline alias header forwarding to `coldfire.h` and `isp1181.h`.
-- **Opaque Handle Context**: All emulator instances are referenced via `cf_ctx*` (or `mcf5407_ctx*`).
+- **Opaque Handle Context**: All emulator instances are referenced via `cf_ctx*`.
 - **Zero Allocations in Critical Loops**: Step and execution functions operate strictly within caller-provided memory buffers.
-- **Host Callbacks**: The host provides read/write bus callbacks, IRQ acknowledgements, and USB transport hooks.
+- **Host Callbacks**: The host provides read/write bus callbacks and IRQ acknowledgements.
 - **Deterministic State**: State snapshots can be saved and restored at arbitrary execution points.
 
 ---
@@ -75,7 +73,5 @@ int main(void) {
 
 ## Repository and Code
 
-- GitHub Repository: [axiomantic/mcf5407](https://github.com/axiomantic/mcf5407)
-- Canonical C Header: [`include/coldfire.h`](https://github.com/axiomantic/mcf5407/blob/main/include/coldfire.h)
-- USB Controller C Header: [`include/isp1181.h`](https://github.com/axiomantic/mcf5407/blob/main/include/isp1181.h)
-- Compatibility C Header: [`include/mcf5407.h`](https://github.com/axiomantic/mcf5407/blob/main/include/mcf5407.h)
+- GitHub Repository: [axiomantic/coldfire](https://github.com/axiomantic/coldfire)
+- Canonical C Header: [`include/coldfire.h`](https://github.com/axiomantic/coldfire/blob/main/include/coldfire.h)

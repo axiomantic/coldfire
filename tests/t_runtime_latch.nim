@@ -29,7 +29,6 @@ import std/os
 
 import coldfire/latch
 import coldfire/cpu
-import isp1181/stub
 
 
 var failures: seq[string]
@@ -180,11 +179,6 @@ let refusedCore = cf_create(nil, nil, nil, nil)
 check(refusedCore.isNil,
       "cf_create refuses to allocate a core behind an abandoned runtime",
       (if refusedCore.isNil: "nil" else: "a context"), "nil")
-
-let refusedDevice = isp1181_create(nil, nil, nil)
-check(refusedDevice.isNil,
-      "isp1181_create refuses to allocate a device behind an abandoned runtime",
-      (if refusedDevice.isNil: "nil" else: "a context"), "nil")
 
 # ---------------------------------------------------------------------------
 

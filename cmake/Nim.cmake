@@ -254,9 +254,8 @@ set(MCF5407_NIM_BUILT_PREFIX "${CMAKE_MATCH_1}")
 mcf5407_render_command(MCF5407_NIM_COMMAND_TEXT ${MCF5407_NIM_COMMAND})
 message(STATUS "mcf5407: nim invocation: ${MCF5407_NIM_COMMAND_TEXT}")
 
-# The contract headers. They are read here and they are never written here.
+# The contract header. It is read here and it is never written here.
 set(MCF5407_ABI_CONTRACT_COLDFIRE "${PROJECT_SOURCE_DIR}/include/coldfire.h")
-set(MCF5407_ABI_CONTRACT_ISP1181 "${PROJECT_SOURCE_DIR}/include/isp1181.h")
 set(MCF5407_ABI_CONTRACT_FILE "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 
 # Editing a configure-time input must re-run the configure step. The inputs
@@ -269,14 +268,12 @@ set(MCF5407_ABI_CONTRACT_FILE "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 #                        module adds a unit to it.
 #   `.nim-version`       step 1 compares it against the compiler.
 #   `include/coldfire.h` step 4a reads the published set out of it.
-#   `include/isp1181.h`  step 4a reads the published set out of it.
 file(GLOB_RECURSE MCF5407_NIM_SOURCES CONFIGURE_DEPENDS
     "${PROJECT_SOURCE_DIR}/src/*.nim")
 set_property(DIRECTORY "${PROJECT_SOURCE_DIR}"
     APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
     ${MCF5407_NIM_SOURCES} "${MCF5407_NIM_VERSION_FILE}"
-    "${MCF5407_ABI_CONTRACT_COLDFIRE}"
-    "${MCF5407_ABI_CONTRACT_ISP1181}")
+    "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 
 execute_process(
     COMMAND ${MCF5407_NIM_COMMAND}
@@ -1201,24 +1198,12 @@ if(NOT EXISTS "${MCF5407_ABI_CONTRACT_COLDFIRE}")
         "That header is the published set of this library, and the gate reads "
         "its names from there.")
 endif()
-if(NOT EXISTS "${MCF5407_ABI_CONTRACT_ISP1181}")
-    message(FATAL_ERROR
-        "mcf5407: step 4a failed: ${MCF5407_ABI_CONTRACT_ISP1181} does not exist. "
-        "That header is the published set of this library, and the gate reads "
-        "its names from there.")
-endif()
-
 mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_COLDFIRE MCF5407_ABI_SENTINELS_COLDFIRE
     MCF5407_ABI_LOST_COLDFIRE contract_coldfire "${MCF5407_ABI_CONTRACT_COLDFIRE}")
 mcf5407_abi_check_sentinels("the coldfire header"
     "${MCF5407_ABI_SENTINELS_COLDFIRE}" "${MCF5407_ABI_LOST_COLDFIRE}")
 
-mcf5407_abi_read_published(MCF5407_ABI_PUBLISHED_ISP1181 MCF5407_ABI_SENTINELS_ISP1181
-    MCF5407_ABI_LOST_ISP1181 contract_isp1181 "${MCF5407_ABI_CONTRACT_ISP1181}")
-mcf5407_abi_check_sentinels("the isp1181 header"
-    "${MCF5407_ABI_SENTINELS_ISP1181}" "${MCF5407_ABI_LOST_ISP1181}")
-
-set(MCF5407_ABI_PUBLISHED ${MCF5407_ABI_PUBLISHED_COLDFIRE} ${MCF5407_ABI_PUBLISHED_ISP1181})
+set(MCF5407_ABI_PUBLISHED ${MCF5407_ABI_PUBLISHED_COLDFIRE})
 list(REMOVE_DUPLICATES MCF5407_ABI_PUBLISHED)
 
 if(MCF5407_ABI_PUBLISHED STREQUAL "")
@@ -1702,8 +1687,8 @@ endif()
 # The other direction. An exported name the contract does not declare.
 #
 # A consumer cannot call a symbol it cannot declare. This check also constrains
-# this project: no new exported symbol can be added in `src/mcf5407.nim` until
-# `include/coldfire.h` or `include/isp1181.h` declares it, because this step refuses an export the
+# this project: no new exported symbol can be added in `src/coldfire.nim` until
+# `include/coldfire.h` declares it, because this step refuses an export the
 # contract does not carry.
 set(MCF5407_ABI_UNDECLARED "")
 foreach(name IN LISTS MCF5407_ABI_EXPORTED)

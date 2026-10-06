@@ -20,7 +20,7 @@ cmake_minimum_required(VERSION 3.26)
 
 project(coldfire
     VERSION 0.1.0
-    DESCRIPTION "ColdFire family microprocessor core and ISP1181 USB device model"
+    DESCRIPTION "ColdFire family microprocessor core model"
     LANGUAGES C CXX)
 
 # `enable_testing()` is what makes the test tree reachable. Without it CTest

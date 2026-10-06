@@ -29,12 +29,9 @@
 #include <cstdint>
 
 #include "coldfire.h"
-#include "isp1181.h"
 
 static_assert(sizeof(cf_ctx*) == sizeof(void*),
               "cf_ctx must be declared as an opaque context type");
-static_assert(sizeof(isp1181_ctx*) == sizeof(void*),
-              "isp1181_ctx must be declared as an opaque context type");
 
 static_assert(sizeof(cf_bus_status) >= 1u,
               "cf_bus_status must be declared as a type");
@@ -52,10 +49,6 @@ static_assert(sizeof(cf_write_fn) == sizeof(void (*)()),
               "cf_write_fn must be a function-pointer type");
 static_assert(sizeof(cf_iack_fn) == sizeof(void (*)()),
               "cf_iack_fn must be a function-pointer type");
-static_assert(sizeof(isp1181_irq_fn) == sizeof(void (*)()),
-              "isp1181_irq_fn must be a function-pointer type");
-static_assert(sizeof(isp1181_tx_fn) == sizeof(void (*)()),
-              "isp1181_tx_fn must be a function-pointer type");
 
 /* ------------------------------------------------ the address-of expressions
  *
@@ -76,18 +69,6 @@ int main()
     void (*const volatile p08)(const cf_ctx*, void*) = &cf_state_save;
     void (*const volatile p09)(cf_ctx*, const void*) = &cf_state_load;
 
-    isp1181_ctx* (*const volatile p10)(void*, isp1181_irq_fn,
-                              isp1181_tx_fn) = &isp1181_create;
-    void (*const volatile p11)(isp1181_ctx*) = &isp1181_destroy;
-    uint8_t (*const volatile p12)(isp1181_ctx*, uint32_t) = &isp1181_read;
-    void (*const volatile p13)(isp1181_ctx*, uint32_t, uint8_t) = &isp1181_write;
-    int (*const volatile p14)(isp1181_ctx*, int, const uint8_t*,
-                     size_t) = &isp1181_rx;
-    void (*const volatile p15)(isp1181_ctx*, uint32_t) = &isp1181_tick;
-    size_t (*const volatile p16)() = &isp1181_state_size;
-    void (*const volatile p17)(const isp1181_ctx*, void*) = &isp1181_state_save;
-    void (*const volatile p18)(isp1181_ctx*, const void*) = &isp1181_state_load;
-
     int found = 0;
     found += (p01 != nullptr);
     found += (p02 != nullptr);
@@ -98,17 +79,8 @@ int main()
     found += (p07 != nullptr);
     found += (p08 != nullptr);
     found += (p09 != nullptr);
-    found += (p10 != nullptr);
-    found += (p11 != nullptr);
-    found += (p12 != nullptr);
-    found += (p13 != nullptr);
-    found += (p14 != nullptr);
-    found += (p15 != nullptr);
-    found += (p16 != nullptr);
-    found += (p17 != nullptr);
-    found += (p18 != nullptr);
 
-    if (found != 18) {
+    if (found != 9) {
         return 1;
     }
     return 0;
