@@ -1,6 +1,6 @@
 # ColdFire & ISP1181 C API Specification
 
-This document specifies the C application binary interface (ABI) exposed by the ColdFire emulator and ISP1181 USB controller via [`include/coldfire.h`](../include/coldfire.h) and [`include/isp1181.h`](../include/isp1181.h), along with the backward compatibility layer in [`include/mcf5407.h`](../include/mcf5407.h).
+This document specifies the C application binary interface (ABI) exposed by the ColdFire emulator and ISP1181 USB controller via [`include/coldfire.h`](../include/coldfire.h) and [`include/isp1181.h`](../include/isp1181.h).
 
 The interface is strictly standardized to C11 / C++17 compatibility. No Nim runtime internals, garbage collector pointers, or C++ language constructs cross this boundary.
 
@@ -27,10 +27,7 @@ The interface is strictly standardized to C11 / C++17 compatibility. No Nim runt
    - [Endpoint Geometry & Configuration](#endpoint-geometry--configuration)
    - [Diagnostics & Audit Logging](#diagnostics--audit-logging)
    - [USB State Serialization](#usb-state-serialization)
-4. [Migrating from `mcf5407` (Compatibility Transition Guide)](#4-migrating-from-mcf5407-compatibility-transition-guide)
-   - [Header Separation](#header-separation)
-   - [Symbol Mapping Reference](#symbol-mapping-reference)
-5. [Complete C Integration Example](#5-complete-c-integration-example)
+4. [Complete C Integration Example](#4-complete-c-integration-example)
 
 ---
 
@@ -307,57 +304,7 @@ void isp1181_state_load(isp1181_ctx* ctx, const void* src);
 
 ---
 
-## 4. Migrating from `mcf5407` (Compatibility Transition Guide)
-
-The monolithic `include/mcf5407.h` header has been decoupled into two dedicated domain headers:
-1. `include/coldfire.h`: ColdFire processor core emulation.
-2. `include/isp1181.h`: Philips ISP1181 USB device controller.
-
-[`include/mcf5407.h`](../include/mcf5407.h) remains fully supported as a transparent, inline compatibility layer. Existing code bases will compile without modification or link disruption.
-
-### Header Separation
-
-When refactoring downstream code to adopt the canonical headers:
-
-```c
-/* Legacy single header include */
-#include "mcf5407.h"
-
-/* Modern modular includes */
-#include "coldfire.h"  /* For ColdFire core */
-#include "isp1181.h"   /* If USB controller emulation is required */
-```
-
-### Symbol Mapping Reference
-
-| Legacy `mcf5407` Symbol | Canonical `coldfire` / `isp1181` Symbol | Notes |
-|---|---|---|
-| `mcf5407_ctx` | `cf_ctx` | `typedef cf_ctx mcf5407_ctx;` |
-| `mcf5407_bus_status` | `cf_bus_status` | `typedef cf_bus_status mcf5407_bus_status;` |
-| `MCF5407_BUS_OK` | `CF_BUS_OK` | `#define MCF5407_BUS_OK CF_BUS_OK` |
-| `MCF5407_BUS_UNMAPPED` | `CF_BUS_UNMAPPED` | `#define MCF5407_BUS_UNMAPPED CF_BUS_UNMAPPED` |
-| `MCF5407_BUS_SIZE_ILLEGAL` | `CF_BUS_SIZE_ILLEGAL` | `#define MCF5407_BUS_SIZE_ILLEGAL CF_BUS_SIZE_ILLEGAL` |
-| `MCF5407_BUS_FAULT` | `CF_BUS_FAULT` | `#define MCF5407_BUS_FAULT CF_BUS_FAULT` |
-| `MCF5407_IRQ_NONE` | `CF_IRQ_NONE` | `#define MCF5407_IRQ_NONE CF_IRQ_NONE` |
-| `mcf5407_runtime_init()` | `cf_runtime_init()` | Static inline wrapper |
-| `mcf5407_create(u, rd, wr, iack)` | `cf_create(&cfg)` | Inline wrapper constructs `cf_config` with `CF_ISA_A` and default mask |
-| `mcf5407_destroy(ctx)` | `cf_destroy(ctx)` | Static inline wrapper |
-| `mcf5407_reset(ctx, sp, pc)` | `cf_reset(ctx, sp, pc)` | Static inline wrapper |
-| `mcf5407_exec(ctx, cycles)` | `cf_exec(ctx, cycles)` | Static inline wrapper |
-| `mcf5407_set_reg(ctx, idx, val)` | `cf_set_reg(ctx, idx, val)` | Static inline wrapper |
-| `mcf5407_get_reg(ctx, idx)` | `cf_get_reg(ctx, idx)` | Static inline wrapper |
-| `mcf5407_halted(ctx)` | `cf_halted(ctx)` | Static inline wrapper |
-| `mcf5407_faulted(ctx)` | `cf_faulted(ctx)` | Static inline wrapper |
-| `mcf5407_set_irq(ctx, l, v, av)` | `cf_set_irq(ctx, l, v, av)` | Static inline wrapper |
-| `mcf5407_state_size()` | `cf_state_size()` | Static inline wrapper |
-| `mcf5407_state_save(ctx, dst)` | `cf_state_save(ctx, dst)` | Static inline wrapper |
-| `mcf5407_state_load(ctx, src)` | `cf_state_load(ctx, src)` | Static inline wrapper |
-| `MCF5407_ISP1181_BACKEND_STUB` | `ISP1181_BACKEND_STUB` | Forwarded define |
-| `MCF5407_ISP1181_BACKEND_FULL_MODEL` | `ISP1181_BACKEND_FULL_MODEL` | Forwarded define |
-
----
-
-## 5. Complete C Integration Example
+## 4. Complete C Integration Example
 
 ```c
 #include "coldfire.h"

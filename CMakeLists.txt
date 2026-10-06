@@ -70,12 +70,12 @@ enable_testing()
 # and the standalone results do not move.
 include(CheckCXXCompilerFlag)
 
-set(MCF5407_TEST_WARNING_RELAXATIONS "")
+set(COLDFIRE_TEST_WARNING_RELAXATIONS "")
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
     check_cxx_compiler_flag("-Wno-error=deprecated-ofast"
-        MCF5407_HAVE_WNO_ERROR_DEPRECATED_OFAST)
-    if(MCF5407_HAVE_WNO_ERROR_DEPRECATED_OFAST)
-        list(APPEND MCF5407_TEST_WARNING_RELAXATIONS
+        COLDFIRE_HAVE_WNO_ERROR_DEPRECATED_OFAST)
+    if(COLDFIRE_HAVE_WNO_ERROR_DEPRECATED_OFAST)
+        list(APPEND COLDFIRE_TEST_WARNING_RELAXATIONS
             "-Wno-error=deprecated-ofast")
     endif()
 endif()

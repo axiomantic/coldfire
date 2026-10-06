@@ -2,7 +2,7 @@
 
 A modular, high-performance emulator for Motorola and Freescale ColdFire processors (MCF5407, MCF5307, MCF5249) and a functional model of the Philips ISP1181 USB device controller.
 
-The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/coldfire.h`](include/coldfire.h) and [`include/isp1181.h`](include/isp1181.h). Downstream consumers can consume the library either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler. Full backward compatibility is maintained via [`include/mcf5407.h`](include/mcf5407.h).
+The core implementation is authored in Nim, exposing a pure C application binary interface (ABI) declared in [`include/coldfire.h`](include/coldfire.h) and [`include/isp1181.h`](include/isp1181.h). Downstream consumers can consume the library either by compiling the original Nim sources or by building directly from pre-generated, platform-native C translation units requiring only a standard C11 compiler.
 
 ---
 
@@ -12,7 +12,6 @@ The core implementation is authored in Nim, exposing a pure C application binary
 - **Header Architecture**:
   - [`include/coldfire.h`](include/coldfire.h): Canonical ColdFire processor API (`cf_*`).
   - [`include/isp1181.h`](include/isp1181.h): Dedicated Philips ISP1181 USB controller API (`isp1181_*`).
-  - [`include/mcf5407.h`](include/mcf5407.h): Seamless backward-compatibility inline alias header forwarding to `coldfire.h` and `isp1181.h`.
 - **Supported Architecture & ISA Variants**:
   - **ColdFire ISA_A**: MCF5307 and baseline V3 architectural features.
   - **ColdFire ISA_A+**: MCF5249, MCF5272 with hardware divider and enhanced MAC support.
@@ -44,7 +43,7 @@ c_src/
 CMake automatically checks for the `nim` compiler on your `PATH`:
 - If `nim` is present and matches the pinned version in [`.nim-version`](.nim-version), CMake defaults to compiling from Nim sources.
 - If `nim` is absent, CMake automatically falls back to compiling from the pre-generated C sources in `c_src/`.
-- To explicitly force the C distribution even when Nim is installed, pass `-DMCF5407_USE_C_DIST=ON`.
+- To explicitly force the C distribution even when Nim is installed, pass `-DCOLDFIRE_USE_C_DIST=ON`.
 
 ### Updating C Sources (Maintainers)
 
@@ -64,12 +63,11 @@ This script verifies that the installed Nim compiler version matches [`.nim-vers
 
 | Option | Default | Description |
 |---|---|---|
-| `MCF5407_USE_C_DIST` | `OFF` (or `ON` if `nim` missing) | Compiles `libmcf5407` directly from `c_src/` using standard C11. |
+| `COLDFIRE_USE_C_DIST` | `OFF` (or `ON` if `nim` missing) | Compiles `libcoldfire` directly from `c_src/` using standard C11. |
 
 ### Exported Targets
 
 - `coldfire::coldfire` (canonical target)
-- `mcf5407::mcf5407` (backward compatibility alias)
 
 ### Consuming via `FetchContent`
 
@@ -83,7 +81,7 @@ FetchContent_Declare(
 )
 
 # Optional: Force pre-generated C distribution (no Nim dependency required)
-set(MCF5407_USE_C_DIST ON CACHE BOOL "" FORCE)
+set(COLDFIRE_USE_C_DIST ON CACHE BOOL "" FORCE)
 
 FetchContent_MakeAvailable(coldfire)
 
@@ -98,7 +96,7 @@ add_subdirectory(path/to/coldfire)
 target_link_libraries(my_emulator PRIVATE coldfire::coldfire)
 ```
 
-The exported targets automatically propagate the include directory for `coldfire.h`, `isp1181.h`, and `mcf5407.h`.
+The exported target automatically propagates the include directory for `coldfire.h` and `isp1181.h`.
 
 ---
 
@@ -166,19 +164,6 @@ isp1181_tick(usb, 1);
 isp1181_destroy(usb);
 ```
 
-### Backward Compatibility (`mcf5407.h`)
-
-Existing consumers can continue including `mcf5407.h` without code changes. All `mcf5407_*` functions and macros transparently forward to the canonical `cf_*` and `isp1181_*` functions via inline wrappers:
-
-```c
-#include "mcf5407.h"
-
-mcf5407_ctx* cpu = mcf5407_create(board_ptr, board_read, board_write, board_iack);
-mcf5407_reset(cpu, 0x00040000, 0x00000400);
-mcf5407_exec(cpu, 1000);
-mcf5407_destroy(cpu);
-```
-
 ## Building and Testing
 
 ### 1. Pre-Generated C Distribution Build
@@ -186,7 +171,7 @@ mcf5407_destroy(cpu);
 Requires only CMake 3.26+ and a standard C11/C++17 compiler (GCC, Clang, or MSVC):
 
 ```bash
-cmake -S . -B build-cdist -DMCF5407_USE_C_DIST=ON
+cmake -S . -B build-cdist -DCOLDFIRE_USE_C_DIST=ON
 cmake --build build-cdist --parallel
 ctest --test-dir build-cdist -R t0_ --no-tests=error --output-on-failure
 ```
@@ -211,7 +196,7 @@ ctest --preset full
 
 ## Detailed Documentation
 
-- [Online Documentation (GitHub Pages)](https://axiomantic.github.io/mcf5407/): Live rendered documentation portal.
+- [Online Documentation (GitHub Pages)](https://axiomantic.github.io/coldfire/): Live rendered documentation portal.
 - [API Specification](docs/api.md): Complete function, callback, and type reference.
 - [Sources and Architectural References](docs/sources.md): Hardware manual citations, register decodes, and design rationale.
 
