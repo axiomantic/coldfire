@@ -1,4 +1,4 @@
-# coldfire / mcf5407
+# coldfire
 
 A modular, high-performance emulator for Motorola and Freescale ColdFire processors (MCF5407, MCF5307, MCF5249) and a functional model of the Philips ISP1181 USB device controller.
 
