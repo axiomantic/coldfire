@@ -78,7 +78,7 @@ N_LIB_PRIVATE N_NIMCALL(NU8, uisr__coldfireZuart_u51)(tyObject_UartObj__3Zve532Y
 	res_1 = ((NU8)0);
 	{
 		if (!(((NI)0) < (*u_p0).rxCount)) goto LA3_;
-		res_1 = (NU8)(res_1 | ((NU8)4));
+		res_1 = (NU8)(res_1 | ((NU8)2));
 	}
 LA3_: ;
 	{
@@ -89,7 +89,7 @@ LA3_: ;
 		T7_ = !((*u_p0).txHoldingValid);
 LA8_: ;
 		if (!T7_) goto LA9_;
-		res_1 = (NU8)(res_1 | ((NU8)2));
+		res_1 = (NU8)(res_1 | ((NU8)1));
 	}
 LA9_: ;
 	result = res_1;

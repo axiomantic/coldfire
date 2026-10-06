@@ -98,8 +98,8 @@ void testDuart(cf_ctx* ctx) {
 	cf_mbar_write(ctx, 0x1C8, 1, 0x01, &st);
 	CHECK(st == CF_BUS_OK, "DUART: enable Rx via UCR succeeds");
 
-	// Enable Rx interrupt in UIMR (MBAR+0x1D4, bit 2 = 0x04)
-	cf_mbar_write(ctx, 0x1D4, 1, 0x04, &st);
+	// Enable Rx interrupt in UIMR (MBAR+0x1D4, bit 1 = 0x02)
+	cf_mbar_write(ctx, 0x1D4, 1, 0x02, &st);
 	// Map UART0 to Level 5 via ICR4 (MBAR+0x050)
 	cf_mbar_write(ctx, 0x050, 1, 0x14, &st);
 	// Program UIVR vector to 0x42 (MBAR+0x1F0)

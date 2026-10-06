@@ -294,8 +294,8 @@ block:
   # Enable receiver and transmitter (UCR = 0x05)
   writeMem(ctx, 0x1000_01C8'u32, 1, 0x05'u32) # Tx enable, Rx enable
 
-  # Enable Rx interrupt in UIMR (bit 2 = 0x04)
-  writeMem(ctx, 0x1000_01D4'u32, 1, 0x04'u32)
+  # Enable Rx interrupt in UIMR (bit 1 = 0x02)
+  writeMem(ctx, 0x1000_01D4'u32, 1, 0x02'u32)
 
   # Set UIVR vector to 0x42
   writeMem(ctx, 0x1000_01F0'u32, 1, 0x42'u32)
