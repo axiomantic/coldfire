@@ -144,7 +144,7 @@ void cf_state_load(cf_ctx* ctx, const void* src);
 
 /* ----------------------------------------------------------------- DUART0 */
 
-#define CF_UART_CH0  0  /* Channel A (UART0) - MIDI In/Out in gearmulator (MBAR + 0x1C0) */
+#define CF_UART_CH0  0  /* Channel A (UART0) (MBAR + 0x1C0) */
 #define CF_UART_CH1  1  /* Channel B (UART1) - Auxiliary / unused (MBAR + 0x200) */
 
 /* Transmit callback: invoked synchronously when the firmware writes a byte
